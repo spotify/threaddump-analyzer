@@ -3,9 +3,7 @@
 This is a Java thread dump analyzer written in Javascript.
 
 The idea is that this web page should live somewhere on the Internet
-and help people all over analyze their thread dumps.
-
-Web page here:  
+and help people all over analyze their thread dumps:
 https://ghe.spotify.net/pages/walles/threaddump-analyzer/
 
 ## TODO
@@ -19,3 +17,5 @@ expandable nodes.
 
 ## DONE
 * Publish the web page using Github pages.
+
+* Make submit button call a Javascript function.
