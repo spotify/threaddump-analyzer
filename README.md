@@ -9,8 +9,6 @@ https://ghe.spotify.net/pages/walles/threaddump-analyzer/
 
 
 ## TODO
-* HTML escape the text before writing it below the line.
-
 * Parse the thread dump and reconstruct it below the line.
 
 * Instead of recreating the thread dump, show it in a tree with
@@ -32,3 +30,5 @@ expandable nodes.
 
 * Connect the submit button to a Javascript function that simply
 copies the whole thread dump to below the line.
+
+* HTML escape the text before writing it below the line.
