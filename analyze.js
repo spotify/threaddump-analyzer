@@ -1,3 +1,4 @@
 function analyze_textfield() {
-    alert("fluff")
+    var text = document.getElementById("TEXTAREA").value
+    alert(text)
 }
