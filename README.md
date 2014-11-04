@@ -9,8 +9,7 @@ https://ghe.spotify.net/pages/walles/threaddump-analyzer/
 
 
 ## TODO
-* Connect the submit button to a Javascript function that simply
-copies the whole thread dump to below the line.
+* HTML escape the text before writing it below the line.
 
 * Parse the thread dump and reconstruct it below the line.
 
@@ -30,3 +29,6 @@ expandable nodes.
 * Publish the web page using Github pages.
 
 * Make submit button call a Javascript function.
+
+* Connect the submit button to a Javascript function that simply
+copies the whole thread dump to below the line.
