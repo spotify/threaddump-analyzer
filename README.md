@@ -42,6 +42,11 @@ spontaneously analyze that.
 * Find out how to load a text file in the tests and validate the
 result of analyzing that file.
 
+* Dump all input lines we failed to parse in red at the end so it's
+obvious if we need to add something.
+
+* Publish on public Github.
+
 
 ## DONE
 * Publish the web page using Github pages.
