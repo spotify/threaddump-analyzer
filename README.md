@@ -15,10 +15,6 @@ The Java Thread Dump Analyzer is licensed under
 the copyright belongs to Spotify AB.
 
 ## TODO
-* Add thread stack traces to the parse result.
-
-* Add thread stacks to the output.
-
 * Group threads with the same stacks and show the most common stack
 traces and their names first.
 
@@ -69,3 +65,7 @@ copies the whole thread dump to below the line.
 
 * Our example thread dump contains 297 threads. Make sure we get all
 of them on the web page.
+
+* Add thread stack traces to the parse result.
+
+* Add thread stacks to the output.

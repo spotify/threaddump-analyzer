@@ -32,11 +32,25 @@ function setOutputText(unescaped) {
 
 function Thread(line) {
     this.toString = function() {
-        return '"' + this.name + '": ' + (this.daemon ? "daemon, " : "") + this.state;
+        var string = '"' + this.name + '": ' + (this.daemon ? "daemon, " : "") + this.state;
+        for (var i = 0; i < this._frames.length; i++) {
+            var frame = this._frames[i];
+            string += '\n' + frame;
+        }
+
+        return string + '\n';
     };
 
     this.isValid = function() {
         return this.hasOwnProperty('name');
+    };
+
+    this.addStackLine = function(line) {
+        var FRAME = /^\s+at .*/;
+        if (line.match(FRAME) === null) {
+            return;
+        }
+        this._frames.push(line);
     };
 
     var THREAD_HEADER1 = /"(.*)" (daemon )?prio=([0-9]+) tid=(0x[0-9a-f]+) nid=(0x[0-9a-f]+) (.*) (\[(.*)\])?/;
@@ -48,6 +62,8 @@ function Thread(line) {
     if (match === null) {
         return undefined;
     }
+
+    this._frames = [];
 
     this.name = match[1];
     this.daemon = (match[2] !== undefined);
@@ -62,6 +78,7 @@ function Thread(line) {
 function Analyzer(text) {
     this._analyze = function(text) {
         var lines = text.split('\n');
+        var currentThread = null;
         for (var i = 0; i < lines.length; i++) {
             var line = lines[i];
             while (line.charAt(0) == '"' && line.indexOf(' prio=') == -1) {
@@ -78,6 +95,9 @@ function Analyzer(text) {
             var thread = new Thread(line);
             if (thread.isValid()) {
                 this.threads.push(thread);
+                currentThread = thread;
+            } else if (currentThread !== null) {
+                currentThread.addStackLine(line);
             }
         }
     };
