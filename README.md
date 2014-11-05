@@ -1,19 +1,20 @@
 <!--- -*-markdown-*- -->
 
-# Java thread dump analyzer
+# Java Thread Dump Analyzer
 
 This is a Java thread dump analyzer written in Javascript.
 
-The idea is that this web page should live somewhere on the Internet
-and help people all over analyze their thread dumps:
-
-https://ghe.spotify.net/pages/walles/threaddump-analyzer/
+[Click here to get your Java thread dump analyzed.](https://ghe.spotify.net/pages/walles/threaddump-analyzer/)
 
 # Unit tests
 
-To run the unit tests:
+[Click here to run the unit tests.](https://ghe.spotify.net/pages/walles/threaddump-analyzer/test.html)
 
-https://ghe.spotify.net/pages/walles/threaddump-analyzer/test.html
+# License
+
+The Java Thread Dump Analyzer is licensed under
+[version 2.0 of the Apache license](http://www.apache.org/licenses/LICENSE-2.0.html),
+the copyright belongs to Spotify AB.
 
 ## TODO
 * Find out how to load a text file in the tests and validate the
@@ -56,3 +57,5 @@ copies the whole thread dump to below the line.
 * Handle thread names containing linefeeds.
 
 * Add tests, unit or otherwise.
+
+* Apply Apache License.
