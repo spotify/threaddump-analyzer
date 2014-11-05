@@ -30,11 +30,11 @@ function ThreadHeader(line) {
     }
 
     this.name = match[1];
-    this.daemon = (match[2] !== null);
+    this.daemon = (match[2] !== undefined);
     this.prio = parseInt(match[3]);
     this.tid = match[4];
     this.nid = match[5];
-    this.state = match[6];
+    this.state = match[6].trim();
     this.dontknow = match[7];
 }
 
@@ -57,21 +57,21 @@ function Analyzer(text) {
 
             var threadHeader = new ThreadHeader(line);
             if (threadHeader.isValid()) {
-                this._threadHeaders.push(threadHeader);
+                this.threads.push(threadHeader);
             }
         }
     };
 
     this.toString = function() {
         var asString = "";
-        asString += "" + this._threadHeaders.length + " threads found: \n\n";
-        for (var i = 0; i < this._threadHeaders.length; i++) {
-            header = this._threadHeaders[i];
-            asString += header + '\n';
+        asString += "" + this.threads.length + " threads found:\n";
+        for (var i = 0; i < this.threads.length; i++) {
+            header = this.threads[i];
+            asString += '\n' + header;
         }
         return asString;
     };
 
-    this._threadHeaders = [];
+    this.threads = [];
     this._analyze(text);
 }

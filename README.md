@@ -9,8 +9,16 @@ and help people all over analyze their thread dumps:
 
 https://ghe.spotify.net/pages/walles/threaddump-analyzer/
 
+# Unit tests
+
+To run the unit tests:
+
+https://ghe.spotify.net/pages/walles/threaddump-analyzer/test.html
 
 ## TODO
+* Find out how to load a text file in the tests and validate the
+result of analyzing that file.
+
 * Our example thread dump contains 297 threads. Make sure we get all
 of them on the web page.
 
@@ -46,3 +54,5 @@ copies the whole thread dump to below the line.
 * Parse the thread dump and reconstruct it below the line.
 
 * Handle thread names containing linefeeds.
+
+* Add tests, unit or otherwise.
