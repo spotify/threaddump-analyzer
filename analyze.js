@@ -30,7 +30,7 @@ function setOutputText(unescaped) {
     outputDiv.innerHTML = escaped;
 }
 
-function ThreadHeader(line) {
+function Thread(line) {
     this.toString = function() {
         return '"' + this.name + '": ' + (this.daemon ? "daemon, " : "") + this.state;
     };
@@ -75,9 +75,9 @@ function Analyzer(text) {
                 line += ', ' + lines[i];
             }
 
-            var threadHeader = new ThreadHeader(line);
-            if (threadHeader.isValid()) {
-                this.threads.push(threadHeader);
+            var thread = new Thread(line);
+            if (thread.isValid()) {
+                this.threads.push(thread);
             }
         }
     };
@@ -86,8 +86,8 @@ function Analyzer(text) {
         var asString = "";
         asString += "" + this.threads.length + " threads found:\n";
         for (var i = 0; i < this.threads.length; i++) {
-            var header = this.threads[i];
-            asString += '\n' + header;
+            var thread = this.threads[i];
+            asString += '\n' + thread;
         }
         return asString;
     };

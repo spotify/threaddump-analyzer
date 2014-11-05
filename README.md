@@ -31,7 +31,14 @@ expandable nodes.
 
 * Support parsing multiple consecutive thread dumps.
 
-* Show locking information as part of the analysis.
+* Include locking information in the analysis.
+
+* Include synchronizers in the analysis.
+
+* Include java.lang.Thread.State in the analysis.
+
+* Include "- locked", "- eliminated", "- parking to wait for", "-
+  waiting on" and any other similar lines in the analysis.
 
 * Auto detect if somebody copies a thread dump to the clipboard and
 spontaneously analyze that.

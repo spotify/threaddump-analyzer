@@ -16,27 +16,27 @@ limitations under the License.
 
 QUnit.test( "basic thread", function(assert) {
     var header = '"thread name" prio=10 tid=0x00007f16a118e000 nid=0x6e5a runnable [0x00007f18b91d0000]';
-    assert.equal(new ThreadHeader(header), '"thread name": runnable');
+    assert.equal(new Thread(header), '"thread name": runnable');
 });
 
 QUnit.test( "daemon thread", function(assert) {
     var header = '"thread name" daemon prio=10 tid=0x00007f16a118e000 nid=0x6e5a runnable [0x00007f18b91d0000]';
-    assert.equal(new ThreadHeader(header), '"thread name": daemon, runnable');
+    assert.equal(new Thread(header), '"thread name": daemon, runnable');
 });
 
 QUnit.test( "vm thread", function(assert) {
     var header = '"VM Periodic Task Thread" prio=10 tid=0x00007f1af00c9800 nid=0x3c2c waiting on condition ';
-    assert.equal(new ThreadHeader(header), '"VM Periodic Task Thread": waiting on condition');
+    assert.equal(new Thread(header), '"VM Periodic Task Thread": waiting on condition');
 });
 
 QUnit.test( "sleeping daemon thread", function(assert) {
     var header = '"Store spotify-uuid Spool Thread" daemon prio=10 tid=0x00007f1a16aa0800 nid=0x3f5b sleeping[0x00007f199997a000]';
-    assert.equal(new ThreadHeader(header), '"Store spotify-uuid Spool Thread": daemon, sleeping');
+    assert.equal(new Thread(header), '"Store spotify-uuid Spool Thread": daemon, sleeping');
 });
 
 QUnit.test( "sleeping thread", function(assert) {
     var header = '"git@ghe.spotify.net:caoliang2598/ta-zelda-test.git#master"}; 09:09:58 Task started; VCS Periodical executor 39" prio=10 tid=0x00007f1728056000 nid=0x1347 sleeping[0x00007f169cdcb000]';
-    assert.equal(new ThreadHeader(header), '"git@ghe.spotify.net:caoliang2598/ta-zelda-test.git#master"}; 09:09:58 Task started; VCS Periodical executor 39": sleeping');
+    assert.equal(new Thread(header), '"git@ghe.spotify.net:caoliang2598/ta-zelda-test.git#master"}; 09:09:58 Task started; VCS Periodical executor 39": sleeping');
 });
 
 QUnit.test( "multiline thread name", function(assert) {
