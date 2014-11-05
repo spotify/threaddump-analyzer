@@ -29,6 +29,16 @@ QUnit.test( "vm thread", function(assert) {
     assert.equal(new ThreadHeader(header), '"VM Periodic Task Thread": waiting on condition');
 });
 
+QUnit.test( "sleeping daemon thread", function(assert) {
+    var header = '"Store spotify-uuid Spool Thread" daemon prio=10 tid=0x00007f1a16aa0800 nid=0x3f5b sleeping[0x00007f199997a000]';
+    assert.equal(new ThreadHeader(header), '"Store spotify-uuid Spool Thread": daemon, sleeping');
+});
+
+QUnit.test( "sleeping thread", function(assert) {
+    var header = '"git@ghe.spotify.net:caoliang2598/ta-zelda-test.git#master"}; 09:09:58 Task started; VCS Periodical executor 39" prio=10 tid=0x00007f1728056000 nid=0x1347 sleeping[0x00007f169cdcb000]';
+    assert.equal(new ThreadHeader(header), '"git@ghe.spotify.net:caoliang2598/ta-zelda-test.git#master"}; 09:09:58 Task started; VCS Periodical executor 39": sleeping');
+});
+
 QUnit.test( "multiline thread name", function(assert) {
     // It's the Analyzer that joins lines so we have to go through the Analyzer here
     var multilineHeader = '"line 1\nline 2" prio=10 tid=0x00007f16a118e000 nid=0x6e5a runnable [0x00007f18b91d0000]';

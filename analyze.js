@@ -39,8 +39,12 @@ function ThreadHeader(line) {
         return this.hasOwnProperty('name');
     };
 
-    var THREAD_HEADER = /"(.*)" (daemon )?prio=([0-9]+) tid=(0x[0-9a-f]+) nid=(0x[0-9a-f]+) (.*) (\[(.*)\])?/;
-    var match = THREAD_HEADER.exec(line);
+    var THREAD_HEADER1 = /"(.*)" (daemon )?prio=([0-9]+) tid=(0x[0-9a-f]+) nid=(0x[0-9a-f]+) (.*) (\[(.*)\])?/;
+    var match = THREAD_HEADER1.exec(line);
+    if (match === null) {
+        var THREAD_HEADER2 = /"(.*)" (daemon )?prio=([0-9]+) tid=(0x[0-9a-f]+) nid=(0x[0-9a-f]+) (sleeping)(\[(.*)\])?/;
+        match = THREAD_HEADER2.exec(line);
+    }
     if (match === null) {
         return undefined;
     }
