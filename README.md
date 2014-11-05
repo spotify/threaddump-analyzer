@@ -11,8 +11,6 @@ https://ghe.spotify.net/pages/walles/threaddump-analyzer/
 
 
 ## TODO
-* Handle thread names containing linefeeds.
-
 * Our example thread dump contains 297 threads. Make sure we get all
 of them on the web page.
 
@@ -46,3 +44,5 @@ copies the whole thread dump to below the line.
 * Make an Analyzer class / prototype.
 
 * Parse the thread dump and reconstruct it below the line.
+
+* Handle thread names containing linefeeds.

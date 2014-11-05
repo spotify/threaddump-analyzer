@@ -44,6 +44,16 @@ function Analyzer(text) {
         var lines = text.split('\n');
         for (var i = 0; i < lines.length; i++) {
             var line = lines[i];
+            while (line.charAt(0) == '"' && line.indexOf(' prio=') == -1) {
+                // Multi line thread name
+                i++;
+                if (i >= lines.length) {
+                    break;
+                }
+
+                // Replace thread name newline with ", "
+                line += ', ' + lines[i];
+            }
 
             var threadHeader = new ThreadHeader(line);
             if (threadHeader.isValid()) {
