@@ -16,9 +16,19 @@ function setOutputText(unescaped) {
 
 // Create an analyzer object
 function Analyzer(text) {
-    this.text = text;
+    this._analyze = function(text) {
+        var lines = text.split('\n');
+        for (var i = 0; i < lines.length; i++) {
+            var line = lines[i];
+
+            this.asString += line + '\n';
+        }
+    };
 
     this.toString = function() {
-        return this.text;
+        return this.asString;
     };
+
+    this.asString = "";
+    this._analyze(text);
 }
