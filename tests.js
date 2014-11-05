@@ -24,7 +24,13 @@ QUnit.test( "daemon thread", function(assert) {
     assert.equal(new ThreadHeader(header), '"thread name": daemon, runnable');
 });
 
+QUnit.test( "vm thread", function(assert) {
+    var header = '"VM Periodic Task Thread" prio=10 tid=0x00007f1af00c9800 nid=0x3c2c waiting on condition ';
+    assert.equal(new ThreadHeader(header), '"VM Periodic Task Thread": waiting on condition');
+});
+
 QUnit.test( "multiline thread name", function(assert) {
+    // It's the Analyzer that joins lines so we have to go through the Analyzer here
     var multilineHeader = '"line 1\nline 2" prio=10 tid=0x00007f16a118e000 nid=0x6e5a runnable [0x00007f18b91d0000]';
     var analyzer = new Analyzer(multilineHeader);
     var threads = analyzer.threads;
@@ -32,6 +38,7 @@ QUnit.test( "multiline thread name", function(assert) {
     assert.equal(threads.length, 1);
     assert.equal(threads[0].toString(), '"line 1, line 2": runnable');
 
+    // Test the Analyzer's toString() method as well now that we have an Analyzer
     var analysisLines = analyzer.toString().split('\n');
     assert.equal(analysisLines.length, 3);
     assert.equal(analysisLines[0], "1 threads found:");

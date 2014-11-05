@@ -6,8 +6,6 @@ This is a Java thread dump analyzer written in Javascript.
 
 [Click here to get your Java thread dump analyzed.](https://ghe.spotify.net/pages/walles/threaddump-analyzer/)
 
-# Unit tests
-
 [Click here to run the unit tests.](https://ghe.spotify.net/pages/walles/threaddump-analyzer/test.html)
 
 # License
@@ -17,9 +15,6 @@ The Java Thread Dump Analyzer is licensed under
 the copyright belongs to Spotify AB.
 
 ## TODO
-* Find out how to load a text file in the tests and validate the
-result of analyzing that file.
-
 * Our example thread dump contains 297 threads. Make sure we get all
 of them on the web page.
 
@@ -38,6 +33,9 @@ expandable nodes.
 
 * Auto detect if somebody copies a thread dump to the clipboard and
 spontaneously analyze that.
+
+* Find out how to load a text file in the tests and validate the
+result of analyzing that file.
 
 
 ## DONE

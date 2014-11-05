@@ -39,7 +39,7 @@ function ThreadHeader(line) {
         return this.hasOwnProperty('name');
     };
 
-    var THREAD_HEADER = /"(.*)" (daemon )?prio=([0-9]+) tid=(0x[0-9a-f]+) nid=(0x[0-9a-f]+) (.*)\[(0x[0-9a-f]+)\]/;
+    var THREAD_HEADER = /"(.*)" (daemon )?prio=([0-9]+) tid=(0x[0-9a-f]+) nid=(0x[0-9a-f]+) (.*) (\[(.*)\])?/;
     var match = THREAD_HEADER.exec(line);
     if (match === null) {
         return undefined;
@@ -51,7 +51,7 @@ function ThreadHeader(line) {
     this.tid = match[4];
     this.nid = match[5];
     this.state = match[6].trim();
-    this.dontknow = match[7];
+    this.dontknow = ((match.length >= 7) ? match[7] : undefined);
 }
 
 // Create an analyzer object
