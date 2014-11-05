@@ -1,7 +1,8 @@
 function analyze_textfield() {
     var text = document.getElementById("TEXTAREA").value;
 
-    setOutputText(text);
+    var analyzer = new Analyzer(text);
+    setOutputText(analyzer.toString());
 }
 
 function setOutputText(unescaped) {
@@ -11,4 +12,13 @@ function setOutputText(unescaped) {
 
     var outputDiv = document.getElementById("OUTPUT");
     outputDiv.innerHTML = escaped;
+}
+
+// Create an analyzer object
+function Analyzer(text) {
+    this.text = text;
+
+    this.toString = function() {
+        return this.text;
+    };
 }

@@ -1,3 +1,5 @@
+-*-markdown-*-
+
 # Java thread dump analyzer
 
 This is a Java thread dump analyzer written in Javascript.
@@ -22,6 +24,9 @@ expandable nodes.
 
 * Show locking information as part of the analysis.
 
+* Auto detect if somebody copies a thread dump to the clipboard and
+spontaneously analyze that.
+
 
 ## DONE
 * Publish the web page using Github pages.
@@ -32,3 +37,5 @@ expandable nodes.
 copies the whole thread dump to below the line.
 
 * HTML escape the text before writing it below the line.
+
+* Make an Analyzer class / prototype.
