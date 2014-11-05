@@ -1,4 +1,4 @@
--*-markdown-*-
+<!--- -*-markdown-*- -->
 
 # Java thread dump analyzer
 
