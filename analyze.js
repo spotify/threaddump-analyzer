@@ -39,7 +39,7 @@ function ThreadHeader(line) {
         return this.hasOwnProperty('name');
     };
 
-    THREAD_HEADER = /"(.*)" (daemon )?prio=([0-9]+) tid=(0x[0-9a-f]+) nid=(0x[0-9a-f]+) (.*)\[(0x[0-9a-f]+)\]/;
+    var THREAD_HEADER = /"(.*)" (daemon )?prio=([0-9]+) tid=(0x[0-9a-f]+) nid=(0x[0-9a-f]+) (.*)\[(0x[0-9a-f]+)\]/;
     var match = THREAD_HEADER.exec(line);
     if (match === null) {
         return undefined;
@@ -82,7 +82,7 @@ function Analyzer(text) {
         var asString = "";
         asString += "" + this.threads.length + " threads found:\n";
         for (var i = 0; i < this.threads.length; i++) {
-            header = this.threads[i];
+            var header = this.threads[i];
             asString += '\n' + header;
         }
         return asString;

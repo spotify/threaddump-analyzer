@@ -32,7 +32,7 @@ QUnit.test( "multiline thread name", function(assert) {
     assert.equal(threads.length, 1);
     assert.equal(threads[0].toString(), '"line 1, line 2": runnable');
 
-    analysisLines = analyzer.toString().split('\n');
+    var analysisLines = analyzer.toString().split('\n');
     assert.equal(analysisLines.length, 3);
     assert.equal(analysisLines[0], "1 threads found:");
     assert.equal(analysisLines[1], "");
