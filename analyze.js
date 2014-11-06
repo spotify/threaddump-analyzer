@@ -32,13 +32,7 @@ function setOutputText(unescaped) {
 
 function Thread(line) {
     this.toString = function() {
-        var string = '"' + this.name + '": ' + (this.daemon ? "daemon, " : "") + this.state;
-        for (var i = 0; i < this._frames.length; i++) {
-            var frame = this._frames[i];
-            string += '\n' + frame;
-        }
-
-        return string + '\n';
+        return this.toHeaderString() + '\n' + this.toStackString();
     };
 
     this.isValid = function() {
@@ -51,6 +45,24 @@ function Thread(line) {
             return;
         }
         this._frames.push(line);
+    };
+
+    this.toStackString = function() {
+        var string = "";
+        for (var i = 0; i < this._frames.length; i++) {
+            var frame = this._frames[i];
+            string += frame + '\n';
+        }
+
+        if (string === '') {
+            return "	<empty stack>\n";
+        }
+
+        return string;
+    };
+
+    this.toHeaderString = function() {
+        return '"' + this.name + '": ' + (this.daemon ? "daemon, " : "") + this.state;
     };
 
     var THREAD_HEADER1 = /"(.*)" (daemon )?prio=([0-9]+) tid=(0x[0-9a-f]+) nid=(0x[0-9a-f]+) (.*) (\[(.*)\])?/;
@@ -103,12 +115,42 @@ function Analyzer(text) {
     };
 
     this.toString = function() {
-        var asString = "";
-        asString += "" + this.threads.length + " threads found:\n";
+        // Map stacks to which threads have them
+        var stacksToThreads = {};
         for (var i = 0; i < this.threads.length; i++) {
             var thread = this.threads[i];
-            asString += '\n' + thread;
+            var stackString = thread.toStackString();
+            if (!stacksToThreads.hasOwnProperty(stackString)) {
+                stacksToThreads[stackString] = [];
+            }
+            stacksToThreads[stackString].push(thread);
         }
+
+        // List stacks by popularity
+        var stacks = [];
+        for (var stack in stacksToThreads) {
+            stacks.push(stack);
+        }
+        stacks.sort(function(a, b) { return stacksToThreads[b].length - stacksToThreads[a].length; });
+
+        // Iterate over stacks and for each stack, print first all
+        // threads that have it, and then the stack itself.
+        var asString = "";
+        asString += "" + this.threads.length + " threads found:\n";
+        for (var j = 0; j < stacks.length; j++) {
+            var currentStack = stacks[j];
+
+            asString += '\n';
+
+            var threads = stacksToThreads[currentStack];
+            for (var k = 0; k < threads.length; k++) {
+                var currentThread = threads[k];
+
+                asString += threads[k].toHeaderString() + "\n";
+            }
+            asString += currentStack;
+        }
+
         return asString;
     };
 

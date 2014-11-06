@@ -15,8 +15,12 @@ The Java Thread Dump Analyzer is licensed under
 the copyright belongs to Spotify AB.
 
 ## TODO
-* Group threads with the same stacks and show the most common stack
-traces and their names first.
+* Sort thread names in each group alphabetically.
+
+* Put <empty stack trace> threads last, no matter how many they are.
+
+* Dump all input lines we failed to parse in red at the end so it's
+obvious if we need to add something.
 
 * Instead of recreating the thread dump, show it in a tree with
 expandable nodes.
@@ -41,9 +45,6 @@ spontaneously analyze that.
 
 * Find out how to load a text file in the tests and validate the
 result of analyzing that file.
-
-* Dump all input lines we failed to parse in red at the end so it's
-obvious if we need to add something.
 
 * Publish on public Github.
 
@@ -74,3 +75,6 @@ of them on the web page.
 * Add thread stack traces to the parse result.
 
 * Add thread stacks to the output.
+
+* Group threads with the same stacks and show the most common stack
+traces and their names first.

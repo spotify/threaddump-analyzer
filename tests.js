@@ -16,27 +16,27 @@ limitations under the License.
 
 QUnit.test( "basic thread", function(assert) {
     var header = '"thread name" prio=10 tid=0x00007f16a118e000 nid=0x6e5a runnable [0x00007f18b91d0000]';
-    assert.equal(new Thread(header), '"thread name": runnable');
+    assert.equal(new Thread(header).toHeaderString(), '"thread name": runnable');
 });
 
 QUnit.test( "daemon thread", function(assert) {
     var header = '"thread name" daemon prio=10 tid=0x00007f16a118e000 nid=0x6e5a runnable [0x00007f18b91d0000]';
-    assert.equal(new Thread(header), '"thread name": daemon, runnable');
+    assert.equal(new Thread(header).toHeaderString(), '"thread name": daemon, runnable');
 });
 
 QUnit.test( "vm thread", function(assert) {
     var header = '"VM Periodic Task Thread" prio=10 tid=0x00007f1af00c9800 nid=0x3c2c waiting on condition ';
-    assert.equal(new Thread(header), '"VM Periodic Task Thread": waiting on condition');
+    assert.equal(new Thread(header).toHeaderString(), '"VM Periodic Task Thread": waiting on condition');
 });
 
 QUnit.test( "sleeping daemon thread", function(assert) {
     var header = '"Store spotify-uuid Spool Thread" daemon prio=10 tid=0x00007f1a16aa0800 nid=0x3f5b sleeping[0x00007f199997a000]';
-    assert.equal(new Thread(header), '"Store spotify-uuid Spool Thread": daemon, sleeping');
+    assert.equal(new Thread(header).toHeaderString(), '"Store spotify-uuid Spool Thread": daemon, sleeping');
 });
 
 QUnit.test( "sleeping thread", function(assert) {
     var header = '"git@ghe.spotify.net:caoliang2598/ta-zelda-test.git#master"}; 09:09:58 Task started; VCS Periodical executor 39" prio=10 tid=0x00007f1728056000 nid=0x1347 sleeping[0x00007f169cdcb000]';
-    assert.equal(new Thread(header), '"git@ghe.spotify.net:caoliang2598/ta-zelda-test.git#master"}; 09:09:58 Task started; VCS Periodical executor 39": sleeping');
+    assert.equal(new Thread(header).toHeaderString(), '"git@ghe.spotify.net:caoliang2598/ta-zelda-test.git#master"}; 09:09:58 Task started; VCS Periodical executor 39": sleeping');
 });
 
 QUnit.test( "multiline thread name", function(assert) {
@@ -46,14 +46,20 @@ QUnit.test( "multiline thread name", function(assert) {
     var threads = analyzer.threads;
 
     assert.equal(threads.length, 1);
-    assert.equal(threads[0].toString(), '"line 1, line 2": runnable');
+    var threadLines = threads[0].toString().split('\n');
+    assert.equal(threadLines.length, 3);
+    assert.equal(threadLines[0], '"line 1, line 2": runnable');
+    assert.equal(threadLines[1], '	<empty stack>');
+    assert.equal(threadLines[2], '');
 
     // Test the Analyzer's toString() method as well now that we have an Analyzer
     var analysisLines = analyzer.toString().split('\n');
-    assert.equal(analysisLines.length, 3);
+    assert.equal(analysisLines.length, 5);
     assert.equal(analysisLines[0], "1 threads found:");
     assert.equal(analysisLines[1], "");
     assert.equal(analysisLines[2], '"line 1, line 2": runnable');
+    assert.equal(analysisLines[3], '	<empty stack>');
+    assert.equal(analysisLines[4], "");
 });
 
 QUnit.test( "thread stack", function(assert) {
@@ -67,8 +73,9 @@ QUnit.test( "thread stack", function(assert) {
     // When adding stack frames we should just ignore unsupported
     // lines, and the end result should contain only supported data.
     var threadLines = thread.toString().split('\n');
-    assert.equal(threadLines.length, 3);
+    assert.equal(threadLines.length, 4);
     assert.equal(threadLines[0], '"Thread name": sleeping');
     assert.equal(threadLines[1], "	at java.security.AccessController.doPrivileged(Native Method)");
     assert.equal(threadLines[2], "	at java.net.SocksSocketImpl.connect(SocksSocketImpl.java:353)");
+    assert.equal(threadLines[3], "");
 });
