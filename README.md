@@ -15,6 +15,9 @@ The Java Thread Dump Analyzer is licensed under
 the copyright belongs to Spotify AB.
 
 ## TODO
+* If there are five or more threads in a group, prefix the group with a
+line saying: "NN threads with stack trace:"
+
 * Sort thread names in each group alphabetically.
 
 * Put \<empty stack trace\> threads last, no matter how many they are.
