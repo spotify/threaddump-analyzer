@@ -15,12 +15,12 @@ The Java Thread Dump Analyzer is licensed under
 the copyright belongs to Spotify AB.
 
 ## TODO
+* Publish on public Github.
+
 * If there are five or more threads in a group, prefix the group with a
 line saying: "NN threads with stack trace:"
 
 * Sort thread names in each group alphabetically.
-
-* Put \<empty stack trace\> threads last, no matter how many they are.
 
 * Dump all input lines we failed to parse in red at the end so it's
 obvious if we need to add something.
@@ -48,8 +48,6 @@ spontaneously analyze that.
 
 * Find out how to load a text file in the tests and validate the
 result of analyzing that file.
-
-* Publish on public Github.
 
 
 ## DONE
@@ -81,3 +79,5 @@ of them on the web page.
 
 * Group threads with the same stacks and show the most common stack
 traces and their names first.
+
+* Put \<empty stack trace\> threads last, no matter how many they are.

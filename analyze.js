@@ -14,6 +14,8 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
+var EMPTY_STACK = "	<empty stack>\n";
+
 function analyze_textfield() {
     var text = document.getElementById("TEXTAREA").value;
 
@@ -55,7 +57,7 @@ function Thread(line) {
         }
 
         if (string === '') {
-            return "	<empty stack>\n";
+            return EMPTY_STACK;
         }
 
         return string;
@@ -131,7 +133,19 @@ function Analyzer(text) {
         for (var stack in stacksToThreads) {
             stacks.push(stack);
         }
-        stacks.sort(function(a, b) { return stacksToThreads[b].length - stacksToThreads[a].length; });
+        stacks.sort(function(a, b) {
+            var a_score = stacksToThreads[a].length;
+            if (a === EMPTY_STACK) {
+                a_score = -123456;
+            }
+
+            var b_score = stacksToThreads[b].length;
+            if (b === EMPTY_STACK) {
+                b_score = -123456;
+            }
+
+            return b_score - a_score;
+        });
 
         // Iterate over stacks and for each stack, print first all
         // threads that have it, and then the stack itself.
