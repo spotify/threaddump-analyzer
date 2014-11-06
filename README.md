@@ -17,7 +17,7 @@ the copyright belongs to Spotify AB.
 ## TODO
 * Sort thread names in each group alphabetically.
 
-* Put <empty stack trace> threads last, no matter how many they are.
+* Put \<empty stack trace\> threads last, no matter how many they are.
 
 * Dump all input lines we failed to parse in red at the end so it's
 obvious if we need to add something.
