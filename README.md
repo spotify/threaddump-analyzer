@@ -17,6 +17,20 @@ the copyright belongs to Spotify AB.
 ## TODO
 * Publish on public Github.
 
+* Update the README.md links to point to the public Analyzer location.
+
+* Put links to the Github project and the unit tests page on index.html.
+
+* Add a Travis configuration.
+
+* Make Travis run the unit tests and fail the build if they fail.
+
+* Make Travis validate the HTML and fail the build if the HTML is
+invalid.
+
+* Make Travis run a Javascript code checker and fail the build if there
+are warnings.
+
 * If there are five or more threads in a group, prefix the group with a
 line saying: "NN threads with stack trace:"
 
@@ -24,6 +38,10 @@ line saying: "NN threads with stack trace:"
 
 * Dump all input lines we failed to parse in red at the end so it's
 obvious if we need to add something.
+
+* If two stacks are just as common, use the stack trace contents itself
+as the secondary sort key. This way similar stacks will end up closer to
+each other.
 
 * Instead of recreating the thread dump, show it in a tree with
 expandable nodes.
