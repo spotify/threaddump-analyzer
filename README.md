@@ -4,9 +4,9 @@
 
 This is a Java thread dump analyzer written in Javascript.
 
-[Click here to get your Java thread dump analyzed.](https://ghe.spotify.net/pages/walles/threaddump-analyzer/)
+[Click here to get your Java thread dump analyzed.](http://spotify.github.io/threaddump-analyzer/)
 
-[Click here to run the unit tests.](https://ghe.spotify.net/pages/walles/threaddump-analyzer/test.html)
+[Click here to run the unit tests.](http://spotify.github.io/threaddump-analyzer/test.html)
 
 # License
 
@@ -15,10 +15,6 @@ The Java Thread Dump Analyzer is licensed under
 the copyright belongs to Spotify AB.
 
 ## TODO
-* Publish on public Github.
-
-* Update the README.md links to point to the public Analyzer location.
-
 * Put links to the Github project and the unit tests page on index.html.
 
 * Add a Travis configuration.
@@ -100,3 +96,7 @@ traces and their names first.
 
 * If there are five or more threads in a group, prefix the group with a
 line saying: "NN threads with stack trace:"
+
+* Publish on public Github.
+
+* Update the README.md links to point to the public Analyzer location.

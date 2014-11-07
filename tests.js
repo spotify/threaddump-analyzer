@@ -35,8 +35,8 @@ QUnit.test( "sleeping daemon thread", function(assert) {
 });
 
 QUnit.test( "sleeping thread", function(assert) {
-    var header = '"git@ghe.spotify.net:caoliang2598/ta-zelda-test.git#master"}; 09:09:58 Task started; VCS Periodical executor 39" prio=10 tid=0x00007f1728056000 nid=0x1347 sleeping[0x00007f169cdcb000]';
-    assert.equal(new Thread(header).toHeaderString(), '"git@ghe.spotify.net:caoliang2598/ta-zelda-test.git#master"}; 09:09:58 Task started; VCS Periodical executor 39": sleeping');
+    var header = '"git@github.com:caoliang2598/ta-zelda-test.git#master"}; 09:09:58 Task started; VCS Periodical executor 39" prio=10 tid=0x00007f1728056000 nid=0x1347 sleeping[0x00007f169cdcb000]';
+    assert.equal(new Thread(header).toHeaderString(), '"git@github.com:caoliang2598/ta-zelda-test.git#master"}; 09:09:58 Task started; VCS Periodical executor 39": sleeping');
 });
 
 QUnit.test( "multiline thread name", function(assert) {
