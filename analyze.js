@@ -157,6 +157,9 @@ function Analyzer(text) {
             asString += '\n';
 
             var threads = stacksToThreads[currentStack];
+            if (threads.length > 4) {
+                asString += "" + threads.length + " threads with this stack:\n";
+            }
             for (var k = 0; k < threads.length; k++) {
                 var currentThread = threads[k];
 

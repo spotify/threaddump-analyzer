@@ -31,9 +31,6 @@ invalid.
 * Make Travis run a Javascript code checker and fail the build if there
 are warnings.
 
-* If there are five or more threads in a group, prefix the group with a
-line saying: "NN threads with stack trace:"
-
 * Sort thread names in each group alphabetically.
 
 * Dump all input lines we failed to parse in red at the end so it's
@@ -64,8 +61,9 @@ expandable nodes.
 * Auto detect if somebody copies a thread dump to the clipboard and
 spontaneously analyze that.
 
-* Find out how to load a text file in the tests and validate the
-result of analyzing that file.
+* Put an actual thread dump and the expected outcome of analyzing it
+in test.html and make a test that verifies that analyzing that dump
+gives the expected result.
 
 
 ## DONE
@@ -99,3 +97,6 @@ of them on the web page.
 traces and their names first.
 
 * Put \<empty stack trace\> threads last, no matter how many they are.
+
+* If there are five or more threads in a group, prefix the group with a
+line saying: "NN threads with stack trace:"
