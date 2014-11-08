@@ -15,8 +15,6 @@ The Java Thread Dump Analyzer is licensed under
 the copyright belongs to Spotify AB.
 
 ## TODO
-* Put links to the Github project and the unit tests page on index.html.
-
 * Add a Travis configuration.
 
 * Make Travis run the unit tests and fail the build if they fail.
@@ -36,12 +34,12 @@ obvious if we need to add something.
 as the secondary sort key. This way similar stacks will end up closer to
 each other.
 
-* Instead of recreating the thread dump, show it in a tree with
+* Instead of showing the thread dump as text, show it in a tree with
 expandable nodes.
 
-* Support uploading threaddumps from the local file system.
+* Support uploading thread dumps from the local file system.
 
-* Support parsing gzipped threaddumps.
+* Support parsing gzipped thread dumps.
 
 * Support parsing multiple consecutive thread dumps.
 
@@ -100,3 +98,5 @@ line saying: "NN threads with stack trace:"
 * Publish on public Github.
 
 * Update the README.md links to point to the public Analyzer location.
+
+* Put links to the Github project and the unit tests page on index.html.
