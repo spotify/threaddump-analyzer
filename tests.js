@@ -19,6 +19,19 @@ QUnit.test( "basic thread", function(assert) {
     assert.equal(new Thread(header).toHeaderString(), '"thread name": runnable');
 });
 
+// java version "1.7.0_21"
+// Java(TM) SE Runtime Environment (build 1.7.0_21-b12)
+// Java HotSpot(TM) 64-Bit Server VM (build 23.21-b01, mixed mode)
+QUnit.test( "basic thread 2", function(assert) {
+    var header = '"ApplicationImpl pooled thread 1" prio=4 tid=11296d000 nid=0x118a84000 waiting on condition [118a83000]';
+    assert.equal(new Thread(header).toHeaderString(), '"ApplicationImpl pooled thread 1": waiting on condition');
+});
+
+QUnit.test( "basic thread 3", function(assert) {
+    var header = '"Gang worker#1 (Parallel GC Threads)" prio=9 tid=105002800 nid=0x10bc88000 runnable';
+    assert.equal(new Thread(header).toHeaderString(), '"Gang worker#1 (Parallel GC Threads)": runnable');
+});
+
 QUnit.test( "daemon thread", function(assert) {
     var header = '"thread name" daemon prio=10 tid=0x00007f16a118e000 nid=0x6e5a runnable [0x00007f18b91d0000]';
     assert.equal(new Thread(header).toHeaderString(), '"thread name": daemon, runnable');
@@ -78,4 +91,17 @@ QUnit.test( "thread stack", function(assert) {
     assert.equal(threadLines[1], "	at java.security.AccessController.doPrivileged(Native Method)");
     assert.equal(threadLines[2], "	at java.net.SocksSocketImpl.connect(SocksSocketImpl.java:353)");
     assert.equal(threadLines[3], "");
+});
+
+function unescapeHtml(escaped) {
+  var e = document.createElement('div');
+  e.innerHTML = escaped;
+  return e.childNodes.length === 0 ? "" : e.childNodes[0].nodeValue;
+}
+
+QUnit.test( "full dump analysis", function(assert) {
+    var input = document.getElementById("sample-input").innerHTML;
+    var expectedOutput = unescapeHtml(document.getElementById("sample-analysis").innerHTML);
+    var analyzer = new Analyzer(input);
+    assert.equal(analyzer.toString(), expectedOutput);
 });

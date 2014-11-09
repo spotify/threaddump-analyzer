@@ -55,10 +55,6 @@ expandable nodes.
 * Auto detect if somebody copies a thread dump to the clipboard and
 spontaneously analyze that.
 
-* Put an actual thread dump and the expected outcome of analyzing it
-in test.html and make a test that verifies that analyzing that dump
-gives the expected result.
-
 
 ## DONE
 * Publish the web page using Github pages.
@@ -100,3 +96,7 @@ line saying: "NN threads with stack trace:"
 * Update the README.md links to point to the public Analyzer location.
 
 * Put links to the Github project and the unit tests page on index.html.
+
+* Put an actual thread dump and the expected outcome of analyzing it
+in test.html and make a test that verifies that analyzing that dump
+gives the expected result.
