@@ -29,7 +29,7 @@
     <p>
       <textarea cols='115' rows='10' id='TEXTAREA'></textarea>
       <br/>
-      <input type='submit' onclick='analyze_textfield();'>
+      <input type='submit' value='Analyze' onclick='analyze_textfield();'>
     </p>
     <p><a href="http://github.com/spotify/threaddump-analyzer">
         Source code on Github</a></p>
@@ -38,9 +38,15 @@
     <p><a href="test.html">
         Run the test suite in your browser</a></p>
 
-    <hr/>
+    <div id='OUTPUT_DIV' style="display: none;">
+      <hr/>
+      <pre id="OUTPUT"></pre>
+      <p><a href="https://github.com/spotify/threaddump-analyzer/issues/new">Report a bug</a></p>
+    </div>
 
-    <pre id="OUTPUT"></pre>
+    <hr/>
+    <p>This page is client-side only, and no data will leave your
+    computer when you click Analyze.</p>
 
   </body>
 </html>

@@ -25,8 +25,6 @@ invalid.
 * Make Travis run a Javascript code checker and fail the build if there
 are warnings.
 
-* Add a "report bug" link right after the analysis.
-
 * Dump all input lines we failed to parse in red at the end so it's
 obvious if we need to add something.
 
@@ -103,3 +101,5 @@ line saying: "NN threads with stack trace:"
 * Put an actual thread dump and the expected outcome of analyzing it
 in test.html and make a test that verifies that analyzing that dump
 gives the expected result.
+
+* Add a "report bug" link right after the analysis.

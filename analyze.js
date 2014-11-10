@@ -28,8 +28,11 @@ function setOutputText(unescaped) {
     div.appendChild(document.createTextNode(unescaped));
     var escaped = div.innerHTML;
 
-    var outputDiv = document.getElementById("OUTPUT");
-    outputDiv.innerHTML = escaped;
+    var outputPre = document.getElementById("OUTPUT");
+    outputPre.innerHTML = escaped;
+
+    var outputDiv = document.getElementById('OUTPUT_DIV');
+    outputDiv.style.display = 'inline';
 }
 
 function Thread(line) {
