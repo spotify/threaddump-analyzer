@@ -25,17 +25,25 @@ invalid.
 * Make Travis run a Javascript code checker and fail the build if there
 are warnings.
 
-* Sort thread names in each group alphabetically.
+* Add a "report bug" link right after the analysis.
 
 * Dump all input lines we failed to parse in red at the end so it's
 obvious if we need to add something.
 
+* Make the Thread class parse held locks, waited-for locks and
+waited-for condition variables from the thread dump.
+
+* If a thread is waiting for a lock held by another thread, make a
+clickable link from the waiter thread to the holder thread.
+
+* List all condition variables anybody is waiting for at the end. For
+each condition variable list which threads are waiting for it and who
+(if anybody) is holding the lock associated with the condvar. All
+references need to be clickable.
+
 * If two stacks are just as common, use the stack trace contents itself
 as the secondary sort key. This way similar stacks will end up closer to
 each other.
-
-* Instead of showing the thread dump as text, show it in a tree with
-expandable nodes.
 
 * Support uploading thread dumps from the local file system.
 
@@ -43,18 +51,13 @@ expandable nodes.
 
 * Support parsing multiple consecutive thread dumps.
 
-* Include locking information in the analysis.
-
-* Include synchronizers in the analysis.
-
-* Include java.lang.Thread.State in the analysis.
-
-* Include "- locked", "- eliminated", "- parking to wait for", "-
-  waiting on" and any other similar lines in the analysis.
+* Sort thread names in each group alphabetically.
 
 * Auto detect if somebody copies a thread dump to the clipboard and
 spontaneously analyze that.
 
+* Instead of showing the thread dump as text, show it in a tree with
+expandable nodes.
 
 ## DONE
 * Publish the web page using Github pages.
