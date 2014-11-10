@@ -464,12 +464,15 @@ Full thread dump Java HotSpot(TM) 64-Bit Server VM (20.65-b04-466.1 mixed mode):
 "Concurrent Mark-Sweep GC Thread" prio=9 tid=10c07c000 nid=0x110b5a000 runnable
 "VM Periodic Task Thread" prio=10 tid=10506b800 nid=0x112119000 waiting on condition
 
+"GC task thread#7 (ParallelGC)" os_prio=31 tid=0x00007fddb280d000 nid=0x2f03 runnable
+"GC task thread#8 (ParallelGC)" os_prio=31 tid=0x00007fddb280d000 nid=0x2f03 runnable
+
 "Exception Catcher Thread" prio=10 tid=105002000 nid=0x105901000 runnable
 JNI global references: 8210
 
 </pre>
 
-    <pre id="sample-analysis" style="display: none;">51 threads found:
+    <pre id="sample-analysis" style="display: none;">53 threads found:
 
 "RMI Scheduler(0)": daemon, waiting on condition
 "Change List Updater": daemon, waiting on condition
@@ -686,7 +689,7 @@ JNI global references: 8210
 	at java.lang.Object.wait(Object.java:485)
 	at java.lang.ref.Reference$ReferenceHandler.run(Reference.java:116)
 
-16 threads with this stack:
+18 threads with this stack:
 "Attach Listener": daemon, waiting on condition
 "DestroyJavaVM": waiting on condition
 "AWT-AppKit": daemon, runnable
@@ -702,6 +705,8 @@ JNI global references: 8210
 "Gang worker#3 (Parallel GC Threads)": runnable
 "Concurrent Mark-Sweep GC Thread": runnable
 "VM Periodic Task Thread": waiting on condition
+"GC task thread#7 (ParallelGC)": runnable
+"GC task thread#8 (ParallelGC)": runnable
 "Exception Catcher Thread": runnable
 	&lt;empty stack&gt;
 </pre>

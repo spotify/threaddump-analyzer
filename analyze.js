@@ -67,10 +67,10 @@ function Thread(line) {
         return '"' + this.name + '": ' + (this.daemon ? "daemon, " : "") + this.state;
     };
 
-    var THREAD_HEADER1 = /"(.*)" (daemon )?prio=([0-9]+) tid=([x0-9a-f]+) nid=([x0-9a-f]+) (.*) ?(\[(.*)\])/;
+    var THREAD_HEADER1 = /"(.*)" (#[0-9]+ )?(daemon )?(prio=([0-9]+) )?(os_prio=([0-9]+) )?tid=([x0-9a-f]+) nid=([x0-9a-f]+) (.*) ?(\[(.*)\])/;
     var match = THREAD_HEADER1.exec(line);
     if (match === null) {
-        var THREAD_HEADER2 = /"(.*)" (daemon )?prio=([0-9]+) tid=([x0-9a-f]+) nid=([x0-9a-f]+) (.*)/;
+        var THREAD_HEADER2 = /"(.*)" (#[0-9]+ )?(daemon )?(prio=([0-9]+) )?(os_prio=([0-9]+) )?tid=([x0-9a-f]+) nid=([x0-9a-f]+) (.*)/;
         match = THREAD_HEADER2.exec(line);
     }
     if (match === null) {
@@ -80,12 +80,22 @@ function Thread(line) {
     this._frames = [];
 
     this.name = match[1];
-    this.daemon = (match[2] !== undefined);
-    this.prio = parseInt(match[3]);
-    this.tid = match[4];
-    this.nid = match[5];
-    this.state = match[6].trim();
-    this.dontknow = ((match.length >= 7) ? match[7] : undefined);
+    if (match[2] !== undefined) {
+        this.number = match[2];
+    }
+    this.daemon = (match[3] !== undefined);
+    // match[4] is the prio parenthesis
+    if (match[5] !== undefined) {
+        this.prio = parseInt(match[5]);
+    }
+    // match[6] is the os_prio parenthesis
+    if (match[7] !== undefined) {
+        this.os_prio = parseInt(match[7]);
+    }
+    this.tid = match[8];
+    this.nid = match[9];
+    this.state = match[10].trim();
+    this.dontknow = ((match.length >= 11) ? match[11] : undefined);
 }
 
 // Create an analyzer object
@@ -95,7 +105,7 @@ function Analyzer(text) {
         var currentThread = null;
         for (var i = 0; i < lines.length; i++) {
             var line = lines[i];
-            while (line.charAt(0) == '"' && line.indexOf(' prio=') == -1) {
+            while (line.charAt(0) == '"' && line.indexOf('prio=') == -1) {
                 // Multi line thread name
                 i++;
                 if (i >= lines.length) {

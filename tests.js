@@ -14,14 +14,11 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
-QUnit.test( "basic thread", function(assert) {
+QUnit.test( "basic thread 1", function(assert) {
     var header = '"thread name" prio=10 tid=0x00007f16a118e000 nid=0x6e5a runnable [0x00007f18b91d0000]';
     assert.equal(new Thread(header).toHeaderString(), '"thread name": runnable');
 });
 
-// java version "1.7.0_21"
-// Java(TM) SE Runtime Environment (build 1.7.0_21-b12)
-// Java HotSpot(TM) 64-Bit Server VM (build 23.21-b01, mixed mode)
 QUnit.test( "basic thread 2", function(assert) {
     var header = '"ApplicationImpl pooled thread 1" prio=4 tid=11296d000 nid=0x118a84000 waiting on condition [118a83000]';
     assert.equal(new Thread(header).toHeaderString(), '"ApplicationImpl pooled thread 1": waiting on condition');
@@ -30,6 +27,21 @@ QUnit.test( "basic thread 2", function(assert) {
 QUnit.test( "basic thread 3", function(assert) {
     var header = '"Gang worker#1 (Parallel GC Threads)" prio=9 tid=105002800 nid=0x10bc88000 runnable';
     assert.equal(new Thread(header).toHeaderString(), '"Gang worker#1 (Parallel GC Threads)": runnable');
+});
+
+QUnit.test( "basic thread 4", function(assert) {
+    var header = '"Attach Listener" #10 daemon prio=9 os_prio=31 tid=0x00007fddb280e000 nid=0x380b waiting on condition [0x0000000000000000]';
+    assert.equal(new Thread(header).toHeaderString(), '"Attach Listener": daemon, waiting on condition');
+});
+
+QUnit.test( "basic thread 5", function(assert) {
+    var header = '"Attach Listener" #10 daemon prio=9 os_prio=31 tid=0x00007fddb280e000 nid=0x380b waiting on condition';
+    assert.equal(new Thread(header).toHeaderString(), '"Attach Listener": daemon, waiting on condition');
+});
+
+QUnit.test( "basic thread 6", function(assert) {
+    var header = '"VM Thread" os_prio=31 tid=0x00007fddb2049800 nid=0x3103 runnable';
+    assert.equal(new Thread(header).toHeaderString(), '"VM Thread": runnable');
 });
 
 QUnit.test( "daemon thread", function(assert) {
