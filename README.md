@@ -39,6 +39,9 @@ each condition variable list which threads are waiting for it and who
 (if anybody) is holding the lock associated with the condvar. All
 references need to be clickable.
 
+* Detect deadlocks and display deadlock information prominently at the
+top if detected.
+
 * If two stacks are just as common, use the stack trace contents itself
 as the secondary sort key. This way similar stacks will end up closer to
 each other.
