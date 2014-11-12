@@ -23,6 +23,20 @@ function analyze_textfield() {
     setOutputText(analyzer.toString());
 }
 
+// Extracts a substring from a string.
+//
+// Returns an object with two properties:
+// value = the first group of the extracted object
+// shorter_string = the string with the full contents of the regex removed
+function _extract(regex, string) {
+    var match = regex.exec(string);
+    if (match === null) {
+        return {value: undefined, shorter_string: string};
+    }
+
+    return {value: match[1], shorter_string: string.replace(regex, "")};
+}
+
 function setOutputText(unescaped) {
     var div = document.createElement('div');
     div.appendChild(document.createTextNode(unescaped));
@@ -41,7 +55,7 @@ function Thread(line) {
     };
 
     this.isValid = function() {
-        return this.hasOwnProperty('name');
+        return this.hasOwnProperty('name') && this.name !== undefined;
     };
 
     this.addStackLine = function(line) {
@@ -67,38 +81,58 @@ function Thread(line) {
     };
 
     this.toHeaderString = function() {
-        return '"' + this.name + '": ' + (this.daemon ? "daemon, " : "") + this.state;
+        var headerString = "";
+        if (this.group !== undefined) {
+            headerString += '"' + this.group + '"/';
+        }
+        headerString += '"' + this.name + '": ' + (this.daemon ? "daemon, " : "") + this.state;
+        return headerString;
     };
 
-    var THREAD_HEADER1 = /"(.*)" (#[0-9]+ )?(daemon )?(prio=([0-9]+) )?(os_prio=([0-9]+) )?tid=([x0-9a-f]+) nid=([x0-9a-f]+) (.*) ?(\[(.*)\])/;
-    var match = THREAD_HEADER1.exec(line);
-    if (match === null) {
-        var THREAD_HEADER2 = /"(.*)" (#[0-9]+ )?(daemon )?(prio=([0-9]+) )?(os_prio=([0-9]+) )?tid=([x0-9a-f]+) nid=([x0-9a-f]+) (.*)/;
-        match = THREAD_HEADER2.exec(line);
-    }
-    if (match === null) {
+    var match;
+    match = _extract(/\[([0-9a-fx,]+)\]$/, line);
+    this.dontKnow = match.value;
+    line = match.shorter_string;
+
+    match = _extract(/ nid=([0-9a-fx,]+)/, line);
+    this.nid = match.value;
+    line = match.shorter_string;
+
+    match = _extract(/ tid=([0-9a-fx,]+)/, line);
+    this.tid = match.value;
+    line = match.shorter_string;
+
+    match = _extract(/ prio=([0-9]+)/, line);
+    this.prio = match.value;
+    line = match.shorter_string;
+
+    match = _extract(/ os_prio=([0-9a-fx,]+)/, line);
+    this.os_prio = match.value;
+    line = match.shorter_string;
+
+    match = _extract(/ (daemon)/, line);
+    this.daemon = (match.value !== undefined);
+    line = match.shorter_string;
+
+    match = _extract(/ #([0-9]+)/, line);
+    this.number = match.value;
+    line = match.shorter_string;
+
+    match = _extract(/ group="(.*)"/, line);
+    this.group = match.value;
+    line = match.shorter_string;
+
+    match = _extract(/^"(.*)" /, line);
+    this.name = match.value;
+    line = match.shorter_string;
+
+    this.state = line.trim();
+
+    if (this.name === undefined) {
         return undefined;
     }
 
     this._frames = [];
-
-    this.name = match[1];
-    if (match[2] !== undefined) {
-        this.number = match[2];
-    }
-    this.daemon = (match[3] !== undefined);
-    // match[4] is the prio parenthesis
-    if (match[5] !== undefined) {
-        this.prio = parseInt(match[5]);
-    }
-    // match[6] is the os_prio parenthesis
-    if (match[7] !== undefined) {
-        this.os_prio = parseInt(match[7]);
-    }
-    this.tid = match[8];
-    this.nid = match[9];
-    this.state = match[10].trim();
-    this.dontknow = ((match.length >= 11) ? match[11] : undefined);
 }
 
 // Create an analyzer object

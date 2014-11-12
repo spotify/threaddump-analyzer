@@ -14,34 +14,44 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
-QUnit.test( "basic thread 1", function(assert) {
+QUnit.test( "thread header 1", function(assert) {
     var header = '"thread name" prio=10 tid=0x00007f16a118e000 nid=0x6e5a runnable [0x00007f18b91d0000]';
     assert.equal(new Thread(header).toHeaderString(), '"thread name": runnable');
 });
 
-QUnit.test( "basic thread 2", function(assert) {
+QUnit.test( "thread header 2", function(assert) {
     var header = '"ApplicationImpl pooled thread 1" prio=4 tid=11296d000 nid=0x118a84000 waiting on condition [118a83000]';
     assert.equal(new Thread(header).toHeaderString(), '"ApplicationImpl pooled thread 1": waiting on condition');
 });
 
-QUnit.test( "basic thread 3", function(assert) {
+QUnit.test( "thread header 3", function(assert) {
     var header = '"Gang worker#1 (Parallel GC Threads)" prio=9 tid=105002800 nid=0x10bc88000 runnable';
     assert.equal(new Thread(header).toHeaderString(), '"Gang worker#1 (Parallel GC Threads)": runnable');
 });
 
-QUnit.test( "basic thread 4", function(assert) {
+QUnit.test( "thread header 4", function(assert) {
     var header = '"Attach Listener" #10 daemon prio=9 os_prio=31 tid=0x00007fddb280e000 nid=0x380b waiting on condition [0x0000000000000000]';
     assert.equal(new Thread(header).toHeaderString(), '"Attach Listener": daemon, waiting on condition');
 });
 
-QUnit.test( "basic thread 5", function(assert) {
+QUnit.test( "thread header 5", function(assert) {
     var header = '"Attach Listener" #10 daemon prio=9 os_prio=31 tid=0x00007fddb280e000 nid=0x380b waiting on condition';
     assert.equal(new Thread(header).toHeaderString(), '"Attach Listener": daemon, waiting on condition');
 });
 
-QUnit.test( "basic thread 6", function(assert) {
+QUnit.test( "thread header 6", function(assert) {
     var header = '"VM Thread" os_prio=31 tid=0x00007fddb2049800 nid=0x3103 runnable';
     assert.equal(new Thread(header).toHeaderString(), '"VM Thread": runnable');
+});
+
+QUnit.test( "thread header 7", function(assert) {
+    var header = '"Queued build chains changes collector 8" daemon group="main" prio=5 tid=431,909 nid=431,909 waiting ';
+    assert.equal(new Thread(header).toHeaderString(), '"main"/"Queued build chains changes collector 8": daemon, waiting');
+});
+
+QUnit.test( "thread header 8", function(assert) {
+    var header = '"Attach Listener" #10 prio=9 os_prio=31 tid=0x00007fddb280e000 nid=0x380b waiting on condition [0x0000000000000000]';
+    assert.equal(new Thread(header).toHeaderString(), '"Attach Listener": waiting on condition');
 });
 
 QUnit.test( "daemon thread", function(assert) {
@@ -116,4 +126,14 @@ QUnit.test( "full dump analysis", function(assert) {
     var expectedOutput = unescapeHtml(document.getElementById("sample-analysis").innerHTML);
     var analyzer = new Analyzer(input);
     assert.equal(analyzer.toString(), expectedOutput);
+});
+
+QUnit.test("extract regex from string", function(assert) {
+    var extracted = _extract(/a(p)a/, "gris");
+    assert.equal(extracted.value, undefined);
+    assert.equal(extracted.shorter_string, "gris");
+
+    extracted = _extract(/a(p)a/, "hejapagris");
+    assert.equal(extracted.value, "p");
+    assert.equal(extracted.shorter_string, "hejgris");
 });
