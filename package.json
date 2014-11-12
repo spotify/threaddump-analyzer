@@ -1,0 +1,24 @@
+{
+    "name": "threaddump-analyzer",
+    "version": "0.0.0",
+    "description": "Java thread dump analyzer",
+    "license": "Apache-2.0",
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/spotify/threaddump-analyzer.git"
+    },
+    "bugs": { "url" : "https://github.com/spotify/threaddump-analyzer/issues" },
+    "scripts": {
+        "test": "gulp"
+    },
+    "keywords": [
+        "java",
+        "thread",
+        "thread dump"
+    ],
+    "devDependencies": {
+        "gulp-qunit": "~0.2.1",
+        "gulp-util": "~2.2.14",
+        "gulp": "~3.5.1"
+    }
+}

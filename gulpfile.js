@@ -14,14 +14,9 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
-module.exports = function(grunt) {
-    // Project configuration.
-    grunt.initConfig({
-        qunit: {
-            files: ['test.html']
-        }
-    });
+var gulp = require('gulp');
+var qunit = require('gulp-qunit');
 
-    // Task to run tests
-    grunt.registerTask('test', 'qunit');
-};
+gulp.task('default', function() {
+    return gulp.src('./test.html').pipe(qunit());
+});
