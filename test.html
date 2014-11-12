@@ -198,6 +198,19 @@ Full thread dump Java HotSpot(TM) 64-Bit Server VM (20.65-b04-466.1 mixed mode):
 	at java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:917)
 	at java.lang.Thread.run(Thread.java:695)
 
+"Animations 2" daemon prio=5 tid=11c336000 nid=0x11d1b6000 waiting on condition [11d1b5000]
+   java.lang.Thread.State: WAITING (parking)
+	at sun.misc.Unsafe.park(Native Method)
+	- parking to wait for  <7c1da4188> (a java.util.concurrent.locks.AbstractQueuedSynchronizer$ConditionObject)
+	at java.util.concurrent.locks.LockSupport.park(LockSupport.java:156)
+	at java.util.concurrent.locks.AbstractQueuedSynchronizer$ConditionObject.await(AbstractQueuedSynchronizer.java:1987)
+	at java.util.concurrent.DelayQueue.take(DelayQueue.java:160)
+	at java.util.concurrent.ScheduledThreadPoolExecutor$DelayedWorkQueue.take(ScheduledThreadPoolExecutor.java:609)
+	at java.util.concurrent.ScheduledThreadPoolExecutor$DelayedWorkQueue.take(ScheduledThreadPoolExecutor.java:602)
+	at java.util.concurrent.ThreadPoolExecutor.getTask(ThreadPoolExecutor.java:957)
+	at java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:917)
+	at java.lang.Thread.run(Thread.java:695)
+
 "TimerQueue" daemon prio=5 tid=105479800 nid=0x118e8d000 in Object.wait() [118e8c000]
    java.lang.Thread.State: TIMED_WAITING (on object monitor)
 	at java.lang.Object.wait(Native Method)
@@ -472,12 +485,14 @@ JNI global references: 8210
 
 </pre>
 
-    <pre id="sample-analysis" style="display: none;">53 threads found:
+    <pre id="sample-analysis" style="display: none;">54 threads found:
 
+5 threads with this stack:
 "RMI Scheduler(0)": daemon, waiting on condition
 "Change List Updater": daemon, waiting on condition
 "Encoding detection thread": daemon, waiting on condition
 "Animations": daemon, waiting on condition
+"Animations 2": daemon, waiting on condition
 	at sun.misc.Unsafe.park(Native Method)
 	at java.util.concurrent.locks.LockSupport.park(LockSupport.java:156)
 	at java.util.concurrent.locks.AbstractQueuedSynchronizer$ConditionObject.await(AbstractQueuedSynchronizer.java:1987)
