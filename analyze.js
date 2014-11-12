@@ -181,6 +181,10 @@ function Analyzer(text) {
             stacks.push(stack);
         }
         stacks.sort(function(a, b) {
+            if (a == b) {
+                return 0;
+            }
+
             var a_score = stacksToThreads[a].length;
             if (a === EMPTY_STACK) {
                 a_score = -123456;
@@ -191,7 +195,19 @@ function Analyzer(text) {
                 b_score = -123456;
             }
 
-            return b_score - a_score;
+            if (b_score != a_score) {
+                return b_score - a_score;
+            }
+
+            // Use stack contents as secondary sort key. This is
+            // needed to get deterministic enough output for being
+            // able to run our unit tests in both Node.js and in
+            // Chrome.
+            if (a < b) {
+                return -1;
+            } else {
+                return 1;
+            }
         });
 
         // Iterate over stacks and for each stack, print first all

@@ -15,10 +15,6 @@ The Java Thread Dump Analyzer is licensed under
 the copyright belongs to Spotify AB.
 
 ## TODO
-* Add a Travis configuration.
-
-* Make Travis run the unit tests and fail the build if they fail.
-
 * Make Travis validate the HTML and fail the build if the HTML is
 invalid.
 
@@ -106,3 +102,7 @@ in test.html and make a test that verifies that analyzing that dump
 gives the expected result.
 
 * Add a "report bug" link right after the analysis.
+
+* Add a Travis configuration.
+
+* Make Travis run the unit tests and fail the build if they fail.

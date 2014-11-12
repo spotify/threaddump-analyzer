@@ -536,6 +536,112 @@ JNI global references: 8210
 	at java.lang.Thread.run(Thread.java:695)
 	at com.intellij.openapi.application.impl.ApplicationImpl$1$1.run(ApplicationImpl.java:149)
 
+"Document commit thread": in Object.wait()
+	at java.lang.Object.wait(Native Method)
+	at java.lang.Object.wait(Object.java:485)
+	at com.intellij.psi.impl.DocumentCommitThread.pollQueue(DocumentCommitThread.java:262)
+	at com.intellij.psi.impl.DocumentCommitThread.run(DocumentCommitThread.java:238)
+	at java.lang.Thread.run(Thread.java:695)
+
+"AWT-EventQueue-1 0.8.14#AI-135.1538390, eap:true": in Object.wait()
+	at java.lang.Object.wait(Native Method)
+	at java.lang.Object.wait(Object.java:485)
+	at java.awt.EventQueue.getNextEvent(EventQueue.java:558)
+	at java.awt.EventDispatchThread.pumpOneEventForFilters(EventDispatchThread.java:263)
+	at java.awt.EventDispatchThread.pumpEventsForFilter(EventDispatchThread.java:211)
+	at java.awt.EventDispatchThread.pumpEventsForHierarchy(EventDispatchThread.java:201)
+	at java.awt.EventDispatchThread.pumpEvents(EventDispatchThread.java:196)
+	at java.awt.EventDispatchThread.pumpEvents(EventDispatchThread.java:188)
+	at java.awt.EventDispatchThread.run(EventDispatchThread.java:122)
+
+"ApplicationImpl pooled thread 0": in Object.wait()
+	at java.lang.Object.wait(Native Method)
+	at java.lang.Object.wait(Object.java:485)
+	at java.lang.UNIXProcess.waitFor(UNIXProcess.java:115)
+	at com.intellij.execution.process.ProcessWaitFor$1.run(ProcessWaitFor.java:30)
+	at com.intellij.openapi.application.impl.ApplicationImpl$8.run(ApplicationImpl.java:419)
+	at java.util.concurrent.Executors$RunnableAdapter.call(Executors.java:439)
+	at java.util.concurrent.FutureTask$Sync.innerRun(FutureTask.java:303)
+	at java.util.concurrent.FutureTask.run(FutureTask.java:138)
+	at java.util.concurrent.ThreadPoolExecutor$Worker.runTask(ThreadPoolExecutor.java:895)
+	at java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:918)
+	at java.lang.Thread.run(Thread.java:695)
+	at com.intellij.openapi.application.impl.ApplicationImpl$1$1.run(ApplicationImpl.java:149)
+
+"Reference Handler": daemon, in Object.wait()
+	at java.lang.Object.wait(Native Method)
+	at java.lang.Object.wait(Object.java:485)
+	at java.lang.ref.Reference$ReferenceHandler.run(Reference.java:116)
+
+"AWT-Shutdown": in Object.wait()
+	at java.lang.Object.wait(Native Method)
+	at java.lang.Object.wait(Object.java:485)
+	at sun.awt.AWTAutoShutdown.run(AWTAutoShutdown.java:265)
+	at java.lang.Thread.run(Thread.java:695)
+
+"Finalizer": daemon, in Object.wait()
+	at java.lang.Object.wait(Native Method)
+	at java.lang.ref.ReferenceQueue.remove(ReferenceQueue.java:118)
+	at java.lang.ref.ReferenceQueue.remove(ReferenceQueue.java:134)
+	at java.lang.ref.Finalizer$FinalizerThread.run(Finalizer.java:171)
+
+"Java2D Disposer": daemon, in Object.wait()
+	at java.lang.Object.wait(Native Method)
+	at java.lang.ref.ReferenceQueue.remove(ReferenceQueue.java:118)
+	at java.lang.ref.ReferenceQueue.remove(ReferenceQueue.java:134)
+	at sun.java2d.Disposer.run(Disposer.java:125)
+	at java.lang.Thread.run(Thread.java:695)
+
+"RMI Reaper": in Object.wait()
+	at java.lang.Object.wait(Native Method)
+	at java.lang.ref.ReferenceQueue.remove(ReferenceQueue.java:118)
+	at java.lang.ref.ReferenceQueue.remove(ReferenceQueue.java:134)
+	at sun.rmi.transport.ObjectTable$Reaper.run(ObjectTable.java:333)
+	at java.lang.Thread.run(Thread.java:695)
+
+"RMI RenewClean-[localhost:49463]": daemon, in Object.wait()
+	at java.lang.Object.wait(Native Method)
+	at java.lang.ref.ReferenceQueue.remove(ReferenceQueue.java:118)
+	at sun.rmi.transport.DGCClient$EndpointEntry$RenewCleanThread.run(DGCClient.java:516)
+	at java.lang.Thread.run(Thread.java:695)
+
+"TimerQueue": daemon, in Object.wait()
+	at java.lang.Object.wait(Native Method)
+	at javax.swing.TimerQueue.postExpiredTimers(TimerQueue.java:214)
+	at javax.swing.TimerQueue.run(TimerQueue.java:230)
+	at java.lang.Thread.run(Thread.java:695)
+
+"GC Daemon": daemon, in Object.wait()
+	at java.lang.Object.wait(Native Method)
+	at sun.misc.GC$Daemon.run(GC.java:100)
+
+"StoreRefreshStatusThread": daemon, waiting on condition
+	at java.lang.Thread.sleep(Native Method)
+	at com.intellij.util.TimeoutUtil.sleep(TimeoutUtil.java:58)
+	at com.intellij.openapi.vfs.impl.local.LocalFileSystemImpl$StoreRefreshStatusThread.run(LocalFileSystemImpl.java:355)
+
+"process reaper": daemon, runnable
+	at java.lang.UNIXProcess.waitForProcessExit(Native Method)
+	at java.lang.UNIXProcess.access$900(UNIXProcess.java:17)
+	at java.lang.UNIXProcess$2$1.run(UNIXProcess.java:86)
+
+"Lock thread": runnable
+	at java.net.PlainSocketImpl.socketAccept(Native Method)
+	at java.net.PlainSocketImpl.accept(PlainSocketImpl.java:439)
+	at java.net.ServerSocket.implAccept(ServerSocket.java:468)
+	at java.net.ServerSocket.accept(ServerSocket.java:436)
+	at com.intellij.idea.SocketLock$MyRunnable.run(SocketLock.java:224)
+	at java.lang.Thread.run(Thread.java:695)
+
+"RMI TCP Accept-0": daemon, runnable
+	at java.net.PlainSocketImpl.socketAccept(Native Method)
+	at java.net.PlainSocketImpl.accept(PlainSocketImpl.java:439)
+	at java.net.ServerSocket.implAccept(ServerSocket.java:468)
+	at java.net.ServerSocket.accept(ServerSocket.java:436)
+	at sun.rmi.transport.tcp.TCPTransport$AcceptLoop.executeAcceptLoop(TCPTransport.java:369)
+	at sun.rmi.transport.tcp.TCPTransport$AcceptLoop.run(TCPTransport.java:341)
+	at java.lang.Thread.run(Thread.java:695)
+
 "ApplicationImpl pooled thread 32": daemon, waiting on condition
 	at sun.misc.Unsafe.park(Native Method)
 	at java.util.concurrent.locks.LockSupport.parkNanos(LockSupport.java:196)
@@ -547,25 +653,23 @@ JNI global references: 8210
 	at java.lang.Thread.run(Thread.java:695)
 	at com.intellij.openapi.application.impl.ApplicationImpl$1$1.run(ApplicationImpl.java:149)
 
-"GC Daemon": daemon, in Object.wait()
-	at java.lang.Object.wait(Native Method)
-	at sun.misc.GC$Daemon.run(GC.java:100)
-
-"RMI Reaper": in Object.wait()
-	at java.lang.Object.wait(Native Method)
-	at java.lang.ref.ReferenceQueue.remove(ReferenceQueue.java:118)
-	at java.lang.ref.ReferenceQueue.remove(ReferenceQueue.java:134)
-	at sun.rmi.transport.ObjectTable$Reaper.run(ObjectTable.java:333)
+"Performance watcher": waiting on condition
+	at sun.misc.Unsafe.park(Native Method)
+	at java.util.concurrent.locks.LockSupport.parkNanos(LockSupport.java:196)
+	at java.util.concurrent.locks.AbstractQueuedSynchronizer.doAcquireSharedNanos(AbstractQueuedSynchronizer.java:1011)
+	at java.util.concurrent.locks.AbstractQueuedSynchronizer.tryAcquireSharedNanos(AbstractQueuedSynchronizer.java:1303)
+	at java.util.concurrent.Semaphore.tryAcquire(Semaphore.java:383)
+	at com.intellij.diagnostic.PerformanceWatcher.checkEDTResponsiveness(PerformanceWatcher.java:158)
+	at com.intellij.diagnostic.PerformanceWatcher.access$100(PerformanceWatcher.java:40)
+	at com.intellij.diagnostic.PerformanceWatcher$2.run(PerformanceWatcher.java:113)
 	at java.lang.Thread.run(Thread.java:695)
 
-"RMI TCP Accept-0": daemon, runnable
-	at java.net.PlainSocketImpl.socketAccept(Native Method)
-	at java.net.PlainSocketImpl.accept(PlainSocketImpl.java:439)
-	at java.net.ServerSocket.implAccept(ServerSocket.java:468)
-	at java.net.ServerSocket.accept(ServerSocket.java:436)
-	at sun.rmi.transport.tcp.TCPTransport$AcceptLoop.executeAcceptLoop(TCPTransport.java:369)
-	at sun.rmi.transport.tcp.TCPTransport$AcceptLoop.run(TCPTransport.java:341)
-	at java.lang.Thread.run(Thread.java:695)
+"JobScheduler FJ pool 0/4": daemon, waiting on condition
+	at sun.misc.Unsafe.park(Native Method)
+	at jsr166e.ForkJoinPool.awaitWork(ForkJoinPool.java:1756)
+	at jsr166e.ForkJoinPool.scan(ForkJoinPool.java:1694)
+	at jsr166e.ForkJoinPool.runWorker(ForkJoinPool.java:1642)
+	at jsr166e.ForkJoinWorkerThread.run(ForkJoinWorkerThread.java:109)
 
 "ApplicationImpl pooled thread 9": daemon, runnable
 	at sun.nio.ch.KQueueArrayWrapper.kevent0(Native Method)
@@ -584,110 +688,6 @@ JNI global references: 8210
 	at java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:918)
 	at java.lang.Thread.run(Thread.java:695)
 	at com.intellij.openapi.application.impl.ApplicationImpl$1$1.run(ApplicationImpl.java:149)
-
-"Document commit thread": in Object.wait()
-	at java.lang.Object.wait(Native Method)
-	at java.lang.Object.wait(Object.java:485)
-	at com.intellij.psi.impl.DocumentCommitThread.pollQueue(DocumentCommitThread.java:262)
-	at com.intellij.psi.impl.DocumentCommitThread.run(DocumentCommitThread.java:238)
-	at java.lang.Thread.run(Thread.java:695)
-
-"TimerQueue": daemon, in Object.wait()
-	at java.lang.Object.wait(Native Method)
-	at javax.swing.TimerQueue.postExpiredTimers(TimerQueue.java:214)
-	at javax.swing.TimerQueue.run(TimerQueue.java:230)
-	at java.lang.Thread.run(Thread.java:695)
-
-"Finalizer": daemon, in Object.wait()
-	at java.lang.Object.wait(Native Method)
-	at java.lang.ref.ReferenceQueue.remove(ReferenceQueue.java:118)
-	at java.lang.ref.ReferenceQueue.remove(ReferenceQueue.java:134)
-	at java.lang.ref.Finalizer$FinalizerThread.run(Finalizer.java:171)
-
-"Performance watcher": waiting on condition
-	at sun.misc.Unsafe.park(Native Method)
-	at java.util.concurrent.locks.LockSupport.parkNanos(LockSupport.java:196)
-	at java.util.concurrent.locks.AbstractQueuedSynchronizer.doAcquireSharedNanos(AbstractQueuedSynchronizer.java:1011)
-	at java.util.concurrent.locks.AbstractQueuedSynchronizer.tryAcquireSharedNanos(AbstractQueuedSynchronizer.java:1303)
-	at java.util.concurrent.Semaphore.tryAcquire(Semaphore.java:383)
-	at com.intellij.diagnostic.PerformanceWatcher.checkEDTResponsiveness(PerformanceWatcher.java:158)
-	at com.intellij.diagnostic.PerformanceWatcher.access$100(PerformanceWatcher.java:40)
-	at com.intellij.diagnostic.PerformanceWatcher$2.run(PerformanceWatcher.java:113)
-	at java.lang.Thread.run(Thread.java:695)
-
-"StoreRefreshStatusThread": daemon, waiting on condition
-	at java.lang.Thread.sleep(Native Method)
-	at com.intellij.util.TimeoutUtil.sleep(TimeoutUtil.java:58)
-	at com.intellij.openapi.vfs.impl.local.LocalFileSystemImpl$StoreRefreshStatusThread.run(LocalFileSystemImpl.java:355)
-
-"JobScheduler FJ pool 0/4": daemon, waiting on condition
-	at sun.misc.Unsafe.park(Native Method)
-	at jsr166e.ForkJoinPool.awaitWork(ForkJoinPool.java:1756)
-	at jsr166e.ForkJoinPool.scan(ForkJoinPool.java:1694)
-	at jsr166e.ForkJoinPool.runWorker(ForkJoinPool.java:1642)
-	at jsr166e.ForkJoinWorkerThread.run(ForkJoinWorkerThread.java:109)
-
-"ApplicationImpl pooled thread 0": in Object.wait()
-	at java.lang.Object.wait(Native Method)
-	at java.lang.Object.wait(Object.java:485)
-	at java.lang.UNIXProcess.waitFor(UNIXProcess.java:115)
-	at com.intellij.execution.process.ProcessWaitFor$1.run(ProcessWaitFor.java:30)
-	at com.intellij.openapi.application.impl.ApplicationImpl$8.run(ApplicationImpl.java:419)
-	at java.util.concurrent.Executors$RunnableAdapter.call(Executors.java:439)
-	at java.util.concurrent.FutureTask$Sync.innerRun(FutureTask.java:303)
-	at java.util.concurrent.FutureTask.run(FutureTask.java:138)
-	at java.util.concurrent.ThreadPoolExecutor$Worker.runTask(ThreadPoolExecutor.java:895)
-	at java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:918)
-	at java.lang.Thread.run(Thread.java:695)
-	at com.intellij.openapi.application.impl.ApplicationImpl$1$1.run(ApplicationImpl.java:149)
-
-"process reaper": daemon, runnable
-	at java.lang.UNIXProcess.waitForProcessExit(Native Method)
-	at java.lang.UNIXProcess.access$900(UNIXProcess.java:17)
-	at java.lang.UNIXProcess$2$1.run(UNIXProcess.java:86)
-
-"RMI RenewClean-[localhost:49463]": daemon, in Object.wait()
-	at java.lang.Object.wait(Native Method)
-	at java.lang.ref.ReferenceQueue.remove(ReferenceQueue.java:118)
-	at sun.rmi.transport.DGCClient$EndpointEntry$RenewCleanThread.run(DGCClient.java:516)
-	at java.lang.Thread.run(Thread.java:695)
-
-"AWT-EventQueue-1 0.8.14#AI-135.1538390, eap:true": in Object.wait()
-	at java.lang.Object.wait(Native Method)
-	at java.lang.Object.wait(Object.java:485)
-	at java.awt.EventQueue.getNextEvent(EventQueue.java:558)
-	at java.awt.EventDispatchThread.pumpOneEventForFilters(EventDispatchThread.java:263)
-	at java.awt.EventDispatchThread.pumpEventsForFilter(EventDispatchThread.java:211)
-	at java.awt.EventDispatchThread.pumpEventsForHierarchy(EventDispatchThread.java:201)
-	at java.awt.EventDispatchThread.pumpEvents(EventDispatchThread.java:196)
-	at java.awt.EventDispatchThread.pumpEvents(EventDispatchThread.java:188)
-	at java.awt.EventDispatchThread.run(EventDispatchThread.java:122)
-
-"Lock thread": runnable
-	at java.net.PlainSocketImpl.socketAccept(Native Method)
-	at java.net.PlainSocketImpl.accept(PlainSocketImpl.java:439)
-	at java.net.ServerSocket.implAccept(ServerSocket.java:468)
-	at java.net.ServerSocket.accept(ServerSocket.java:436)
-	at com.intellij.idea.SocketLock$MyRunnable.run(SocketLock.java:224)
-	at java.lang.Thread.run(Thread.java:695)
-
-"Java2D Disposer": daemon, in Object.wait()
-	at java.lang.Object.wait(Native Method)
-	at java.lang.ref.ReferenceQueue.remove(ReferenceQueue.java:118)
-	at java.lang.ref.ReferenceQueue.remove(ReferenceQueue.java:134)
-	at sun.java2d.Disposer.run(Disposer.java:125)
-	at java.lang.Thread.run(Thread.java:695)
-
-"AWT-Shutdown": in Object.wait()
-	at java.lang.Object.wait(Native Method)
-	at java.lang.Object.wait(Object.java:485)
-	at sun.awt.AWTAutoShutdown.run(AWTAutoShutdown.java:265)
-	at java.lang.Thread.run(Thread.java:695)
-
-"Reference Handler": daemon, in Object.wait()
-	at java.lang.Object.wait(Native Method)
-	at java.lang.Object.wait(Object.java:485)
-	at java.lang.ref.Reference$ReferenceHandler.run(Reference.java:116)
 
 18 threads with this stack:
 "Attach Listener": daemon, waiting on condition
