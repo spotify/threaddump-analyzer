@@ -488,11 +488,11 @@ JNI global references: 8210
     <pre id="sample-analysis" style="display: none;">54 threads found:
 
 5 threads with this stack:
-"RMI Scheduler(0)": daemon, waiting on condition
+"Animations 2": daemon, waiting on condition
+"Animations": daemon, waiting on condition
 "Change List Updater": daemon, waiting on condition
 "Encoding detection thread": daemon, waiting on condition
-"Animations": daemon, waiting on condition
-"Animations 2": daemon, waiting on condition
+"RMI Scheduler(0)": daemon, waiting on condition
 	at sun.misc.Unsafe.park(Native Method)
 	at java.util.concurrent.locks.LockSupport.park(LockSupport.java:156)
 	at java.util.concurrent.locks.AbstractQueuedSynchronizer$ConditionObject.await(AbstractQueuedSynchronizer.java:1987)
@@ -504,8 +504,8 @@ JNI global references: 8210
 	at java.lang.Thread.run(Thread.java:695)
 
 "Flushing thread": daemon, waiting on condition
-"timed reference disposer": daemon, waiting on condition
 "Periodic tasks thread": daemon, waiting on condition
+"timed reference disposer": daemon, waiting on condition
 "timed reference disposer": daemon, waiting on condition
 	at sun.misc.Unsafe.park(Native Method)
 	at java.util.concurrent.locks.LockSupport.parkNanos(LockSupport.java:196)
@@ -517,17 +517,17 @@ JNI global references: 8210
 	at java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:917)
 	at java.lang.Thread.run(Thread.java:695)
 
-"Timer-0": daemon, in Object.wait()
 "FocusManager timer": daemon, in Object.wait()
 "Shared SimpleTimer": daemon, in Object.wait()
+"Timer-0": daemon, in Object.wait()
 	at java.lang.Object.wait(Native Method)
 	at java.lang.Object.wait(Object.java:485)
 	at java.util.TimerThread.mainLoop(Timer.java:483)
 	at java.util.TimerThread.run(Timer.java:462)
 
-"RefCountingStorage write content helper": waiting on condition
-"FS Synchronizer": daemon, waiting on condition
 "Alarm pool(shared)": daemon, waiting on condition
+"FS Synchronizer": daemon, waiting on condition
+"RefCountingStorage write content helper": waiting on condition
 	at sun.misc.Unsafe.park(Native Method)
 	at java.util.concurrent.locks.LockSupport.park(LockSupport.java:156)
 	at java.util.concurrent.locks.AbstractQueuedSynchronizer$ConditionObject.await(AbstractQueuedSynchronizer.java:1987)
@@ -536,8 +536,8 @@ JNI global references: 8210
 	at java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:917)
 	at java.lang.Thread.run(Thread.java:695)
 
-"ApplicationImpl pooled thread 2": waiting on condition
 "ApplicationImpl pooled thread 1": waiting on condition
+"ApplicationImpl pooled thread 2": waiting on condition
 	at java.lang.Thread.sleep(Native Method)
 	at com.intellij.util.TimeoutUtil.sleep(TimeoutUtil.java:58)
 	at com.intellij.util.io.BaseDataReader.doRun(BaseDataReader.java:105)
@@ -705,24 +705,24 @@ JNI global references: 8210
 	at com.intellij.openapi.application.impl.ApplicationImpl$1$1.run(ApplicationImpl.java:149)
 
 18 threads with this stack:
-"Attach Listener": daemon, waiting on condition
-"DestroyJavaVM": waiting on condition
 "AWT-AppKit": daemon, runnable
-"Low Memory Detector": daemon, runnable
-"C2 CompilerThread1": daemon, waiting on condition
+"Attach Listener": daemon, waiting on condition
 "C2 CompilerThread0": daemon, waiting on condition
-"Signal Dispatcher": daemon, runnable
-"Surrogate Locker Thread (Concurrent GC)": daemon, waiting on condition
-"VM Thread": runnable
+"C2 CompilerThread1": daemon, waiting on condition
+"Concurrent Mark-Sweep GC Thread": runnable
+"DestroyJavaVM": waiting on condition
+"Exception Catcher Thread": runnable
+"GC task thread#7 (ParallelGC)": runnable
+"GC task thread#8 (ParallelGC)": runnable
 "Gang worker#0 (Parallel GC Threads)": runnable
 "Gang worker#1 (Parallel GC Threads)": runnable
 "Gang worker#2 (Parallel GC Threads)": runnable
 "Gang worker#3 (Parallel GC Threads)": runnable
-"Concurrent Mark-Sweep GC Thread": runnable
+"Low Memory Detector": daemon, runnable
+"Signal Dispatcher": daemon, runnable
+"Surrogate Locker Thread (Concurrent GC)": daemon, waiting on condition
 "VM Periodic Task Thread": waiting on condition
-"GC task thread#7 (ParallelGC)": runnable
-"GC task thread#8 (ParallelGC)": runnable
-"Exception Catcher Thread": runnable
+"VM Thread": runnable
 	&lt;empty stack&gt;
 </pre>
   </body>

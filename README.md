@@ -24,6 +24,9 @@ are warnings.
 * Dump all input lines we failed to parse in red at the end so it's
 obvious if we need to add something.
 
+* If two or more threads share both thread header and stack, print
+only one thread header line prefixed by "N x ".
+
 * Make the Thread class parse held locks, waited-for locks and
 waited-for condition variables from the thread dump.
 
@@ -38,17 +41,11 @@ references need to be clickable.
 * Detect deadlocks and display deadlock information prominently at the
 top if detected.
 
-* If two stacks are just as common, use the stack trace contents itself
-as the secondary sort key. This way similar stacks will end up closer to
-each other.
-
 * Support uploading thread dumps from the local file system.
 
 * Support parsing gzipped thread dumps.
 
 * Support parsing multiple consecutive thread dumps.
-
-* Sort thread names in each group alphabetically.
 
 * Auto detect if somebody copies a thread dump to the clipboard and
 spontaneously analyze that.
@@ -106,3 +103,9 @@ gives the expected result.
 * Add a Travis configuration.
 
 * Make Travis run the unit tests and fail the build if they fail.
+
+* If two stacks are just as common, use the stack trace contents itself
+as the secondary sort key. This way similar stacks will end up closer to
+each other.
+
+* Sort thread names in each group alphabetically.

@@ -223,11 +223,19 @@ function Analyzer(text) {
             if (threads.length > 4) {
                 asString += "" + threads.length + " threads with this stack:\n";
             }
+
+            // Print thread headers for this stack in alphabetic order
+            var headers = [];
             for (var k = 0; k < threads.length; k++) {
                 var currentThread = threads[k];
 
-                asString += threads[k].toHeaderString() + "\n";
+                headers.push(threads[k].toHeaderString());
             }
+            headers.sort();
+            for (var l = 0; l < headers.length; l++) {
+                asString += headers[l] + '\n';
+            }
+
             asString += currentStack;
         }
 
