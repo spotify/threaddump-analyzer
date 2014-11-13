@@ -14,6 +14,8 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
+/* global require */
+
 var gulp = require('gulp');
 var qunit = require('gulp-qunit');
 var jshint = require('gulp-jshint');

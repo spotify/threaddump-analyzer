@@ -14,6 +14,12 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
+/* global QUnit */
+/* global Thread */
+/* global _extract */
+/* global Analyzer */
+/* global document */
+
 QUnit.test( "thread header 1", function(assert) {
     var header = '"thread name" prio=10 tid=0x00007f16a118e000 nid=0x6e5a runnable [0x00007f18b91d0000]';
     assert.equal(new Thread(header).toHeaderString(), '"thread name": runnable');
@@ -131,9 +137,9 @@ QUnit.test( "full dump analysis", function(assert) {
 QUnit.test("extract regex from string", function(assert) {
     var extracted = _extract(/a(p)a/, "gris");
     assert.equal(extracted.value, undefined);
-    assert.equal(extracted.shorter_string, "gris");
+    assert.equal(extracted.shorterString, "gris");
 
     extracted = _extract(/a(p)a/, "hejapagris");
     assert.equal(extracted.value, "p");
-    assert.equal(extracted.shorter_string, "hejgris");
+    assert.equal(extracted.shorterString, "hejgris");
 });
