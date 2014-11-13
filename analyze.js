@@ -138,6 +138,27 @@ function Thread(line) {
     this._frames = [];
 }
 
+function toStackWithHeadersString(stack, threads) {
+    var string = '';
+    if (threads.length > 4) {
+        string += "" + threads.length + " threads with this stack:\n";
+    }
+
+    // Print thread headers for this stack in alphabetic order
+    var headers = [];
+    for (var k = 0; k < threads.length; k++) {
+        headers.push(threads[k].toHeaderString());
+    }
+    headers.sort();
+    for (var l = 0; l < headers.length; l++) {
+        string += headers[l] + '\n';
+    }
+
+    string += stack;
+
+    return string;
+}
+
 // Create an analyzer object
 function Analyzer(text) {
     this._analyze = function(text) {
@@ -219,25 +240,8 @@ function Analyzer(text) {
         asString += "" + this.threads.length + " threads found:\n";
         for (var j = 0; j < stacks.length; j++) {
             var currentStack = stacks[j];
-
-            asString += '\n';
-
             var threads = stacksToThreads[currentStack];
-            if (threads.length > 4) {
-                asString += "" + threads.length + " threads with this stack:\n";
-            }
-
-            // Print thread headers for this stack in alphabetic order
-            var headers = [];
-            for (var k = 0; k < threads.length; k++) {
-                headers.push(threads[k].toHeaderString());
-            }
-            headers.sort();
-            for (var l = 0; l < headers.length; l++) {
-                asString += headers[l] + '\n';
-            }
-
-            asString += currentStack;
+            asString += '\n' + toStackWithHeadersString(currentStack, threads);
         }
 
         return asString;
