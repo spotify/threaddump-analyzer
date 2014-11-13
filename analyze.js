@@ -14,9 +14,12 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
+/* global document */
+
 var EMPTY_STACK = "	<empty stack>\n";
 
-function analyze_textfield() {
+// This method is called from HTML so we need to tell JSHint it's not unused
+function analyzeTextfield() { // jshint ignore: line
     var text = document.getElementById("TEXTAREA").value;
 
     var analyzer = new Analyzer(text);
@@ -27,14 +30,14 @@ function analyze_textfield() {
 //
 // Returns an object with two properties:
 // value = the first group of the extracted object
-// shorter_string = the string with the full contents of the regex removed
+// shorterString = the string with the full contents of the regex removed
 function _extract(regex, string) {
     var match = regex.exec(string);
     if (match === null) {
-        return {value: undefined, shorter_string: string};
+        return {value: undefined, shorterString: string};
     }
 
-    return {value: match[1], shorter_string: string.replace(regex, "")};
+    return {value: match[1], shorterString: string.replace(regex, "")};
 }
 
 function setOutputText(unescaped) {
@@ -92,39 +95,39 @@ function Thread(line) {
     var match;
     match = _extract(/\[([0-9a-fx,]+)\]$/, line);
     this.dontKnow = match.value;
-    line = match.shorter_string;
+    line = match.shorterString;
 
     match = _extract(/ nid=([0-9a-fx,]+)/, line);
     this.nid = match.value;
-    line = match.shorter_string;
+    line = match.shorterString;
 
     match = _extract(/ tid=([0-9a-fx,]+)/, line);
     this.tid = match.value;
-    line = match.shorter_string;
+    line = match.shorterString;
 
     match = _extract(/ prio=([0-9]+)/, line);
     this.prio = match.value;
-    line = match.shorter_string;
+    line = match.shorterString;
 
     match = _extract(/ os_prio=([0-9a-fx,]+)/, line);
-    this.os_prio = match.value;
-    line = match.shorter_string;
+    this.osPrio = match.value;
+    line = match.shorterString;
 
     match = _extract(/ (daemon)/, line);
     this.daemon = (match.value !== undefined);
-    line = match.shorter_string;
+    line = match.shorterString;
 
     match = _extract(/ #([0-9]+)/, line);
     this.number = match.value;
-    line = match.shorter_string;
+    line = match.shorterString;
 
     match = _extract(/ group="(.*)"/, line);
     this.group = match.value;
-    line = match.shorter_string;
+    line = match.shorterString;
 
     match = _extract(/^"(.*)" /, line);
     this.name = match.value;
-    line = match.shorter_string;
+    line = match.shorterString;
 
     this.state = line.trim();
 
@@ -135,6 +138,27 @@ function Thread(line) {
     this._frames = [];
 }
 
+function toStackWithHeadersString(stack, threads) {
+    var string = '';
+    if (threads.length > 4) {
+        string += "" + threads.length + " threads with this stack:\n";
+    }
+
+    // Print thread headers for this stack in alphabetic order
+    var headers = [];
+    for (var k = 0; k < threads.length; k++) {
+        headers.push(threads[k].toHeaderString());
+    }
+    headers.sort();
+    for (var l = 0; l < headers.length; l++) {
+        string += headers[l] + '\n';
+    }
+
+    string += stack;
+
+    return string;
+}
+
 // Create an analyzer object
 function Analyzer(text) {
     this._analyze = function(text) {
@@ -142,7 +166,7 @@ function Analyzer(text) {
         var currentThread = null;
         for (var i = 0; i < lines.length; i++) {
             var line = lines[i];
-            while (line.charAt(0) == '"' && line.indexOf('prio=') == -1) {
+            while (line.charAt(0) === '"' && line.indexOf('prio=') === -1) {
                 // Multi line thread name
                 i++;
                 if (i >= lines.length) {
@@ -181,22 +205,22 @@ function Analyzer(text) {
             stacks.push(stack);
         }
         stacks.sort(function(a, b) {
-            if (a == b) {
+            if (a === b) {
                 return 0;
             }
 
-            var a_score = stacksToThreads[a].length;
+            var scoreA = stacksToThreads[a].length;
             if (a === EMPTY_STACK) {
-                a_score = -123456;
+                scoreA = -123456;
             }
 
-            var b_score = stacksToThreads[b].length;
+            var scoreB = stacksToThreads[b].length;
             if (b === EMPTY_STACK) {
-                b_score = -123456;
+                scoreB = -123456;
             }
 
-            if (b_score != a_score) {
-                return b_score - a_score;
+            if (scoreB !== scoreA) {
+                return scoreB - scoreA;
             }
 
             // Use stack contents as secondary sort key. This is
@@ -216,27 +240,8 @@ function Analyzer(text) {
         asString += "" + this.threads.length + " threads found:\n";
         for (var j = 0; j < stacks.length; j++) {
             var currentStack = stacks[j];
-
-            asString += '\n';
-
             var threads = stacksToThreads[currentStack];
-            if (threads.length > 4) {
-                asString += "" + threads.length + " threads with this stack:\n";
-            }
-
-            // Print thread headers for this stack in alphabetic order
-            var headers = [];
-            for (var k = 0; k < threads.length; k++) {
-                var currentThread = threads[k];
-
-                headers.push(threads[k].toHeaderString());
-            }
-            headers.sort();
-            for (var l = 0; l < headers.length; l++) {
-                asString += headers[l] + '\n';
-            }
-
-            asString += currentStack;
+            asString += '\n' + toStackWithHeadersString(currentStack, threads);
         }
 
         return asString;

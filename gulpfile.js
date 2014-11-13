@@ -14,9 +14,19 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
+/* global require */
+
 var gulp = require('gulp');
 var qunit = require('gulp-qunit');
+var jshint = require('gulp-jshint');
 
-gulp.task('default', function() {
+gulp.task('test', function() {
     return gulp.src('./test.html').pipe(qunit());
+});
+
+gulp.task('lint', function() {
+    return gulp.src('*.js')
+        .pipe(jshint())
+        .pipe(jshint.reporter('default'))
+        .pipe(jshint.reporter('fail'));
 });
