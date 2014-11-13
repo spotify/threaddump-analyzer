@@ -61,12 +61,14 @@ function Thread(line) {
         return this.hasOwnProperty('name') && this.name !== undefined;
     };
 
+    // Return true if the line was understood, false otherwise
     this.addStackLine = function(line) {
         var FRAME = /^\s+at .*/;
         if (line.match(FRAME) === null) {
-            return;
+            return false;
         }
         this._frames.push(line);
+        return true;
     };
 
     this.toStackString = function() {
