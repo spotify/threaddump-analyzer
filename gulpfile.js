@@ -19,14 +19,22 @@ limitations under the License.
 var gulp = require('gulp');
 var qunit = require('gulp-qunit');
 var jshint = require('gulp-jshint');
+var htmlhint = require("gulp-htmlhint");
 
 gulp.task('test', function() {
     return gulp.src('./test.html').pipe(qunit());
 });
 
-gulp.task('lint', function() {
+gulp.task('jslint', function() {
     return gulp.src('*.js')
         .pipe(jshint())
         .pipe(jshint.reporter('default'))
         .pipe(jshint.reporter('fail'));
+});
+
+gulp.task('htmllint', function() {
+    return gulp.src(["*.html", "!test.html"])
+        .pipe(htmlhint())
+        .pipe(htmlhint.reporter())
+        .pipe(htmlhint.failReporter());
 });

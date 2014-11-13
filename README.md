@@ -15,9 +15,6 @@ The Java Thread Dump Analyzer is licensed under
 the copyright belongs to Spotify AB.
 
 ## TODO
-* Make Travis validate the HTML and fail the build if the HTML is
-invalid.
-
 * Dump all input lines we failed to parse in red at the end so it's
 obvious if we need to add something.
 
@@ -109,3 +106,6 @@ each other.
 
 * Make Travis run a Javascript code checker and fail the build if there
 are warnings.
+
+* Make Travis validate the HTML and fail verifictaion on HTML
+problems.
