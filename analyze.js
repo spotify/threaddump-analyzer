@@ -163,9 +163,24 @@ function toStackWithHeadersString(stack, threads) {
 
 // Create an analyzer object
 function Analyzer(text) {
+    this._handleLine = function(line) {
+        var thread = new Thread(line);
+        var parsed = false;
+        if (thread.isValid()) {
+            this.threads.push(thread);
+            this._currentThread = thread;
+            parsed = true;
+        } else if (this._currentThread !== null) {
+            parsed = this._currentThread.addStackLine(line);
+        }
+
+        if (!parsed) {
+            this.unparsables.push(line);
+        }
+    };
+
     this._analyze = function(text) {
         var lines = text.split('\n');
-        var currentThread = null;
         for (var i = 0; i < lines.length; i++) {
             var line = lines[i];
             while (line.charAt(0) === '"' && line.indexOf('prio=') === -1) {
@@ -179,13 +194,7 @@ function Analyzer(text) {
                 line += ', ' + lines[i];
             }
 
-            var thread = new Thread(line);
-            if (thread.isValid()) {
-                this.threads.push(thread);
-                currentThread = thread;
-            } else if (currentThread !== null) {
-                currentThread.addStackLine(line);
-            }
+            this._handleLine(line);
         }
     };
 
@@ -250,5 +259,8 @@ function Analyzer(text) {
     };
 
     this.threads = [];
+    this.unparsables = [];
+    this._currentThread = null;
+
     this._analyze(text);
 }
