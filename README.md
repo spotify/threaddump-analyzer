@@ -18,9 +18,6 @@ the copyright belongs to Spotify AB.
 * Make Travis validate the HTML and fail the build if the HTML is
 invalid.
 
-* Make Travis run a Javascript code checker and fail the build if there
-are warnings.
-
 * Dump all input lines we failed to parse in red at the end so it's
 obvious if we need to add something.
 
@@ -109,3 +106,6 @@ as the secondary sort key. This way similar stacks will end up closer to
 each other.
 
 * Sort thread names in each group alphabetically.
+
+* Make Travis run a Javascript code checker and fail the build if there
+are warnings.
