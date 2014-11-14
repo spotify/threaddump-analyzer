@@ -15,8 +15,8 @@ The Java Thread Dump Analyzer is licensed under
 the copyright belongs to Spotify AB.
 
 ## TODO
-* Dump all input lines we failed to parse in red at the end so it's
-obvious if we need to add something.
+* Turn the Ignored Lines section at the bottom into an HTML table and
+style it using CSS.
 
 * If two or more threads share both thread header and stack, print
 only one thread header line prefixed by "N x ".
@@ -109,3 +109,6 @@ are warnings.
 
 * Make Travis validate the HTML and fail verifictaion on HTML
 problems.
+
+* Dump all input lines we failed to parse in red at the end so it's
+obvious if we need to add something.
