@@ -175,7 +175,7 @@ function Analyzer(text) {
         }
 
         if (!parsed) {
-            this.unparsables.push(line);
+            this._unparsables.push(line);
         }
     };
 
@@ -258,8 +258,16 @@ function Analyzer(text) {
         return asString;
     };
 
+    this.toUnparsablesString = function() {
+        var string = "";
+        for (var i = 0; i < this._unparsables.length; i++) {
+            string += this._unparsables[i] + '\n';
+        }
+        return string;
+    };
+
     this.threads = [];
-    this.unparsables = [];
+    this._unparsables = [];
     this._currentThread = null;
 
     this._analyze(text);
