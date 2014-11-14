@@ -24,6 +24,37 @@ function analyzeTextfield() { // jshint ignore: line
 
     var analyzer = new Analyzer(text);
     setOutputText(analyzer.toString());
+
+    var ignores = analyzer.toIgnoresString();
+    if (ignores.length > 0) {
+        setIgnoredText(ignores);
+    } else {
+        var ignoredDiv = document.getElementById('IGNORED_DIV');
+        ignoredDiv.style.display = 'none';
+    }
+}
+
+function htmlEscape(unescaped) {
+    var div = document.createElement('div');
+    div.appendChild(document.createTextNode(unescaped));
+    var escaped = div.innerHTML;
+    return escaped;
+}
+
+function setOutputText(unescaped) {
+    var outputPre = document.getElementById("OUTPUT");
+    outputPre.innerHTML = htmlEscape(unescaped);
+
+    var outputDiv = document.getElementById('OUTPUT_DIV');
+    outputDiv.style.display = 'inline';
+}
+
+function setIgnoredText(unescaped) {
+    var ignoredPre = document.getElementById("IGNORED");
+    ignoredPre.innerHTML = htmlEscape(unescaped);
+
+    var ignoredDiv = document.getElementById('IGNORED_DIV');
+    ignoredDiv.style.display = 'inline';
 }
 
 // Extracts a substring from a string.
@@ -40,18 +71,6 @@ function _extract(regex, string) {
     return {value: match[1], shorterString: string.replace(regex, "")};
 }
 
-function setOutputText(unescaped) {
-    var div = document.createElement('div');
-    div.appendChild(document.createTextNode(unescaped));
-    var escaped = div.innerHTML;
-
-    var outputPre = document.getElementById("OUTPUT");
-    outputPre.innerHTML = escaped;
-
-    var outputDiv = document.getElementById('OUTPUT_DIV');
-    outputDiv.style.display = 'inline';
-}
-
 function Thread(line) {
     this.toString = function() {
         return this.toHeaderString() + '\n' + this.toStackString();
@@ -61,12 +80,14 @@ function Thread(line) {
         return this.hasOwnProperty('name') && this.name !== undefined;
     };
 
+    // Return true if the line was understood, false otherwise
     this.addStackLine = function(line) {
         var FRAME = /^\s+at .*/;
         if (line.match(FRAME) === null) {
-            return;
+            return false;
         }
         this._frames.push(line);
+        return true;
     };
 
     this.toStackString = function() {
@@ -159,11 +180,61 @@ function toStackWithHeadersString(stack, threads) {
     return string;
 }
 
+function StringCounter() {
+    this.addString = function(string) {
+        if (!this._stringsToCounts.hasOwnProperty(string)) {
+            this._stringsToCounts[string] = 0;
+        }
+        this._stringsToCounts[string]++;
+    };
+
+    // Returns all individual string and their counts as
+    // {count:5, string:"foo"} hashes.
+    this.getStrings = function() {
+        var returnMe = [];
+
+        for (var string in this._stringsToCounts) {
+            var count = this._stringsToCounts[string];
+            returnMe.push({count:count, string:string});
+        }
+
+        returnMe.sort(function(a, b) {
+            if (a.count === b.count) {
+                return a.string < b.string ? -1 : 1;
+            }
+
+            return b.count - a.count;
+        });
+
+        return returnMe;
+    };
+
+    this._stringsToCounts = {};
+}
+
 // Create an analyzer object
 function Analyzer(text) {
+    this._handleLine = function(line) {
+        var thread = new Thread(line);
+        var parsed = false;
+        if (thread.isValid()) {
+            this.threads.push(thread);
+            this._currentThread = thread;
+            parsed = true;
+        } else if (/^\s*$/.exec(line)) {
+            // We ignore empty lines, and lines containing only whitespace
+            parsed = true;
+        } else if (this._currentThread !== null) {
+            parsed = this._currentThread.addStackLine(line);
+        }
+
+        if (!parsed) {
+            this._ignores.addString(line);
+        }
+    };
+
     this._analyze = function(text) {
         var lines = text.split('\n');
-        var currentThread = null;
         for (var i = 0; i < lines.length; i++) {
             var line = lines[i];
             while (line.charAt(0) === '"' && line.indexOf('prio=') === -1) {
@@ -177,13 +248,7 @@ function Analyzer(text) {
                 line += ', ' + lines[i];
             }
 
-            var thread = new Thread(line);
-            if (thread.isValid()) {
-                this.threads.push(thread);
-                currentThread = thread;
-            } else if (currentThread !== null) {
-                currentThread.addStackLine(line);
-            }
+            this._handleLine(line);
         }
     };
 
@@ -247,6 +312,20 @@ function Analyzer(text) {
         return asString;
     };
 
+    this.toIgnoresString = function() {
+        var string = "";
+        var countedIgnores = this._ignores.getStrings();
+        for (var i = 0; i < countedIgnores.length; i++) {
+            string += countedIgnores[i].count +
+                " " + countedIgnores[i].string +
+                '\n';
+        }
+        return string;
+    };
+
     this.threads = [];
+    this._ignores = new StringCounter();
+    this._currentThread = null;
+
     this._analyze(text);
 }

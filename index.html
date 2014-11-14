@@ -27,10 +27,12 @@
 
     <p>Paste your thread dump here:</p>
     <p>
-      <textarea cols="115" rows="10" id="TEXTAREA"></textarea>
+      <textarea cols="115" rows="10" id="TEXTAREA" autofocus></textarea>
       <br/>
       <input type="submit" value="Analyze" onclick="analyzeTextfield();">
     </p>
+    <p>This page is client-side only, and no data will leave your
+      computer when you click Analyze.</p>
 
     <div id="OUTPUT_DIV" style="display: none;">
       <hr/>
@@ -38,9 +40,16 @@
       <p><a href="https://github.com/spotify/threaddump-analyzer/issues/new">Report a bug</a></p>
     </div>
 
+    <div id="IGNORED_DIV" style="display: none;">
+      <hr/>
+      <h1>Ignored input lines</h1>
+      <p><a href="https://github.com/spotify/threaddump-analyzer/blob/gh-pages/README.md#todo">
+          See TODO list for which of these there are plans for already:</a></p>
+      <pre id="IGNORED" style="color: red;"></pre>
+      <p><a href="https://github.com/spotify/threaddump-analyzer/issues/new">Report a bug</a></p>
+    </div>
+
     <hr/>
-    <p>This page is client-side only, and no data will leave your
-      computer when you click Analyze.</p>
     <p><a href="http://github.com/spotify/threaddump-analyzer">
         Source code on Github</a></p>
     <p><a href="https://github.com/spotify/threaddump-analyzer/blob/gh-pages/README.md#todo">

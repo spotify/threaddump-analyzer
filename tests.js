@@ -19,6 +19,7 @@ limitations under the License.
 /* global _extract */
 /* global Analyzer */
 /* global document */
+/* global StringCounter */
 
 QUnit.test( "thread header 1", function(assert) {
     var header = '"thread name" prio=10 tid=0x00007f16a118e000 nid=0x6e5a runnable [0x00007f18b91d0000]';
@@ -132,6 +133,9 @@ QUnit.test( "full dump analysis", function(assert) {
     var expectedOutput = unescapeHtml(document.getElementById("sample-analysis").innerHTML);
     var analyzer = new Analyzer(input);
     assert.equal(analyzer.toString(), expectedOutput);
+
+    var expectedIgnores = document.getElementById("sample-ignored").innerHTML;
+    assert.equal(analyzer.toIgnoresString(), expectedIgnores);
 });
 
 QUnit.test("extract regex from string", function(assert) {
@@ -142,4 +146,28 @@ QUnit.test("extract regex from string", function(assert) {
     extracted = _extract(/a(p)a/, "hejapagris");
     assert.equal(extracted.value, "p");
     assert.equal(extracted.shorterString, "hejgris");
+});
+
+QUnit.test("identical string counter", function(assert) {
+    var counter = new StringCounter();
+    assert.deepEqual(counter.getStrings().length, 0);
+
+    counter.addString("hej");
+    assert.deepEqual(counter.getStrings(), [{count:1, string:"hej"}]);
+
+    counter.addString("nej");
+    counter.addString("nej");
+    assert.deepEqual(counter.getStrings(),
+                     [
+                         {count:2, string:"nej"},
+                         {count:1, string:"hej"}
+                     ]);
+
+    counter.addString("hej");
+    counter.addString("hej");
+    assert.deepEqual(counter.getStrings(),
+                     [
+                         {count:3, string:"hej"},
+                         {count:2, string:"nej"}
+                     ]);
 });
