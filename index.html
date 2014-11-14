@@ -31,6 +31,8 @@
       <br/>
       <input type="submit" value="Analyze" onclick="analyzeTextfield();">
     </p>
+    <p>This page is client-side only, and no data will leave your
+      computer when you click Analyze.</p>
 
     <div id="OUTPUT_DIV" style="display: none;">
       <hr/>
@@ -38,9 +40,14 @@
       <p><a href="https://github.com/spotify/threaddump-analyzer/issues/new">Report a bug</a></p>
     </div>
 
+    <div id="ERRORS_DIV" style="display: none;">
+      <hr/>
+      <h1>Input lines we failed to parse</h1>
+      <pre id="ERRORS" style="color: red;"></pre>
+      <p><a href="https://github.com/spotify/threaddump-analyzer/issues/new">Report a bug</a></p>
+    </div>
+
     <hr/>
-    <p>This page is client-side only, and no data will leave your
-      computer when you click Analyze.</p>
     <p><a href="http://github.com/spotify/threaddump-analyzer">
         Source code on Github</a></p>
     <p><a href="https://github.com/spotify/threaddump-analyzer/blob/gh-pages/README.md#todo">

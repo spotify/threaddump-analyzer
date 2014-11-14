@@ -24,6 +24,37 @@ function analyzeTextfield() { // jshint ignore: line
 
     var analyzer = new Analyzer(text);
     setOutputText(analyzer.toString());
+
+    var unparsables = analyzer.toUnparsablesString();
+    if (unparsables.length > 0) {
+        setErrorsText(unparsables);
+    } else {
+        var errorsDiv = document.getElementById('ERRORS_DIV');
+        errorsDiv.style.display = 'none';
+    }
+}
+
+function htmlEscape(unescaped) {
+    var div = document.createElement('div');
+    div.appendChild(document.createTextNode(unescaped));
+    var escaped = div.innerHTML;
+    return escaped;
+}
+
+function setOutputText(unescaped) {
+    var outputPre = document.getElementById("OUTPUT");
+    outputPre.innerHTML = htmlEscape(unescaped);
+
+    var outputDiv = document.getElementById('OUTPUT_DIV');
+    outputDiv.style.display = 'inline';
+}
+
+function setErrorsText(unescaped) {
+    var errorsPre = document.getElementById("ERRORS");
+    errorsPre.innerHTML = htmlEscape(unescaped);
+
+    var errorsDiv = document.getElementById('ERRORS_DIV');
+    errorsDiv.style.display = 'inline';
 }
 
 // Extracts a substring from a string.
@@ -38,18 +69,6 @@ function _extract(regex, string) {
     }
 
     return {value: match[1], shorterString: string.replace(regex, "")};
-}
-
-function setOutputText(unescaped) {
-    var div = document.createElement('div');
-    div.appendChild(document.createTextNode(unescaped));
-    var escaped = div.innerHTML;
-
-    var outputPre = document.getElementById("OUTPUT");
-    outputPre.innerHTML = escaped;
-
-    var outputDiv = document.getElementById('OUTPUT_DIV');
-    outputDiv.style.display = 'inline';
 }
 
 function Thread(line) {
