@@ -199,6 +199,10 @@ function StringCounter() {
         }
 
         returnMe.sort(function(a, b) {
+            if (a.count === b.count) {
+                return a.string < b.string ? -1 : 1;
+            }
+
             return b.count - a.count;
         });
 
