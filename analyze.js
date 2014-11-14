@@ -180,6 +180,34 @@ function toStackWithHeadersString(stack, threads) {
     return string;
 }
 
+function StringCounter() {
+    this.addString = function(string) {
+        if (!this._stringsToCounts.hasOwnProperty(string)) {
+            this._stringsToCounts[string] = 0;
+        }
+        this._stringsToCounts[string]++;
+    };
+
+    // Returns all individual string and their counts as
+    // {count:5, string:"foo"} hashes.
+    this.getStrings = function() {
+        var returnMe = [];
+
+        for (var string in this._stringsToCounts) {
+            var count = this._stringsToCounts[string];
+            returnMe.push({count:count, string:string});
+        }
+
+        returnMe.sort(function(a, b) {
+            return b.count - a.count;
+        });
+
+        return returnMe;
+    };
+
+    this._stringsToCounts = {};
+}
+
 // Create an analyzer object
 function Analyzer(text) {
     this._handleLine = function(line) {
@@ -197,7 +225,7 @@ function Analyzer(text) {
         }
 
         if (!parsed) {
-            this._unparsables.push(line);
+            this._unparsables.addString(line);
         }
     };
 
@@ -282,14 +310,17 @@ function Analyzer(text) {
 
     this.toUnparsablesString = function() {
         var string = "";
-        for (var i = 0; i < this._unparsables.length; i++) {
-            string += this._unparsables[i] + '\n';
+        var countedUnparsables = this._unparsables.getStrings();
+        for (var i = 0; i < countedUnparsables.length; i++) {
+            string += countedUnparsables[i].count +
+                " " + countedUnparsables[i].string +
+                '\n';
         }
         return string;
     };
 
     this.threads = [];
-    this._unparsables = [];
+    this._unparsables = new StringCounter();
     this._currentThread = null;
 
     this._analyze(text);
