@@ -27,10 +27,10 @@ function analyzeTextfield() { // jshint ignore: line
 
     var unparsables = analyzer.toUnparsablesString();
     if (unparsables.length > 0) {
-        setErrorsText(unparsables);
+        setIgnoredText(unparsables);
     } else {
-        var errorsDiv = document.getElementById('ERRORS_DIV');
-        errorsDiv.style.display = 'none';
+        var ignoredDiv = document.getElementById('IGNORED_DIV');
+        ignoredDiv.style.display = 'none';
     }
 }
 
@@ -49,12 +49,12 @@ function setOutputText(unescaped) {
     outputDiv.style.display = 'inline';
 }
 
-function setErrorsText(unescaped) {
-    var errorsPre = document.getElementById("ERRORS");
-    errorsPre.innerHTML = htmlEscape(unescaped);
+function setIgnoredText(unescaped) {
+    var ignoredPre = document.getElementById("IGNORED");
+    ignoredPre.innerHTML = htmlEscape(unescaped);
 
-    var errorsDiv = document.getElementById('ERRORS_DIV');
-    errorsDiv.style.display = 'inline';
+    var ignoredDiv = document.getElementById('IGNORED_DIV');
+    ignoredDiv.style.display = 'inline';
 }
 
 // Extracts a substring from a string.
@@ -188,6 +188,9 @@ function Analyzer(text) {
         if (thread.isValid()) {
             this.threads.push(thread);
             this._currentThread = thread;
+            parsed = true;
+        } else if (/^\s*$/.exec(line)) {
+            // We ignore empty lines, and lines containing only whitespace
             parsed = true;
         } else if (this._currentThread !== null) {
             parsed = this._currentThread.addStackLine(line);
