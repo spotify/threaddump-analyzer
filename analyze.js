@@ -25,9 +25,9 @@ function analyzeTextfield() { // jshint ignore: line
     var analyzer = new Analyzer(text);
     setOutputText(analyzer.toString());
 
-    var unparsables = analyzer.toUnparsablesString();
-    if (unparsables.length > 0) {
-        setIgnoredText(unparsables);
+    var ignores = analyzer.toIgnoresString();
+    if (ignores.length > 0) {
+        setIgnoredText(ignores);
     } else {
         var ignoredDiv = document.getElementById('IGNORED_DIV');
         ignoredDiv.style.display = 'none';
@@ -229,7 +229,7 @@ function Analyzer(text) {
         }
 
         if (!parsed) {
-            this._unparsables.addString(line);
+            this._ignores.addString(line);
         }
     };
 
@@ -312,19 +312,19 @@ function Analyzer(text) {
         return asString;
     };
 
-    this.toUnparsablesString = function() {
+    this.toIgnoresString = function() {
         var string = "";
-        var countedUnparsables = this._unparsables.getStrings();
-        for (var i = 0; i < countedUnparsables.length; i++) {
-            string += countedUnparsables[i].count +
-                " " + countedUnparsables[i].string +
+        var countedIgnores = this._ignores.getStrings();
+        for (var i = 0; i < countedIgnores.length; i++) {
+            string += countedIgnores[i].count +
+                " " + countedIgnores[i].string +
                 '\n';
         }
         return string;
     };
 
     this.threads = [];
-    this._unparsables = new StringCounter();
+    this._ignores = new StringCounter();
     this._currentThread = null;
 
     this._analyze(text);

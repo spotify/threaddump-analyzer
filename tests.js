@@ -133,6 +133,9 @@ QUnit.test( "full dump analysis", function(assert) {
     var expectedOutput = unescapeHtml(document.getElementById("sample-analysis").innerHTML);
     var analyzer = new Analyzer(input);
     assert.equal(analyzer.toString(), expectedOutput);
+
+    var expectedIgnores = document.getElementById("sample-ignored").innerHTML;
+    assert.equal(analyzer.toIgnoresString(), expectedIgnores);
 });
 
 QUnit.test("extract regex from string", function(assert) {
