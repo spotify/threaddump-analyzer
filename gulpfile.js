@@ -20,6 +20,7 @@ var gulp = require('gulp');
 var qunit = require('gulp-qunit');
 var jshint = require('gulp-jshint');
 var htmlhint = require("gulp-htmlhint");
+var csslint = require("gulp-csslint");
 
 gulp.task('test', function() {
     return gulp.src('./test.html').pipe(qunit());
@@ -37,4 +38,11 @@ gulp.task('htmllint', function() {
         .pipe(htmlhint())
         .pipe(htmlhint.reporter())
         .pipe(htmlhint.failReporter());
+});
+
+gulp.task('csslint', function() {
+    gulp.src('*.css')
+        .pipe(csslint())
+        .pipe(csslint.reporter())
+        .pipe(csslint.failReporter());
 });

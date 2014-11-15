@@ -15,11 +15,7 @@ The Java Thread Dump Analyzer is licensed under
 the copyright belongs to Spotify AB.
 
 ## TODO
-* Turn the Ignored Lines section at the bottom into an HTML table and
-style it using CSS.
-
-* Remove all style= properties from index.html and move them into a
-style sheet. Make sure the Travis runs validates our CSS.
+* Turn the Ignored Lines section at the bottom into an HTML table.
 
 * If two or more threads share both thread header and stack, print
 only one thread header line prefixed by "N x ".
@@ -115,3 +111,5 @@ problems.
 
 * Dump all input lines we failed to parse in red at the end so it's
 obvious if we need to add something.
+
+* Move styling into CSS.

@@ -9,7 +9,7 @@
     },
     "bugs": { "url" : "https://github.com/spotify/threaddump-analyzer/issues" },
     "scripts": {
-        "test": "gulp test jslint htmllint"
+        "test": "gulp test jslint htmllint csslint"
     },
     "keywords": [
         "java",
@@ -21,6 +21,7 @@
         "gulp-jshint": "1.9.0",
         "gulp-util": "~2.2.14",
         "gulp-htmlhint": "0.0.9",
+        "gulp-csslint": "0.1.5",
         "gulp": "~3.5.1"
     }
 }
