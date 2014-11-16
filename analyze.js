@@ -25,9 +25,9 @@ function analyzeTextfield() { // jshint ignore: line
     var analyzer = new Analyzer(text);
     setOutputText(analyzer.toString());
 
-    var ignores = analyzer.toIgnoresString();
+    var ignores = analyzer.toIgnoresHtml();
     if (ignores.length > 0) {
-        setIgnoredText(ignores);
+        setIgnoredHtml(ignores);
     } else {
         var ignoredDiv = document.getElementById('IGNORED_DIV');
         ignoredDiv.style.display = 'none';
@@ -49,9 +49,9 @@ function setOutputText(unescaped) {
     outputDiv.style.display = 'inline';
 }
 
-function setIgnoredText(unescaped) {
-    var ignoredPre = document.getElementById("IGNORED");
-    ignoredPre.innerHTML = htmlEscape(unescaped);
+function setIgnoredHtml(html) {
+    var ignoredTable = document.getElementById("IGNORED");
+    ignoredTable.innerHTML = html;
 
     var ignoredDiv = document.getElementById('IGNORED_DIV');
     ignoredDiv.style.display = 'inline';
@@ -321,6 +321,19 @@ function Analyzer(text) {
                 '\n';
         }
         return string;
+    };
+
+    this.toIgnoresHtml = function() {
+        var html = "";
+        var countedIgnores = this._ignores.getStrings();
+        for (var i = 0; i < countedIgnores.length; i++) {
+            html += '<tr><td class="right-align">' +
+                countedIgnores[i].count +
+                '</td><td class="monospace">' +
+                " " + htmlEscape(countedIgnores[i].string) +
+                "</td></tr>\n";
+        }
+        return html;
     };
 
     this.threads = [];

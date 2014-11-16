@@ -15,21 +15,18 @@ The Java Thread Dump Analyzer is licensed under
 the copyright belongs to Spotify AB.
 
 ## TODO
-* Turn the Ignored Lines section at the bottom into an HTML table.
-
-* If two or more threads share both thread header and stack, print
-only one thread header line prefixed by "N x ".
-
 * Make the Thread class parse held locks, waited-for locks and
 waited-for condition variables from the thread dump.
 
-* If a thread is waiting for a lock held by another thread, make a
-clickable link from the waiter thread to the holder thread.
+* List all synchronization things at the end; both locks and condition
+  variables in the same list. For each, list who's holding it, who's
+  waiting for the lock, and who's waiting for notification. All
+  references should be clickable. And there should be clickable links
+  from each thread in the thread list to whatever synchronization
+  thingie it is involved with.
 
-* List all condition variables anybody is waiting for at the end. For
-each condition variable list which threads are waiting for it and who
-(if anybody) is holding the lock associated with the condvar. All
-references need to be clickable.
+* If a thread is waiting for another thread to release a lock, make
+sure there's a clickable reference from the waiter to the holder.
 
 * Detect deadlocks and display deadlock information prominently at the
 top if detected.
@@ -42,6 +39,9 @@ top if detected.
 
 * Auto detect if somebody copies a thread dump to the clipboard and
 spontaneously analyze that.
+
+* If two or more threads share both thread header and stack, print
+only one thread header line prefixed by "N x ".
 
 * Instead of showing the thread dump as text, show it in a tree with
 expandable nodes.
@@ -113,3 +113,5 @@ problems.
 obvious if we need to add something.
 
 * Move styling into CSS.
+
+* Turn the Ignored Lines section at the bottom into an HTML table.

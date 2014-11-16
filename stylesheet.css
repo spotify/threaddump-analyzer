@@ -1,3 +1,11 @@
 .ignored {
     color: red;
 }
+
+.right-align {
+    text-align: right;
+}
+
+.monospace {
+    font-family: monospace;
+}
