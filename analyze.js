@@ -329,7 +329,7 @@ function Analyzer(text) {
         for (var i = 0; i < countedIgnores.length; i++) {
             html += '<tr><td class="right-align">' +
                 countedIgnores[i].count +
-                '</td><td class="monospace">' +
+                '</td><td class="raw">' +
                 " " + htmlEscape(countedIgnores[i].string) +
                 "</td></tr>\n";
         }

@@ -6,6 +6,7 @@
     text-align: right;
 }
 
-.monospace {
+.raw {
     font-family: monospace;
+    white-space: nowrap;
 }
