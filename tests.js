@@ -96,12 +96,13 @@ QUnit.test( "multiline thread name", function(assert) {
 
     // Test the Analyzer's toString() method as well now that we have an Analyzer
     var analysisLines = analyzer.toString().split('\n');
-    assert.equal(analysisLines.length, 5);
-    assert.equal(analysisLines[0], "1 threads found:");
-    assert.equal(analysisLines[1], "");
-    assert.equal(analysisLines[2], '"line 1, line 2": runnable');
-    assert.equal(analysisLines[3], '	<empty stack>');
-    assert.equal(analysisLines[4], "");
+    assert.equal(analysisLines, [
+        "1 threads found:",
+        "",
+        '"line 1, line 2": runnable',
+        "	<empty stack>",
+        ""
+    ]);
 });
 
 QUnit.test( "thread stack", function(assert) {

@@ -159,27 +159,6 @@ function Thread(line) {
     this._frames = [];
 }
 
-function toStackWithHeadersString(stack, threads) {
-    var string = '';
-    if (threads.length > 4) {
-        string += "" + threads.length + " threads with this stack:\n";
-    }
-
-    // Print thread headers for this stack in alphabetic order
-    var headers = [];
-    for (var k = 0; k < threads.length; k++) {
-        headers.push(threads[k].toHeaderString());
-    }
-    headers.sort();
-    for (var l = 0; l < headers.length; l++) {
-        string += headers[l] + '\n';
-    }
-
-    string += stack;
-
-    return string;
-}
-
 function StringCounter() {
     this.addString = function(string) {
         if (!this._stringsToCounts.hasOwnProperty(string)) {
@@ -252,7 +231,10 @@ function Analyzer(text) {
         }
     };
 
-    this.toString = function() {
+    // Returns an array [{threads:, stackFrames:,} ...]. The threads:
+    // field contains an array of Threads. The stackFrames contain an
+    // array of strings
+    this._toThreadsAndStacks = function() {
         // Map stacks to which threads have them
         var stacksToThreads = {};
         for (var i = 0; i < this.threads.length; i++) {
@@ -301,12 +283,43 @@ function Analyzer(text) {
 
         // Iterate over stacks and for each stack, print first all
         // threads that have it, and then the stack itself.
-        var asString = "";
-        asString += "" + this.threads.length + " threads found:\n";
+        var threadsAndStacks = [];
         for (var j = 0; j < stacks.length; j++) {
             var currentStack = stacks[j];
             var threads = stacksToThreads[currentStack];
-            asString += '\n' + toStackWithHeadersString(currentStack, threads);
+            threadsAndStacks.push({
+                threads: threads,
+                stackFrames: currentStack.split('\n')
+            });
+        }
+
+        return threadsAndStacks;
+    };
+
+    this.toString = function() {
+        var threadsAndStacks = this._toThreadsAndStacks();
+
+        var asString = "";
+        asString += "" + this.threads.length + " threads found:\n\n";
+        for (var i = 0; i < threadsAndStacks.length; i++) {
+            var currentThreadsAndStack = threadsAndStacks[i];
+            var stackFrames = currentThreadsAndStack.stackFrames;
+            var threads = currentThreadsAndStack.threads;
+
+            if (threads.length > 4) {
+                asString += "" + threads.length + " threads with this stack:\n";
+            }
+
+            var headers = [];
+            for (var j = 0; j < threads.length; j++) {
+                headers.push(threads[j].toHeaderString());
+            }
+            headers.sort();
+            asString += headers.join('\n') + '\n';
+
+            for (var k = 0; k < stackFrames.length; k++) {
+                asString += stackFrames[k] + "\n";
+            }
         }
 
         return asString;
