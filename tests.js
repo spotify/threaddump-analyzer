@@ -136,6 +136,32 @@ QUnit.test( "analyze single thread", function(assert) {
     }]);
 });
 
+QUnit.test( "analyze two threads with same stack", function(assert) {
+    var threadDump = [
+        '"zebra thread" prio=10 tid=0x00007f16a118e000 nid=0x6e5a runnable [0x00007f18b91d0000]',
+        '	at fluff',
+        "",
+        '"aardvark thread" prio=10 tid=0x00007f16a118e000 nid=0x6e5a runnable [0x00007f18b91d0000]',
+        '	at fluff'
+    ].join('\n');
+
+    var analyzer = new Analyzer(threadDump);
+
+    var threads = analyzer.threads;
+    assert.equal(threads.length, 2);
+    var zebra = threads[0];
+    assert.equal(zebra.name, "zebra thread");
+    var aardvark = threads[1];
+    assert.equal(aardvark.name, "aardvark thread");
+
+    // This test validates that threads with the same stack are sorted by name
+    var analysisResult = analyzer._toThreadsAndStacks();
+    assert.deepEqual(analysisResult, [{
+        threads: [aardvark, zebra],
+        stackFrames: ["	at fluff"]
+    }]);
+});
+
 QUnit.test( "thread stack", function(assert) {
     var header = '"Thread name" prio=10 tid=0x00007f1728056000 nid=0x1347 sleeping[0x00007f169cdcb000]';
     var thread = new Thread(header);
