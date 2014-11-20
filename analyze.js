@@ -16,7 +16,7 @@ limitations under the License.
 
 /* global document */
 
-var EMPTY_STACK = "	<empty stack>\n";
+var EMPTY_STACK = "	<empty stack>";
 
 // This method is called from HTML so we need to tell JSHint it's not unused
 function analyzeTextfield() { // jshint ignore: line
@@ -86,22 +86,16 @@ function Thread(line) {
         if (line.match(FRAME) === null) {
             return false;
         }
-        this._frames.push(line);
+        this.frames.push(line);
         return true;
     };
 
     this.toStackString = function() {
-        var string = "";
-        for (var i = 0; i < this._frames.length; i++) {
-            var frame = this._frames[i];
-            string += frame + '\n';
-        }
-
-        if (string === '') {
+        if (this.frames.length === 0) {
             return EMPTY_STACK;
         }
 
-        return string;
+        return this.frames.join('\n');
     };
 
     this.toHeaderString = function() {
@@ -156,7 +150,7 @@ function Thread(line) {
         return undefined;
     }
 
-    this._frames = [];
+    this.frames = [];
 }
 
 function StringCounter() {
@@ -320,6 +314,7 @@ function Analyzer(text) {
             for (var k = 0; k < stackFrames.length; k++) {
                 asString += stackFrames[k] + "\n";
             }
+            asString += '\n';
         }
 
         return asString;

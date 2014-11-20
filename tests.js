@@ -89,21 +89,51 @@ QUnit.test( "multiline thread name", function(assert) {
 
     assert.equal(threads.length, 1);
     var threadLines = threads[0].toString().split('\n');
-    assert.equal(threadLines, [
+    assert.deepEqual(threadLines, [
         '"line 1, line 2": runnable',
-        '	<empty stack>',
-        ''
+        '	<empty stack>'
     ]);
 
     // Test the Analyzer's toString() method as well now that we have an Analyzer
     var analysisLines = analyzer.toString().split('\n');
-    assert.equal(analysisLines, [
+    assert.deepEqual(analysisLines, [
         "1 threads found:",
         "",
         '"line 1, line 2": runnable',
         "	<empty stack>",
         ""
     ]);
+});
+
+QUnit.test( "analyze stackless thread", function(assert) {
+    var threadDump = '"thread name" prio=10 tid=0x00007f16a118e000 nid=0x6e5a runnable [0x00007f18b91d0000]';
+    var analyzer = new Analyzer(threadDump);
+    var threads = analyzer.threads;
+    assert.equal(threads.length, 1);
+    var thread = threads[0];
+
+    var analysisResult = analyzer._toThreadsAndStacks();
+    assert.deepEqual(analysisResult, [{
+        threads: [thread],
+        stackFrames: ["	<empty stack>"]
+    }]);
+});
+
+QUnit.test( "analyze single thread", function(assert) {
+    var threadDump = [
+        '"thread name" prio=10 tid=0x00007f16a118e000 nid=0x6e5a runnable [0x00007f18b91d0000]',
+        '	at fluff'
+    ].join('\n');
+    var analyzer = new Analyzer(threadDump);
+    var threads = analyzer.threads;
+    assert.equal(threads.length, 1);
+    var thread = threads[0];
+
+    var analysisResult = analyzer._toThreadsAndStacks();
+    assert.deepEqual(analysisResult, [{
+        threads: [thread],
+        stackFrames: ["	at fluff"]
+    }]);
 });
 
 QUnit.test( "thread stack", function(assert) {
@@ -117,11 +147,11 @@ QUnit.test( "thread stack", function(assert) {
     // When adding stack frames we should just ignore unsupported
     // lines, and the end result should contain only supported data.
     var threadLines = thread.toString().split('\n');
-    assert.equal(threadLines.length, 4);
-    assert.equal(threadLines[0], '"Thread name": sleeping');
-    assert.equal(threadLines[1], "	at java.security.AccessController.doPrivileged(Native Method)");
-    assert.equal(threadLines[2], "	at java.net.SocksSocketImpl.connect(SocksSocketImpl.java:353)");
-    assert.equal(threadLines[3], "");
+    assert.deepEqual(threadLines, [
+        '"Thread name": sleeping',
+        "	at java.security.AccessController.doPrivileged(Native Method)",
+        "	at java.net.SocksSocketImpl.connect(SocksSocketImpl.java:353)"
+    ]);
 });
 
 function unescapeHtml(escaped) {
@@ -134,10 +164,10 @@ QUnit.test( "full dump analysis", function(assert) {
     var input = document.getElementById("sample-input").innerHTML;
     var expectedOutput = unescapeHtml(document.getElementById("sample-analysis").innerHTML);
     var analyzer = new Analyzer(input);
-    assert.equal(analyzer.toString().split('\n'), expectedOutput.split('\n'));
+    assert.deepEqual(analyzer.toString().split('\n'), expectedOutput.split('\n'));
 
     var expectedIgnores = document.getElementById("sample-ignored").innerHTML;
-    assert.equal(analyzer.toIgnoresString().split('\n'), expectedIgnores.split('\n'));
+    assert.deepEqual(analyzer.toIgnoresString().split('\n'), expectedIgnores.split('\n'));
 });
 
 QUnit.test("extract regex from string", function(assert) {
