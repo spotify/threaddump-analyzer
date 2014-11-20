@@ -281,6 +281,19 @@ function Analyzer(text) {
         for (var j = 0; j < stacks.length; j++) {
             var currentStack = stacks[j];
             var threads = stacksToThreads[currentStack];
+
+            threads.sort(function(a, b){
+                var aHeader = a.toHeaderString();
+                var bHeader = b.toHeaderString();
+                if (aHeader > bHeader) {
+                    return 1;
+                }
+                if (aHeader < bHeader) {
+                    return -1;
+                }
+                return 0;
+            });
+
             threadsAndStacks.push({
                 threads: threads,
                 stackFrames: currentStack.split('\n')
@@ -306,12 +319,9 @@ function Analyzer(text) {
                 asString += "" + threads.length + " threads with this stack:\n";
             }
 
-            var headers = [];
             for (var j = 0; j < threads.length; j++) {
-                headers.push(threads[j].toHeaderString());
+                asString += threads[j].toHeaderString() + '\n';
             }
-            headers.sort();
-            asString += headers.join('\n') + '\n';
 
             for (var k = 0; k < stackFrames.length; k++) {
                 asString += stackFrames[k] + "\n";

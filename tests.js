@@ -137,6 +137,7 @@ QUnit.test( "analyze single thread", function(assert) {
 });
 
 QUnit.test( "analyze two threads with same stack", function(assert) {
+    // Thread dump with zebra before aardvark
     var threadDump = [
         '"zebra thread" prio=10 tid=0x00007f16a118e000 nid=0x6e5a runnable [0x00007f18b91d0000]',
         '	at fluff',
@@ -154,9 +155,9 @@ QUnit.test( "analyze two threads with same stack", function(assert) {
     var aardvark = threads[1];
     assert.equal(aardvark.name, "aardvark thread");
 
-    // This test validates that threads with the same stack are sorted by name
     var analysisResult = analyzer._toThreadsAndStacks();
     assert.deepEqual(analysisResult, [{
+        // Make sure the aardvark comes before the zebra
         threads: [aardvark, zebra],
         stackFrames: ["	at fluff"]
     }]);
