@@ -15,6 +15,11 @@ The Java Thread Dump Analyzer is licensed under
 the copyright belongs to Spotify AB.
 
 ## TODO
+* List top RUNNING methods before everything else. I have a thread
+  dump taken on a system that was swapping basically getting the GC
+  stuck. With a list of top RUNNING methods it should be possible to
+  see this from the analysis.
+
 * Make the Thread class parse held locks, waited-for locks and
 waited-for condition variables from the thread dump.
 
