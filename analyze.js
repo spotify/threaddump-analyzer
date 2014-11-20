@@ -294,11 +294,13 @@ function Analyzer(text) {
         var threadsAndStacks = this._toThreadsAndStacks();
 
         var asString = "";
-        asString += "" + this.threads.length + " threads found:\n\n";
+        asString += "" + this.threads.length + " threads found:\n";
         for (var i = 0; i < threadsAndStacks.length; i++) {
             var currentThreadsAndStack = threadsAndStacks[i];
             var stackFrames = currentThreadsAndStack.stackFrames;
             var threads = currentThreadsAndStack.threads;
+
+            asString += '\n';
 
             if (threads.length > 4) {
                 asString += "" + threads.length + " threads with this stack:\n";
@@ -314,7 +316,6 @@ function Analyzer(text) {
             for (var k = 0; k < stackFrames.length; k++) {
                 asString += stackFrames[k] + "\n";
             }
-            asString += '\n';
         }
 
         return asString;
