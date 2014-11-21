@@ -89,19 +89,78 @@ QUnit.test( "multiline thread name", function(assert) {
 
     assert.equal(threads.length, 1);
     var threadLines = threads[0].toString().split('\n');
-    assert.equal(threadLines.length, 3);
-    assert.equal(threadLines[0], '"line 1, line 2": runnable');
-    assert.equal(threadLines[1], '	<empty stack>');
-    assert.equal(threadLines[2], '');
+    assert.deepEqual(threadLines, [
+        '"line 1, line 2": runnable',
+        '	<empty stack>'
+    ]);
 
     // Test the Analyzer's toString() method as well now that we have an Analyzer
     var analysisLines = analyzer.toString().split('\n');
-    assert.equal(analysisLines.length, 5);
-    assert.equal(analysisLines[0], "1 threads found:");
-    assert.equal(analysisLines[1], "");
-    assert.equal(analysisLines[2], '"line 1, line 2": runnable');
-    assert.equal(analysisLines[3], '	<empty stack>');
-    assert.equal(analysisLines[4], "");
+    assert.deepEqual(analysisLines, [
+        "1 threads found:",
+        "",
+        '"line 1, line 2": runnable',
+        "	<empty stack>",
+        ""
+    ]);
+});
+
+QUnit.test( "analyze stackless thread", function(assert) {
+    var threadDump = '"thread name" prio=10 tid=0x00007f16a118e000 nid=0x6e5a runnable [0x00007f18b91d0000]';
+    var analyzer = new Analyzer(threadDump);
+    var threads = analyzer.threads;
+    assert.equal(threads.length, 1);
+    var thread = threads[0];
+
+    var analysisResult = analyzer._toThreadsAndStacks();
+    assert.deepEqual(analysisResult, [{
+        threads: [thread],
+        stackFrames: ["	<empty stack>"]
+    }]);
+});
+
+QUnit.test( "analyze single thread", function(assert) {
+    var threadDump = [
+        '"thread name" prio=10 tid=0x00007f16a118e000 nid=0x6e5a runnable [0x00007f18b91d0000]',
+        '	at fluff'
+    ].join('\n');
+    var analyzer = new Analyzer(threadDump);
+    var threads = analyzer.threads;
+    assert.equal(threads.length, 1);
+    var thread = threads[0];
+
+    var analysisResult = analyzer._toThreadsAndStacks();
+    assert.deepEqual(analysisResult, [{
+        threads: [thread],
+        stackFrames: ["	at fluff"]
+    }]);
+});
+
+QUnit.test( "analyze two threads with same stack", function(assert) {
+    // Thread dump with zebra before aardvark
+    var threadDump = [
+        '"zebra thread" prio=10 tid=0x00007f16a118e000 nid=0x6e5a runnable [0x00007f18b91d0000]',
+        '	at fluff',
+        "",
+        '"aardvark thread" prio=10 tid=0x00007f16a118e000 nid=0x6e5a runnable [0x00007f18b91d0000]',
+        '	at fluff'
+    ].join('\n');
+
+    var analyzer = new Analyzer(threadDump);
+
+    var threads = analyzer.threads;
+    assert.equal(threads.length, 2);
+    var zebra = threads[0];
+    assert.equal(zebra.name, "zebra thread");
+    var aardvark = threads[1];
+    assert.equal(aardvark.name, "aardvark thread");
+
+    var analysisResult = analyzer._toThreadsAndStacks();
+    assert.deepEqual(analysisResult, [{
+        // Make sure the aardvark comes before the zebra
+        threads: [aardvark, zebra],
+        stackFrames: ["	at fluff"]
+    }]);
 });
 
 QUnit.test( "thread stack", function(assert) {
@@ -115,11 +174,11 @@ QUnit.test( "thread stack", function(assert) {
     // When adding stack frames we should just ignore unsupported
     // lines, and the end result should contain only supported data.
     var threadLines = thread.toString().split('\n');
-    assert.equal(threadLines.length, 4);
-    assert.equal(threadLines[0], '"Thread name": sleeping');
-    assert.equal(threadLines[1], "	at java.security.AccessController.doPrivileged(Native Method)");
-    assert.equal(threadLines[2], "	at java.net.SocksSocketImpl.connect(SocksSocketImpl.java:353)");
-    assert.equal(threadLines[3], "");
+    assert.deepEqual(threadLines, [
+        '"Thread name": sleeping',
+        "	at java.security.AccessController.doPrivileged(Native Method)",
+        "	at java.net.SocksSocketImpl.connect(SocksSocketImpl.java:353)"
+    ]);
 });
 
 function unescapeHtml(escaped) {
@@ -132,10 +191,10 @@ QUnit.test( "full dump analysis", function(assert) {
     var input = document.getElementById("sample-input").innerHTML;
     var expectedOutput = unescapeHtml(document.getElementById("sample-analysis").innerHTML);
     var analyzer = new Analyzer(input);
-    assert.equal(analyzer.toString(), expectedOutput);
+    assert.deepEqual(analyzer.toString().split('\n'), expectedOutput.split('\n'));
 
     var expectedIgnores = document.getElementById("sample-ignored").innerHTML;
-    assert.equal(analyzer.toIgnoresString(), expectedIgnores);
+    assert.deepEqual(analyzer.toIgnoresString().split('\n'), expectedIgnores.split('\n'));
 });
 
 QUnit.test("extract regex from string", function(assert) {

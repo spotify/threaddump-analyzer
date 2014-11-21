@@ -16,7 +16,7 @@ limitations under the License.
 
 /* global document */
 
-var EMPTY_STACK = "	<empty stack>\n";
+var EMPTY_STACK = "	<empty stack>";
 
 // This method is called from HTML so we need to tell JSHint it's not unused
 function analyzeTextfield() { // jshint ignore: line
@@ -86,22 +86,16 @@ function Thread(line) {
         if (line.match(FRAME) === null) {
             return false;
         }
-        this._frames.push(line);
+        this.frames.push(line);
         return true;
     };
 
     this.toStackString = function() {
-        var string = "";
-        for (var i = 0; i < this._frames.length; i++) {
-            var frame = this._frames[i];
-            string += frame + '\n';
-        }
-
-        if (string === '') {
+        if (this.frames.length === 0) {
             return EMPTY_STACK;
         }
 
-        return string;
+        return this.frames.join('\n');
     };
 
     this.toHeaderString = function() {
@@ -156,28 +150,7 @@ function Thread(line) {
         return undefined;
     }
 
-    this._frames = [];
-}
-
-function toStackWithHeadersString(stack, threads) {
-    var string = '';
-    if (threads.length > 4) {
-        string += "" + threads.length + " threads with this stack:\n";
-    }
-
-    // Print thread headers for this stack in alphabetic order
-    var headers = [];
-    for (var k = 0; k < threads.length; k++) {
-        headers.push(threads[k].toHeaderString());
-    }
-    headers.sort();
-    for (var l = 0; l < headers.length; l++) {
-        string += headers[l] + '\n';
-    }
-
-    string += stack;
-
-    return string;
+    this.frames = [];
 }
 
 function StringCounter() {
@@ -252,7 +225,10 @@ function Analyzer(text) {
         }
     };
 
-    this.toString = function() {
+    // Returns an array [{threads:, stackFrames:,} ...]. The threads:
+    // field contains an array of Threads. The stackFrames contain an
+    // array of strings
+    this._toThreadsAndStacks = function() {
         // Map stacks to which threads have them
         var stacksToThreads = {};
         for (var i = 0; i < this.threads.length; i++) {
@@ -301,12 +277,55 @@ function Analyzer(text) {
 
         // Iterate over stacks and for each stack, print first all
         // threads that have it, and then the stack itself.
-        var asString = "";
-        asString += "" + this.threads.length + " threads found:\n";
+        var threadsAndStacks = [];
         for (var j = 0; j < stacks.length; j++) {
             var currentStack = stacks[j];
             var threads = stacksToThreads[currentStack];
-            asString += '\n' + toStackWithHeadersString(currentStack, threads);
+
+            threads.sort(function(a, b){
+                var aHeader = a.toHeaderString();
+                var bHeader = b.toHeaderString();
+                if (aHeader > bHeader) {
+                    return 1;
+                }
+                if (aHeader < bHeader) {
+                    return -1;
+                }
+                return 0;
+            });
+
+            threadsAndStacks.push({
+                threads: threads,
+                stackFrames: currentStack.split('\n')
+            });
+        }
+
+        return threadsAndStacks;
+    };
+
+    this.toString = function() {
+        var threadsAndStacks = this._toThreadsAndStacks();
+
+        var asString = "";
+        asString += "" + this.threads.length + " threads found:\n";
+        for (var i = 0; i < threadsAndStacks.length; i++) {
+            var currentThreadsAndStack = threadsAndStacks[i];
+            var stackFrames = currentThreadsAndStack.stackFrames;
+            var threads = currentThreadsAndStack.threads;
+
+            asString += '\n';
+
+            if (threads.length > 4) {
+                asString += "" + threads.length + " threads with this stack:\n";
+            }
+
+            for (var j = 0; j < threads.length; j++) {
+                asString += threads[j].toHeaderString() + '\n';
+            }
+
+            for (var k = 0; k < stackFrames.length; k++) {
+                asString += stackFrames[k] + "\n";
+            }
         }
 
         return asString;
