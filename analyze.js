@@ -83,11 +83,19 @@ function Thread(line) {
     // Return true if the line was understood, false otherwise
     this.addStackLine = function(line) {
         var FRAME = /^\s+at .*/;
-        if (line.match(FRAME) === null) {
-            return false;
+        if (line.match(FRAME) !== null) {
+            this.frames.push(line);
+            return true;
         }
-        this.frames.push(line);
-        return true;
+
+        var THREAD_STATE = /^\s*java.lang.Thread.State: (.*)/;
+        var match = line.match(THREAD_STATE);
+        if (match !== null) {
+            this.threadState = match[1];
+            return true;
+        }
+
+        return false;
     };
 
     this.toStackString = function() {
