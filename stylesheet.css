@@ -8,5 +8,13 @@
 
 .raw {
     font-family: monospace;
-    white-space: nowrap;
+    white-space: pre;
+}
+
+.threadgroup {
+    margin-top: 1.5em;
+}
+
+.threadcount {
+    font-weight: bold;
 }

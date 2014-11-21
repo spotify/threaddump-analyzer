@@ -23,7 +23,7 @@ function analyzeTextfield() { // jshint ignore: line
     var text = document.getElementById("TEXTAREA").value;
 
     var analyzer = new Analyzer(text);
-    setOutputText(analyzer.toString());
+    setOutputHtml(analyzer.toHtml());
 
     var ignores = analyzer.toIgnoresHtml();
     if (ignores.length > 0) {
@@ -41,9 +41,9 @@ function htmlEscape(unescaped) {
     return escaped;
 }
 
-function setOutputText(unescaped) {
-    var outputPre = document.getElementById("OUTPUT");
-    outputPre.innerHTML = htmlEscape(unescaped);
+function setOutputHtml(html) {
+    var output = document.getElementById("OUTPUT");
+    output.innerHTML = html;
 
     var outputDiv = document.getElementById('OUTPUT_DIV');
     outputDiv.style.display = 'inline';
@@ -329,6 +329,38 @@ function Analyzer(text) {
         }
 
         return asString;
+    };
+
+    this.toHtml = function() {
+        var threadsAndStacks = this._toThreadsAndStacks();
+
+        var asHtml = "";
+        asHtml += '<h2>' + this.threads.length + " threads found</h2>\n";
+        for (var i = 0; i < threadsAndStacks.length; i++) {
+            var currentThreadsAndStack = threadsAndStacks[i];
+            var stackFrames = currentThreadsAndStack.stackFrames;
+            var threads = currentThreadsAndStack.threads;
+
+            asHtml += '<div class="threadgroup">\n';
+            if (threads.length > 4) {
+                asHtml += '<div class="threadcount">' + threads.length + " threads with this stack:</div>\n";
+            } else {
+                // Having an empty div here makes all paragraphs, both
+                // those with and those without headings evenly spaced.
+                asHtml += '<div class="threadcount"></div>\n';
+            }
+
+            for (var j = 0; j < threads.length; j++) {
+                asHtml += '<div class="raw">' + htmlEscape(threads[j].toHeaderString()) + '</div>\n';
+            }
+
+            for (var k = 0; k < stackFrames.length; k++) {
+                asHtml += '<div class="raw">' + htmlEscape(stackFrames[k]) + "</div>\n";
+            }
+            asHtml += '</div>\n';
+        }
+
+        return asHtml;
     };
 
     this.toIgnoresString = function() {
