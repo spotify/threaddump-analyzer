@@ -92,6 +92,7 @@ function Thread(line) {
         var match = line.match(THREAD_STATE);
         if (match !== null) {
             this.threadState = match[1];
+            this.running = (this.threadState === "RUNNING") && (this.state === 'running');
             return true;
         }
 
@@ -153,6 +154,7 @@ function Thread(line) {
     line = match.shorterString;
 
     this.state = line.trim();
+    this.running = false;
 
     if (this.name === undefined) {
         return undefined;

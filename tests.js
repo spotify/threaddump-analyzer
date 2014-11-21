@@ -81,6 +81,32 @@ QUnit.test( "sleeping thread", function(assert) {
     assert.equal(new Thread(header).toHeaderString(), '"git@github.com:caoliang2598/ta-zelda-test.git#master"}; 09:09:58 Task started; VCS Periodical executor 39": sleeping');
 });
 
+// Our definition of a "running" thread is one that is both in
+// Thread.State running and free text state running.
+QUnit.test("thread.running", function(assert) {
+    var thread;
+
+    thread = new Thread('"thread" prio=10 running');
+    thread.addStackLine("	java.lang.Thread.State: RUNNING");
+    assert.ok(thread.running);
+
+    thread = new Thread('"thread" prio=10 not running');
+    thread.addStackLine("	java.lang.Thread.State: RUNNING");
+    assert.ok(!thread.running);
+
+    thread = new Thread('"thread" prio=10 running');
+    thread.addStackLine("	java.lang.Thread.State: TERMINATED");
+    assert.ok(!thread.running);
+
+    thread = new Thread('"thread" prio=10 not running');
+    thread.addStackLine("	java.lang.Thread.State: TERMINATED");
+    assert.ok(!thread.running);
+
+    // Thread without Thread.State
+    thread = new Thread('"thread" prio=10 running');
+    assert.ok(!thread.running);
+});
+
 QUnit.test( "multiline thread name", function(assert) {
     // It's the Analyzer that joins lines so we have to go through the Analyzer here
     var multilineHeader = '"line 1\nline 2" prio=10 tid=0x00007f16a118e000 nid=0x6e5a runnable [0x00007f18b91d0000]';
