@@ -221,6 +221,9 @@ QUnit.test( "full dump analysis", function(assert) {
 
     var expectedIgnores = document.getElementById("sample-ignored").innerHTML;
     assert.deepEqual(analyzer.toIgnoresString().split('\n'), expectedIgnores.split('\n'));
+
+    var expectedRunning = document.getElementById("sample-running").innerHTML;
+    assert.deepEqual(analyzer.toRunningString().split('\n'), expectedRunning.split('\n'));
 });
 
 QUnit.test("extract regex from string", function(assert) {

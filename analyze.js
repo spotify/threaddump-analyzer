@@ -192,6 +192,17 @@ function StringCounter() {
         return returnMe;
     };
 
+    this.toString = function() {
+        var string = "";
+        var countedStrings = this.getStrings();
+        for (var i = 0; i < countedStrings.length; i++) {
+            string += countedStrings[i].count +
+                " " + countedStrings[i].string +
+                '\n';
+        }
+        return string;
+    };
+
     this._stringsToCounts = {};
 }
 
@@ -374,14 +385,7 @@ function Analyzer(text) {
     };
 
     this.toIgnoresString = function() {
-        var string = "";
-        var countedIgnores = this._ignores.getStrings();
-        for (var i = 0; i < countedIgnores.length; i++) {
-            string += countedIgnores[i].count +
-                " " + countedIgnores[i].string +
-                '\n';
-        }
-        return string;
+        return this._ignores.toString();
     };
 
     this.toIgnoresHtml = function() {
@@ -395,6 +399,29 @@ function Analyzer(text) {
                 "</td></tr>\n";
         }
         return html;
+    };
+
+    this.toRunningString = function() {
+        return this._getCountedRunningMethods().toString();
+    };
+
+    this._getCountedRunningMethods = function() {
+        var countedRunning = new StringCounter();
+        for (var i = 0; i < this.threads.length; i++) {
+            var thread = this.threads[i];
+            if (!thread.running) {
+                continue;
+            }
+
+            if (thread.frames.length ===  0) {
+                continue;
+            }
+
+            var runningMethod = thread.frames[0].replace(/^\s+at /, '');
+            countedRunning.addString(runningMethod);
+        }
+
+        return countedRunning.getStrings();
     };
 
     this.threads = [];
