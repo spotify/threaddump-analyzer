@@ -23,15 +23,13 @@ function analyzeTextfield() { // jshint ignore: line
     var text = document.getElementById("TEXTAREA").value;
 
     var analyzer = new Analyzer(text);
-    setOutputHtml(analyzer.toHtml());
+    setHtml("OUTPUT", analyzer.toHtml());
 
     var ignores = analyzer.toIgnoresHtml();
-    if (ignores.length > 0) {
-        setIgnoredHtml(ignores);
-    } else {
-        var ignoredDiv = document.getElementById('IGNORED_DIV');
-        ignoredDiv.style.display = 'none';
-    }
+    setHtml("IGNORED", ignores);
+
+    var running = analyzer.toRunningHtml();
+    setHtml("RUNNING", running);
 }
 
 function htmlEscape(unescaped) {
@@ -41,20 +39,12 @@ function htmlEscape(unescaped) {
     return escaped;
 }
 
-function setOutputHtml(html) {
-    var output = document.getElementById("OUTPUT");
-    output.innerHTML = html;
+function setHtml(name, html) {
+    var destination = document.getElementById(name);
+    destination.innerHTML = html;
 
-    var outputDiv = document.getElementById('OUTPUT_DIV');
-    outputDiv.style.display = 'inline';
-}
-
-function setIgnoredHtml(html) {
-    var ignoredTable = document.getElementById("IGNORED");
-    ignoredTable.innerHTML = html;
-
-    var ignoredDiv = document.getElementById('IGNORED_DIV');
-    ignoredDiv.style.display = 'inline';
+    var div = document.getElementById(name + '_DIV');
+    div.style.display = (html.length > 0) ? 'inline' : 'none';
 }
 
 // Extracts a substring from a string.
@@ -92,7 +82,7 @@ function Thread(line) {
         var match = line.match(THREAD_STATE);
         if (match !== null) {
             this.threadState = match[1];
-            this.running = (this.threadState === "RUNNING") && (this.state === 'running');
+            this.running = (this.threadState === "RUNNABLE") && (this.state === 'runnable');
             return true;
         }
 
@@ -196,9 +186,11 @@ function StringCounter() {
         var string = "";
         var countedStrings = this.getStrings();
         for (var i = 0; i < countedStrings.length; i++) {
+            if (string.length > 0) {
+                string += '\n';
+            }
             string += countedStrings[i].count +
-                " " + countedStrings[i].string +
-                '\n';
+                " " + countedStrings[i].string;
         }
         return string;
     };
@@ -385,7 +377,7 @@ function Analyzer(text) {
     };
 
     this.toIgnoresString = function() {
-        return this._ignores.toString();
+        return this._ignores.toString() + '\n';
     };
 
     this.toIgnoresHtml = function() {
@@ -403,6 +395,19 @@ function Analyzer(text) {
 
     this.toRunningString = function() {
         return this._getCountedRunningMethods().toString();
+    };
+
+    this.toRunningHtml = function() {
+        var html = "";
+        var countedRunning = this._getCountedRunningMethods();
+        for (var i = 0; i < countedRunning.length; i++) {
+            html += '<tr><td class="right-align">' +
+                countedRunning[i].count +
+                '</td><td class="raw">' +
+                " " + htmlEscape(countedRunning[i].string) +
+                "</td></tr>\n";
+        }
+        return html;
     };
 
     this._getCountedRunningMethods = function() {
