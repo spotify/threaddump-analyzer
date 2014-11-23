@@ -195,6 +195,19 @@ function StringCounter() {
         return string;
     };
 
+    this.toHtml = function() {
+        var html = "";
+        var countedStrings = this.getStrings();
+        for (var i = 0; i < countedStrings.length; i++) {
+            html += '<tr><td class="right-align">' +
+                countedStrings[i].count +
+                '</td><td class="raw">' +
+                " " + htmlEscape(countedStrings[i].string) +
+                "</td></tr>\n";
+        }
+        return html;
+    };
+
     this._stringsToCounts = {};
 }
 
@@ -381,16 +394,7 @@ function Analyzer(text) {
     };
 
     this.toIgnoresHtml = function() {
-        var html = "";
-        var countedIgnores = this._ignores.getStrings();
-        for (var i = 0; i < countedIgnores.length; i++) {
-            html += '<tr><td class="right-align">' +
-                countedIgnores[i].count +
-                '</td><td class="raw">' +
-                " " + htmlEscape(countedIgnores[i].string) +
-                "</td></tr>\n";
-        }
-        return html;
+        return this._ignores.toHtml() + "\n";
     };
 
     this.toRunningString = function() {
@@ -398,16 +402,7 @@ function Analyzer(text) {
     };
 
     this.toRunningHtml = function() {
-        var html = "";
-        var countedRunning = this._getCountedRunningMethods();
-        for (var i = 0; i < countedRunning.length; i++) {
-            html += '<tr><td class="right-align">' +
-                countedRunning[i].count +
-                '</td><td class="raw">' +
-                " " + htmlEscape(countedRunning[i].string) +
-                "</td></tr>\n";
-        }
-        return html;
+        return this._getCountedRunningMethods().toHtml();
     };
 
     this._getCountedRunningMethods = function() {
