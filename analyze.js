@@ -202,7 +202,7 @@ function StringCounter() {
             html += '<tr><td class="right-align">' +
                 countedStrings[i].count +
                 '</td><td class="raw">' +
-                " " + htmlEscape(countedStrings[i].string) +
+                htmlEscape(countedStrings[i].string) +
                 "</td></tr>\n";
         }
         return html;
@@ -358,6 +358,10 @@ function Analyzer(text) {
     };
 
     this.toHtml = function() {
+        if (this.threads.length === 0) {
+            return "";
+        }
+
         var threadsAndStacks = this._toThreadsAndStacks();
 
         var asHtml = "";
@@ -394,7 +398,7 @@ function Analyzer(text) {
     };
 
     this.toIgnoresHtml = function() {
-        return this._ignores.toHtml() + "\n";
+        return this._ignores.toHtml();
     };
 
     this.toRunningString = function() {
@@ -417,7 +421,7 @@ function Analyzer(text) {
                 continue;
             }
 
-            var runningMethod = thread.frames[0].replace(/^\s+at /, '');
+            var runningMethod = thread.frames[0].replace(/^\s+at\s+/, '');
             countedRunning.addString(runningMethod);
         }
 
