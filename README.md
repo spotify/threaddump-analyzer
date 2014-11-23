@@ -15,6 +15,14 @@ The Java Thread Dump Analyzer is licensed under
 the copyright belongs to Spotify AB.
 
 ## TODO
+* For top running methods belonging to only one thread, make a link
+from the top list method to the thread executing it.
+
+* Add a Clear button next to the Analyze button.
+
+* Say "... threads with no stack" for threads with no stack, rather
+  than "... threads with this stack".
+
 * Make the Thread class parse held locks, waited-for locks and
 waited-for condition variables from the thread dump.
 
