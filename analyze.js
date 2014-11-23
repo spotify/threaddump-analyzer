@@ -426,7 +426,7 @@ function Analyzer(text) {
             countedRunning.addString(runningMethod);
         }
 
-        return countedRunning.getStrings();
+        return countedRunning;
     };
 
     this.threads = [];
