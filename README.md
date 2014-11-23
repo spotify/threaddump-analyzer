@@ -18,8 +18,6 @@ the copyright belongs to Spotify AB.
 * For top running methods belonging to only one thread, make a link
 from the top list method to the thread executing it.
 
-* Add a Clear button next to the Analyze button.
-
 * Say "... threads with no stack" for threads with no stack, rather
   than "... threads with this stack".
 
@@ -128,3 +126,5 @@ obvious if we need to add something.
   dump taken on a system that was swapping basically getting the GC
   stuck. With a list of top RUNNING methods it should be possible to
   see this from the analysis.
+
+* Add a Clear button next to the Analyze button.

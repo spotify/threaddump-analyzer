@@ -32,6 +32,15 @@ function analyzeTextfield() { // jshint ignore: line
     setHtml("RUNNING", running);
 }
 
+// This method is called from HTML so we need to tell JSHint it's not unused
+function clearTextfield() { // jshint ignore: line
+    var textArea = document.getElementById("TEXTAREA");
+    textArea.value = "";
+
+    // Clear the analysis as well
+    analyzeTextfield();
+}
+
 function htmlEscape(unescaped) {
     var div = document.createElement('div');
     div.appendChild(document.createTextNode(unescaped));
