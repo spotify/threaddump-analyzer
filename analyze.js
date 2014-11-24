@@ -390,7 +390,12 @@ function Analyzer(text) {
             }
 
             for (var j = 0; j < threads.length; j++) {
-                asHtml += '<div class="raw">' + htmlEscape(threads[j].toHeaderString()) + '</div>\n';
+                var thread = threads[j];
+                asHtml += '<div class="raw" id="' +
+                    thread.tid +
+                    '">' +
+                    htmlEscape(thread.toHeaderString()) +
+                    '</div>\n';
             }
 
             for (var k = 0; k < stackFrames.length; k++) {
