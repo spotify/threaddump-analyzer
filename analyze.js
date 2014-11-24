@@ -427,10 +427,13 @@ function Analyzer(text) {
         for (var i = 0; i < countedStrings.length; i++) {
             var countedString = countedStrings[i];
 
-            html += '<tr><td class="right-align">';
+            html += '<tr id="';
+            html += htmlEscape(countedString.string);
+            html += '"><td class="right-align">';
             html += countedString.count;
             html += '</td><td class="raw">';
 
+            // Link to the thread currently executing this method
             if (countedString.count === 1) {
                 html += '<a class="internal-link" href="#' + countedString.sources[0].tid + '">';
             }
