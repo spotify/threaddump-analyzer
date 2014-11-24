@@ -36,6 +36,14 @@
     <p>This page is client-side only, and no data will leave your
       computer when you click Analyze.</p>
 
+    <div id="RUNNING_DIV" style="display: none;">
+      <hr/>
+      <h2>Top Running Methods</h2>
+      <table id="RUNNING"
+             summary="Top methods from all threads that are running">
+      </table>
+    </div>
+
     <div id="OUTPUT_DIV" style="display: none;">
       <hr/>
       <div id="OUTPUT"></div>
@@ -44,7 +52,7 @@
 
     <div id="IGNORED_DIV" style="display: none;">
       <hr/>
-      <h2>Ignored input lines</h2>
+      <h2>Ignored Input Lines</h2>
       <p><a href="https://github.com/spotify/threaddump-analyzer/blob/gh-pages/README.md#todo">
           See TODO list for which of these there are plans for already:</a></p>
       <table id="IGNORED" class="ignored"

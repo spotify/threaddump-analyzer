@@ -82,28 +82,28 @@ QUnit.test( "sleeping thread", function(assert) {
 });
 
 // Our definition of a "running" thread is one that is both in
-// Thread.State running and free text state running.
+// Thread.State RUNNABLE and free text state "runnable".
 QUnit.test("thread.running", function(assert) {
     var thread;
 
-    thread = new Thread('"thread" prio=10 running');
-    thread.addStackLine("	java.lang.Thread.State: RUNNING");
+    thread = new Thread('"thread" prio=10 runnable');
+    thread.addStackLine("	java.lang.Thread.State: RUNNABLE");
     assert.ok(thread.running);
 
-    thread = new Thread('"thread" prio=10 not running');
-    thread.addStackLine("	java.lang.Thread.State: RUNNING");
+    thread = new Thread('"thread" prio=10 not runnable');
+    thread.addStackLine("	java.lang.Thread.State: RUNNABLE");
     assert.ok(!thread.running);
 
-    thread = new Thread('"thread" prio=10 running');
+    thread = new Thread('"thread" prio=10 runnable');
     thread.addStackLine("	java.lang.Thread.State: TERMINATED");
     assert.ok(!thread.running);
 
-    thread = new Thread('"thread" prio=10 not running');
+    thread = new Thread('"thread" prio=10 not runnable');
     thread.addStackLine("	java.lang.Thread.State: TERMINATED");
     assert.ok(!thread.running);
 
     // Thread without Thread.State
-    thread = new Thread('"thread" prio=10 running');
+    thread = new Thread('"thread" prio=10 runnable');
     assert.ok(!thread.running);
 });
 
@@ -239,9 +239,13 @@ QUnit.test("extract regex from string", function(assert) {
 QUnit.test("identical string counter", function(assert) {
     var counter = new StringCounter();
     assert.deepEqual(counter.getStrings().length, 0);
+    assert.equal(counter.toString(), "");
 
     counter.addString("hej");
     assert.deepEqual(counter.getStrings(), [{count:1, string:"hej"}]);
+    assert.deepEqual(counter.toString().split('\n'), [
+        "1 hej"
+    ]);
 
     counter.addString("nej");
     counter.addString("nej");
@@ -250,6 +254,10 @@ QUnit.test("identical string counter", function(assert) {
                          {count:2, string:"nej"},
                          {count:1, string:"hej"}
                      ]);
+    assert.deepEqual(counter.toString().split('\n'), [
+        "2 nej",
+        "1 hej"
+    ]);
 
     counter.addString("hej");
     counter.addString("hej");
@@ -258,4 +266,8 @@ QUnit.test("identical string counter", function(assert) {
                          {count:3, string:"hej"},
                          {count:2, string:"nej"}
                      ]);
+    assert.deepEqual(counter.toString().split('\n'), [
+        "3 hej",
+        "2 nej"
+    ]);
 });
