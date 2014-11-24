@@ -141,7 +141,7 @@ QUnit.test( "analyze stackless thread", function(assert) {
     var analysisResult = analyzer._toThreadsAndStacks();
     assert.deepEqual(analysisResult, [{
         threads: [thread],
-        stackFrames: ["	<empty stack>"]
+        stackFrames: []
     }]);
 });
 
@@ -158,7 +158,7 @@ QUnit.test( "analyze single thread", function(assert) {
     var analysisResult = analyzer._toThreadsAndStacks();
     assert.deepEqual(analysisResult, [{
         threads: [thread],
-        stackFrames: ["	at fluff"]
+        stackFrames: ["fluff"]
     }]);
 });
 
@@ -185,7 +185,7 @@ QUnit.test( "analyze two threads with same stack", function(assert) {
     assert.deepEqual(analysisResult, [{
         // Make sure the aardvark comes before the zebra
         threads: [aardvark, zebra],
-        stackFrames: ["	at fluff"]
+        stackFrames: ["fluff"]
     }]);
 });
 

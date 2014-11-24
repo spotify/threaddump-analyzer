@@ -70,6 +70,18 @@ function _extract(regex, string) {
     return {value: match[1], shorterString: string.replace(regex, "")};
 }
 
+function decorateStackFrames(stackFrames) {
+    if (stackFrames.length === 0) {
+        return [ EMPTY_STACK ];
+    }
+
+    var decorated = [];
+    for (var i = 0; i < stackFrames.length; i++) {
+        decorated.push('	at ' + stackFrames[i]);
+    }
+    return decorated;
+}
+
 function Thread(line) {
     this.toString = function() {
         return this.toHeaderString() + '\n' + this.toStackString();
@@ -81,14 +93,17 @@ function Thread(line) {
 
     // Return true if the line was understood, false otherwise
     this.addStackLine = function(line) {
-        var FRAME = /^\s+at .*/;
-        if (line.match(FRAME) !== null) {
-            this.frames.push(line);
+        var match;
+
+        var FRAME = /^\s+at (.*)/;
+        match = line.match(FRAME);
+        if (match !== null) {
+            this.frames.push(match[1]);
             return true;
         }
 
         var THREAD_STATE = /^\s*java.lang.Thread.State: (.*)/;
-        var match = line.match(THREAD_STATE);
+        match = line.match(THREAD_STATE);
         if (match !== null) {
             this.threadState = match[1];
             this.running = (this.threadState === "RUNNABLE") && (this.state === 'runnable');
@@ -99,11 +114,7 @@ function Thread(line) {
     };
 
     this.toStackString = function() {
-        if (this.frames.length === 0) {
-            return EMPTY_STACK;
-        }
-
-        return this.frames.join('\n');
+        return decorateStackFrames(this.frames).join('\n');
     };
 
     this.toHeaderString = function() {
@@ -333,7 +344,7 @@ function Analyzer(text) {
 
             threadsAndStacks.push({
                 threads: threads,
-                stackFrames: currentStack.split('\n')
+                stackFrames: threads[0].frames
             });
         }
 
@@ -347,7 +358,7 @@ function Analyzer(text) {
         asString += "" + this.threads.length + " threads found:\n";
         for (var i = 0; i < threadsAndStacks.length; i++) {
             var currentThreadsAndStack = threadsAndStacks[i];
-            var stackFrames = currentThreadsAndStack.stackFrames;
+            var stackFrames = decorateStackFrames(currentThreadsAndStack.stackFrames);
             var threads = currentThreadsAndStack.threads;
 
             asString += '\n';
@@ -379,7 +390,7 @@ function Analyzer(text) {
         asHtml += '<h2>' + this.threads.length + " threads found</h2>\n";
         for (var i = 0; i < threadsAndStacks.length; i++) {
             var currentThreadsAndStack = threadsAndStacks[i];
-            var stackFrames = currentThreadsAndStack.stackFrames;
+            var stackFrames = decorateStackFrames(currentThreadsAndStack.stackFrames);
             var threads = currentThreadsAndStack.threads;
 
             asHtml += '<div class="threadgroup">\n';
