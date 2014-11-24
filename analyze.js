@@ -163,21 +163,23 @@ function Thread(line) {
 }
 
 function StringCounter() {
-    this.addString = function(string) {
+    this.addString = function(string, source) {
         if (!this._stringsToCounts.hasOwnProperty(string)) {
-            this._stringsToCounts[string] = 0;
+            this._stringsToCounts[string] = {count: 0, sources: []};
         }
-        this._stringsToCounts[string]++;
+        this._stringsToCounts[string].count++;
+        this._stringsToCounts[string].sources.push(source);
     };
 
     // Returns all individual string and their counts as
-    // {count:5, string:"foo"} hashes.
+    // {count:5, string:"foo", sources: [...]} hashes.
     this.getStrings = function() {
         var returnMe = [];
 
         for (var string in this._stringsToCounts) {
-            var count = this._stringsToCounts[string];
-            returnMe.push({count:count, string:string});
+            var count = this._stringsToCounts[string].count;
+            var sources = this._stringsToCounts[string].sources;
+            returnMe.push({count:count, string:string, sources:sources});
         }
 
         returnMe.sort(function(a, b) {
@@ -420,7 +422,26 @@ function Analyzer(text) {
     };
 
     this.toRunningHtml = function() {
-        return this._getCountedRunningMethods().toHtml();
+        var html = "";
+        var countedStrings = this._getCountedRunningMethods().getStrings();
+        for (var i = 0; i < countedStrings.length; i++) {
+            var countedString = countedStrings[i];
+
+            html += '<tr><td class="right-align">';
+            html += countedString.count;
+            html += '</td><td class="raw">';
+
+            if (countedString.count === 1) {
+                html += '<a class="internal-link" href="#' + countedString.sources[0].tid + '">';
+            }
+            html += htmlEscape(countedString.string);
+            if (countedString.count === 1) {
+                html += '</a>';
+            }
+
+            html += "</td></tr>\n";
+        }
+        return html;
     };
 
     this._getCountedRunningMethods = function() {
@@ -436,7 +457,7 @@ function Analyzer(text) {
             }
 
             var runningMethod = thread.frames[0].replace(/^\s+at\s+/, '');
-            countedRunning.addString(runningMethod);
+            countedRunning.addString(runningMethod, thread);
         }
 
         return countedRunning;

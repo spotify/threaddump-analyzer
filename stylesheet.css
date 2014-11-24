@@ -18,3 +18,18 @@
 .threadcount {
     font-weight: bold;
 }
+
+a.internal-link:link {
+    color: blue;
+    text-decoration: none;
+}
+
+a.internal-link:visited {
+    color: blue;
+    text-decoration: none;
+}
+
+a.internal-link:hover {
+    color: blue;
+    text-decoration: underline;
+}

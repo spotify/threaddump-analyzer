@@ -242,7 +242,7 @@ QUnit.test("identical string counter", function(assert) {
     assert.equal(counter.toString(), "");
 
     counter.addString("hej");
-    assert.deepEqual(counter.getStrings(), [{count:1, string:"hej"}]);
+    assert.deepEqual(counter.getStrings(), [{count:1, string:"hej", sources: [undefined]}]);
     assert.deepEqual(counter.toString().split('\n'), [
         "1 hej"
     ]);
@@ -251,20 +251,20 @@ QUnit.test("identical string counter", function(assert) {
     counter.addString("nej");
     assert.deepEqual(counter.getStrings(),
                      [
-                         {count:2, string:"nej"},
-                         {count:1, string:"hej"}
+                         {count:2, string:"nej", sources:[undefined, undefined]},
+                         {count:1, string:"hej", sources:[undefined]}
                      ]);
     assert.deepEqual(counter.toString().split('\n'), [
         "2 nej",
         "1 hej"
     ]);
 
-    counter.addString("hej");
-    counter.addString("hej");
+    counter.addString("hej", "foo");
+    counter.addString("hej", "bar");
     assert.deepEqual(counter.getStrings(),
                      [
-                         {count:3, string:"hej"},
-                         {count:2, string:"nej"}
+                         {count:3, string:"hej", sources:[undefined, "foo", "bar"]},
+                         {count:2, string:"nej", sources:[undefined, undefined]}
                      ]);
     assert.deepEqual(counter.toString().split('\n'), [
         "3 hej",

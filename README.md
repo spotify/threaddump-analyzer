@@ -15,8 +15,9 @@ The Java Thread Dump Analyzer is licensed under
 the copyright belongs to Spotify AB.
 
 ## TODO
-* For top running methods belonging to only one thread, make a link
-from the top list method to the thread executing it.
+* For threads with a method in the top running methods at the start of
+the page, make a link from the top frame of the full stack back up to
+the Top Running Methods section.
 
 * Say "... threads with no stack" for threads with no stack, rather
   than "... threads with this stack".
@@ -128,3 +129,6 @@ obvious if we need to add something.
   see this from the analysis.
 
 * Add a Clear button next to the Analyze button.
+
+* For top running methods belonging to only one thread, make a link
+from the top list method to the thread executing it.
