@@ -30,6 +30,11 @@ function analyzeTextfield() { // jshint ignore: line
 
     var running = analyzer.toRunningHtml();
     setHtml("RUNNING", running);
+
+    var runningHeader = document.getElementById("RUNNING_HEADER");
+    runningHeader.innerHTML = "Top Methods From " +
+        analyzer.countedRunningMethods.length +
+        " Running Threads";
 }
 
 // This method is called from HTML so we need to tell JSHint it's not unused
@@ -431,12 +436,12 @@ function Analyzer(text) {
     };
 
     this.toRunningString = function() {
-        return this._getCountedRunningMethods().toString();
+        return this.countedRunningMethods.toString();
     };
 
     this.toRunningHtml = function() {
         var html = "";
-        var countedStrings = this._getCountedRunningMethods().getStrings();
+        var countedStrings = this.countedRunningMethods.getStrings();
         for (var i = 0; i < countedStrings.length; i++) {
             var countedString = countedStrings[i];
 
@@ -460,7 +465,7 @@ function Analyzer(text) {
         return html;
     };
 
-    this._getCountedRunningMethods = function() {
+    this._countRunningMethods = function() {
         var countedRunning = new StringCounter();
         for (var i = 0; i < this.threads.length; i++) {
             var thread = this.threads[i];
@@ -484,4 +489,5 @@ function Analyzer(text) {
     this._currentThread = null;
 
     this._analyze(text);
+    this.countedRunningMethods = this._countRunningMethods();
 }
