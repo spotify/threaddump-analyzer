@@ -180,6 +180,7 @@ function StringCounter() {
         }
         this._stringsToCounts[string].count++;
         this._stringsToCounts[string].sources.push(source);
+        this.length++;
     };
 
     // Returns all individual string and their counts as
@@ -231,6 +232,7 @@ function StringCounter() {
     };
 
     this._stringsToCounts = {};
+    this.length = 0;
 }
 
 // Create an analyzer object

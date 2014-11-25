@@ -240,12 +240,14 @@ QUnit.test("identical string counter", function(assert) {
     var counter = new StringCounter();
     assert.deepEqual(counter.getStrings().length, 0);
     assert.equal(counter.toString(), "");
+    assert.equal(counter.length, 0);
 
     counter.addString("hej");
     assert.deepEqual(counter.getStrings(), [{count:1, string:"hej", sources: [undefined]}]);
     assert.deepEqual(counter.toString().split('\n'), [
         "1 hej"
     ]);
+    assert.equal(counter.length, 1);
 
     counter.addString("nej");
     counter.addString("nej");
@@ -258,6 +260,7 @@ QUnit.test("identical string counter", function(assert) {
         "2 nej",
         "1 hej"
     ]);
+    assert.equal(counter.length, 3);
 
     counter.addString("hej", "foo");
     counter.addString("hej", "bar");
@@ -270,4 +273,5 @@ QUnit.test("identical string counter", function(assert) {
         "3 hej",
         "2 nej"
     ]);
+    assert.equal(counter.length, 5);
 });
