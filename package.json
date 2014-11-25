@@ -17,11 +17,10 @@
         "thread dump"
     ],
     "devDependencies": {
-        "gulp-qunit": "~0.2.1",
+        "gulp-qunit": "1.0.0",
         "gulp-jshint": "1.9.0",
-        "gulp-util": "~2.2.14",
         "gulp-htmlhint": "0.0.9",
         "gulp-csslint": "0.1.5",
-        "gulp": "~3.5.1"
+        "gulp": "3.8.10"
     }
 }
