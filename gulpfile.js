@@ -23,7 +23,7 @@ var htmlhint = require("gulp-htmlhint");
 var csslint = require("gulp-csslint");
 
 gulp.task('test', function() {
-    return gulp.src('file://test.html').pipe(qunit());
+    return gulp.src('./test.html').pipe(qunit());
 });
 
 gulp.task('jslint', function() {
