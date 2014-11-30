@@ -19,6 +19,7 @@ limitations under the License.
 /* global _extract */
 /* global Analyzer */
 /* global document */
+/* global stringToId */
 /* global StringCounter */
 
 QUnit.test( "thread header 1", function(assert) {
@@ -274,4 +275,8 @@ QUnit.test("identical string counter", function(assert) {
         "2 nej"
     ]);
     assert.equal(counter.length, 5);
+});
+
+QUnit.test("string to id", function(assert) {
+    assert.equal(stringToId("\"<>'#"), "%22%3C%3E%27%23");
 });

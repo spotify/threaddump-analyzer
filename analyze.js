@@ -53,6 +53,10 @@ function htmlEscape(unescaped) {
     return escaped;
 }
 
+function stringToId(string) {
+    return encodeURIComponent(string).replace("'", "%27");
+}
+
 function setHtml(name, html) {
     var destination = document.getElementById(name);
     destination.innerHTML = html;
@@ -446,7 +450,7 @@ function Analyzer(text) {
             var countedString = countedStrings[i];
 
             html += '<tr id="';
-            html += htmlEscape(countedString.string);
+            html += stringToId(countedString.string);
             html += '"><td class="right-align">';
             html += countedString.count;
             html += '</td><td class="raw">';
