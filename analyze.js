@@ -390,6 +390,16 @@ function Analyzer(text) {
         return asString;
     };
 
+    this._stackToHtml = function(rawStackFrames) {
+        var asHtml = "";
+        var stackFrames = decorateStackFrames(rawStackFrames);
+        for (var k = 0; k < stackFrames.length; k++) {
+            asHtml += '<div class="raw">' + htmlEscape(stackFrames[k]) + "</div>\n";
+        }
+
+        return asHtml;
+    };
+
     this.toHtml = function() {
         if (this.threads.length === 0) {
             return "";
@@ -401,7 +411,6 @@ function Analyzer(text) {
         asHtml += '<h2>' + this.threads.length + " threads found</h2>\n";
         for (var i = 0; i < threadsAndStacks.length; i++) {
             var currentThreadsAndStack = threadsAndStacks[i];
-            var stackFrames = decorateStackFrames(currentThreadsAndStack.stackFrames);
             var threads = currentThreadsAndStack.threads;
 
             asHtml += '<div class="threadgroup">\n';
@@ -422,9 +431,8 @@ function Analyzer(text) {
                     '</div>\n';
             }
 
-            for (var k = 0; k < stackFrames.length; k++) {
-                asHtml += '<div class="raw">' + htmlEscape(stackFrames[k]) + "</div>\n";
-            }
+            asHtml += this._stackToHtml(currentThreadsAndStack.stackFrames);
+
             asHtml += '</div>\n';
         }
 

@@ -280,3 +280,26 @@ QUnit.test("identical string counter", function(assert) {
 QUnit.test("string to id", function(assert) {
     assert.equal(stringToId("\"<>'#"), "%22%3C%3E%27%23");
 });
+
+QUnit.test( "Analyzer.stackToHtml()", function(assert) {
+    var threadDump = [
+        '"running thread" prio=10 tid=0x00007f16a118e000 nid=0x6e5a runnable [0x00007f18b91d0000]',
+        '	java.lang.Thread.State: RUNNABLE',
+        '	at top_frame',
+        '	at second_frame',
+        '',
+        '"VM Thread" prio=9 tid=105047000 nid=0x111901000 runnable',
+    ].join('\n');
+    var analyzer = new Analyzer(threadDump);
+
+    assert.deepEqual(analyzer._stackToHtml(['top_frame', 'second_frame']).split('\n'), [
+        '<div class="raw">	at top_frame</div>',
+        '<div class="raw">	at second_frame</div>',
+        '',
+    ]);
+
+    assert.deepEqual(analyzer._stackToHtml([]).split('\n'), [
+        '<div class="raw">	&lt;empty stack&gt;</div>',
+        '',
+    ]);
+});
