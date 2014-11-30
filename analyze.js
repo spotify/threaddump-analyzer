@@ -394,19 +394,22 @@ function Analyzer(text) {
         return asString;
     };
 
-    this._stackToHtml = function(rawStackFrames) {
+    this._stackToHtml = function(stackFrames) {
+        if (stackFrames.length === 0) {
+            return '<div class="raw">' + htmlEscape(EMPTY_STACK) + '</div>\n';
+        }
+
         var asHtml = "";
-        var stackFrames = decorateStackFrames(rawStackFrames);
+        var href;
         for (var i = 0; i < stackFrames.length; i++) {
-            var href = undefined;
-            if (i < rawStackFrames.length) {
-                var rawStackFrame = rawStackFrames[i];
-                if (this.countedRunningMethods.hasString(rawStackFrame)) {
-                    href = "#" + stringToId(rawStackFrame);
-                }
+            href = undefined;
+            var stackFrame = stackFrames[i];
+
+            if (this.countedRunningMethods.hasString(stackFrame)) {
+                href = "#" + stringToId(stackFrame);
             }
 
-            asHtml += '<div class="raw">';
+            asHtml += '<div class="raw">	at ';
 
             if (href) {
                 asHtml += '<a class="internal" href="' + href + '">';
