@@ -275,6 +275,10 @@ QUnit.test("identical string counter", function(assert) {
         "2 nej"
     ]);
     assert.equal(counter.length, 5);
+
+    assert.ok(counter.hasString('hej'));
+    assert.ok(counter.hasString('nej'));
+    assert.ok(!counter.hasString('gris'));
 });
 
 QUnit.test("string to id", function(assert) {

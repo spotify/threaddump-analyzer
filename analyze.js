@@ -192,6 +192,10 @@ function StringCounter() {
         this.length++;
     };
 
+    this.hasString = function(string) {
+        return this._stringsToCounts.hasOwnProperty(string);
+    };
+
     // Returns all individual string and their counts as
     // {count:5, string:"foo", sources: [...]} hashes.
     this.getStrings = function() {
