@@ -397,8 +397,26 @@ function Analyzer(text) {
     this._stackToHtml = function(rawStackFrames) {
         var asHtml = "";
         var stackFrames = decorateStackFrames(rawStackFrames);
-        for (var k = 0; k < stackFrames.length; k++) {
-            asHtml += '<div class="raw">' + htmlEscape(stackFrames[k]) + "</div>\n";
+        for (var i = 0; i < stackFrames.length; i++) {
+            var href = undefined;
+            if (i < rawStackFrames.length) {
+                var rawStackFrame = rawStackFrames[i];
+                if (this.countedRunningMethods.hasString(rawStackFrame)) {
+                    href = "#" + stringToId(rawStackFrame);
+                }
+            }
+
+            asHtml += '<div class="raw">';
+
+            if (href) {
+                asHtml += '<a class="internal" href="' + href + '">';
+            }
+            asHtml += htmlEscape(stackFrames[i]);
+            if (href) {
+                asHtml += '</a>';
+            }
+
+            asHtml += "</div>\n";
         }
 
         return asHtml;
@@ -469,7 +487,7 @@ function Analyzer(text) {
 
             // Link to the thread currently executing this method
             if (countedString.count === 1) {
-                html += '<a class="internal-link" href="#' + countedString.sources[0].tid + '">';
+                html += '<a class="internal" href="#' + countedString.sources[0].tid + '">';
             }
             html += htmlEscape(countedString.string);
             if (countedString.count === 1) {

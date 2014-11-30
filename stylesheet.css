@@ -19,17 +19,17 @@
     font-weight: bold;
 }
 
-a.internal-link:link {
+a.internal:link {
     color: blue;
     text-decoration: none;
 }
 
-a.internal-link:visited {
+a.internal:visited {
     color: blue;
     text-decoration: none;
 }
 
-a.internal-link:hover {
+a.internal:hover {
     color: blue;
     text-decoration: underline;
 }

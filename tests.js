@@ -297,7 +297,7 @@ QUnit.test( "Analyzer.stackToHtml()", function(assert) {
     var analyzer = new Analyzer(threadDump);
 
     assert.deepEqual(analyzer._stackToHtml(['top_frame', 'second_frame']).split('\n'), [
-        '<div class="raw">	at top_frame</div>',
+        '<div class="raw"><a class="internal" href="#top_frame">	at top_frame</a></div>',
         '<div class="raw">	at second_frame</div>',
         '',
     ]);
