@@ -15,9 +15,6 @@ The Java Thread Dump Analyzer is licensed under
 the copyright belongs to Spotify AB.
 
 ## TODO
-* Say "... threads with no stack" for threads with no stack, rather
-  than "... threads with this stack".
-
 * Make the Thread class parse held locks, waited-for locks and
 waited-for condition variables from the thread dump.
 
@@ -27,6 +24,19 @@ waited-for condition variables from the thread dump.
   references should be clickable. And there should be clickable links
   from each thread in the thread list to whatever synchronization
   thingie it is involved with.
+
+* In the Top Running Methods list, list thread names per top method
+and link them all to the stack traces list.
+
+* Move unit test data from test.html into iframes of test.html and put
+  each unit test data block in its own file, referenced from
+  test.html.
+
+* Change toString test methods into toHtml test methods and remove the
+corresponding toString methods from the source code.
+
+* Say "... threads with no stack" for threads with no stack, rather
+  than "... threads with this stack".
 
 * If a thread is waiting for another thread to release a lock, make
 sure there's a clickable reference from the waiter to the holder.
