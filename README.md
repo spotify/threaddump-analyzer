@@ -28,10 +28,6 @@ waited-for condition variables from the thread dump.
 * In the Top Running Methods list, list thread names per top method
 and link them all to the stack traces list.
 
-* Move unit test data from test.html into iframes of test.html and put
-  each unit test data block in its own file, referenced from
-  test.html.
-
 * Change toString test methods into toHtml test methods and remove the
 corresponding toString methods from the source code.
 
@@ -44,7 +40,8 @@ sure there's a clickable reference from the waiter to the holder.
 * Detect deadlocks and display deadlock information prominently at the
 top if detected.
 
-* Support uploading thread dumps from the local file system.
+* Support uploading thread dumps from the local file system:
+<http://www.html5rocks.com/en/tutorials/file/dndfiles/>
 
 * Support parsing gzipped thread dumps.
 
@@ -142,3 +139,8 @@ from the top list method to the thread executing it.
 * For threads with a method in the top running methods at the start of
 the page, make a link from the top frame of the full stack back up to
 the Top Running Methods section.
+
+* N/A: Accessing iframes isn't possible because of the Javascript
+  security model: Move unit test data from test.html into iframes of
+  test.html and put each unit test data block in its own file,
+  referenced from test.html.
