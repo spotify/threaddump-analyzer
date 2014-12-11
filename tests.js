@@ -192,6 +192,51 @@ QUnit.test( "analyze waiting thread", function(assert) {
     assert.equals(thread.synchronizerClass('47114712gris'), null);
 });
 
+QUnit.test( "analyze thread holding locks", function(assert) {
+    var threadDump = [
+        '"ApplicationImpl pooled thread 8" daemon prio=4 tid=10d96d000 nid=0x11e68a000 runnable [11e689000]',
+        '   java.lang.Thread.State: RUNNABLE',
+        '	at sun.nio.ch.KQueueArrayWrapper.kevent0(Native Method)',
+        '	at sun.nio.ch.KQueueArrayWrapper.poll(KQueueArrayWrapper.java:136)',
+        '	at sun.nio.ch.KQueueSelectorImpl.doSelect(KQueueSelectorImpl.java:69)',
+        '	at sun.nio.ch.SelectorImpl.lockAndDoSelect(SelectorImpl.java:69)',
+        '	- locked <7c37ef220> (a io.netty.channel.nio.SelectedSelectionKeySet)',
+        '	- locked <7c392fac0> (a java.util.Collections$UnmodifiableSet)',
+        '	- locked <7c37f5b88> (a sun.nio.ch.KQueueSelectorImpl)',
+        '	at sun.nio.ch.SelectorImpl.select(SelectorImpl.java:80)',
+        '	at io.netty.channel.nio.NioEventLoop.select(NioEventLoop.java:618)',
+        '	at io.netty.channel.nio.NioEventLoop.run(NioEventLoop.java:306)',
+        '	at io.netty.util.concurrent.SingleThreadEventExecutor$5.run(SingleThreadEventExecutor.java:824)',
+        '	at com.intellij.openapi.application.impl.ApplicationImpl$8.run(ApplicationImpl.java:419)',
+        '	at java.util.concurrent.Executors$RunnableAdapter.call(Executors.java:439)',
+        '	at java.util.concurrent.FutureTask$Sync.innerRun(FutureTask.java:303)',
+        '	at java.util.concurrent.FutureTask.run(FutureTask.java:138)',
+        '	at java.util.concurrent.ThreadPoolExecutor$Worker.runTask(ThreadPoolExecutor.java:895)',
+        '	at java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:918)',
+        '	at java.lang.Thread.run(Thread.java:695)',
+        '	at com.intellij.openapi.application.impl.ApplicationImpl$1$1.run(ApplicationImpl.java:149)',
+        '',
+        '   Locked ownable synchronizers:',
+        '	- <7c393f190> (a java.util.concurrent.locks.ReentrantLock$NonfairSync)',
+    ].join('\n');
+    var analyzer = new Analyzer(threadDump);
+    var threads = analyzer.threads;
+    assert.equal(threads.length, 1);
+    var thread = threads[0];
+
+    assert.equals(thread.wantNotificationOn, null);
+    assert.equals(thread.wantToAcquire, null);
+
+    var locksHeld = [ '7c37ef220', '7c392fac0', '7c37f5b88', '7c393f190' ];
+    assert.deepEquals(thread.locksHeld, locksHeld);
+
+    assert.equals(thread.synchronizerClass('7c37ef220'), 'io.netty.channel.nio.SelectedSelectionKeySet');
+    assert.equals(thread.synchronizerClass('7c392fac0'), 'java.util.Collections$UnmodifiableSet');
+    assert.equals(thread.synchronizerClass('7c37f5b88'), 'sun.nio.ch.KQueueSelectorImpl');
+    assert.equals(thread.synchronizerClass('7c393f190'), 'java.util.concurrent.locks.ReentrantLock$NonfairSync');
+    assert.equals(thread.synchronizerClass('47114712gris'), null);
+});
+
 QUnit.test( "analyze two threads with same stack", function(assert) {
     // Thread dump with zebra before aardvark
     var threadDump = [
