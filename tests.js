@@ -163,6 +163,35 @@ QUnit.test( "analyze single thread", function(assert) {
     }]);
 });
 
+QUnit.test( "analyze waiting thread", function(assert) {
+    var threadDump = [
+        '"Image Fetcher 2" daemon prio=8 tid=11b885800 nid=0x11e78d000 in Object.wait() [11e78c000]',
+        '   java.lang.Thread.State: TIMED_WAITING (on object monitor)',
+        '	at java.lang.Object.wait(Native Method)',
+        '	- waiting on <7c135ea90> (a java.util.Vector)',
+        '	at sun.awt.image.ImageFetcher.nextImage(ImageFetcher.java:114)',
+        '	- locked <7c135ea90> (a java.util.Vector)',
+        '	at sun.awt.image.ImageFetcher.fetchloop(ImageFetcher.java:167)',
+        '	at sun.awt.image.ImageFetcher.run(ImageFetcher.java:136)',
+        '',
+        '   Locked ownable synchronizers:',
+        '	- None',
+    ].join('\n');
+    var analyzer = new Analyzer(threadDump);
+    var threads = analyzer.threads;
+    assert.equal(threads.length, 1);
+    var thread = threads[0];
+
+    assert.equals(thread.wantNotificationOn, '7c135ea90');
+    assert.equals(thread.wantToAcquire, null);
+
+    var locksHeld = [ /* Lock is released while synchronizing */ ];
+    assert.deepEquals(thread.locksHeld, locksHeld);
+
+    assert.equals(thread.synchronizerClass('7c135ea90'), 'java.util.Vector');
+    assert.equals(thread.synchronizerClass('47114712gris'), null);
+});
+
 QUnit.test( "analyze two threads with same stack", function(assert) {
     // Thread dump with zebra before aardvark
     var threadDump = [
