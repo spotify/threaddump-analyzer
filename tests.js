@@ -163,7 +163,7 @@ QUnit.test( "analyze single thread", function(assert) {
     }]);
 });
 
-QUnit.test( "analyze waiting thread", function(assert) {
+QUnit.test( "analyze thread waiting for notification", function(assert) {
     var threadDump = [
         '"Image Fetcher 2" daemon prio=8 tid=11b885800 nid=0x11e78d000 in Object.wait() [11e78c000]',
         '   java.lang.Thread.State: TIMED_WAITING (on object monitor)',
@@ -189,6 +189,40 @@ QUnit.test( "analyze waiting thread", function(assert) {
     assert.deepEquals(thread.locksHeld, locksHeld);
 
     assert.equals(thread.synchronizerClass('7c135ea90'), 'java.util.Vector');
+    assert.equals(thread.synchronizerClass('47114712gris'), null);
+});
+
+QUnit.test( "analyze thread waiting for lock", function(assert) {
+    var threadDump = [
+        '"Animations" daemon prio=5 tid=11bad3000 nid=0x11dbcf000 waiting on condition [11dbce000]',
+        '   java.lang.Thread.State: WAITING (parking)',
+        '	at sun.misc.Unsafe.park(Native Method)',
+        '	- parking to wait for  <7c2cd7dd0> (a java.util.concurrent.locks.AbstractQueuedSynchronizer$ConditionObject)',
+        '	at java.util.concurrent.locks.LockSupport.park(LockSupport.java:156)',
+        '	at java.util.concurrent.locks.AbstractQueuedSynchronizer$ConditionObject.await(AbstractQueuedSynchronizer.java:1987)',
+        '	at java.util.concurrent.DelayQueue.take(DelayQueue.java:160)',
+        '	at java.util.concurrent.ScheduledThreadPoolExecutor$DelayedWorkQueue.take(ScheduledThreadPoolExecutor.java:609)',
+        '	at java.util.concurrent.ScheduledThreadPoolExecutor$DelayedWorkQueue.take(ScheduledThreadPoolExecutor.java:602)',
+        '	at java.util.concurrent.ThreadPoolExecutor.getTask(ThreadPoolExecutor.java:957)',
+        '	at java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:917)',
+        '	at java.lang.Thread.run(Thread.java:695)',
+        '',
+        '   Locked ownable synchronizers:',
+        '	- None',
+    ].join('\n');
+
+    var analyzer = new Analyzer(threadDump);
+    var threads = analyzer.threads;
+    assert.equal(threads.length, 1);
+    var thread = threads[0];
+
+    assert.equals(thread.wantNotificationOn, null);
+    assert.equals(thread.wantToAcquire, '7c2cd7dd0');
+
+    var locksHeld = [ /* None */ ];
+    assert.deepEquals(thread.locksHeld, locksHeld);
+
+    assert.equals(thread.synchronizerClass('7c2cd7dd0'), 'java.util.concurrent.locks.AbstractQueuedSynchronizer$ConditionObject');
     assert.equals(thread.synchronizerClass('47114712gris'), null);
 });
 
