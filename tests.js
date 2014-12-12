@@ -182,14 +182,14 @@ QUnit.test( "analyze thread waiting for notification", function(assert) {
     assert.equal(threads.length, 1);
     var thread = threads[0];
 
-    assert.equals(thread.wantNotificationOn, '7c135ea90');
-    assert.equals(thread.wantToAcquire, null);
+    assert.equal(thread.wantNotificationOn, '7c135ea90');
+    assert.equal(thread.wantToAcquire, null);
 
     var locksHeld = [ /* Lock is released while synchronizing */ ];
     assert.deepEquals(thread.locksHeld, locksHeld);
 
-    assert.equals(thread.synchronizerClass('7c135ea90'), 'java.util.Vector');
-    assert.equals(thread.synchronizerClass('47114712gris'), null);
+    assert.equal(thread.synchronizerClasses['7c135ea90'], 'java.util.Vector');
+    assert.equal(thread.synchronizerClasses['47114712gris'], null);
 });
 
 QUnit.test( "analyze thread waiting for lock", function(assert) {
@@ -216,14 +216,14 @@ QUnit.test( "analyze thread waiting for lock", function(assert) {
     assert.equal(threads.length, 1);
     var thread = threads[0];
 
-    assert.equals(thread.wantNotificationOn, null);
-    assert.equals(thread.wantToAcquire, '7c2cd7dd0');
+    assert.equal(thread.wantNotificationOn, null);
+    assert.equal(thread.wantToAcquire, '7c2cd7dd0');
 
     var locksHeld = [ /* None */ ];
     assert.deepEquals(thread.locksHeld, locksHeld);
 
-    assert.equals(thread.synchronizerClass('7c2cd7dd0'), 'java.util.concurrent.locks.AbstractQueuedSynchronizer$ConditionObject');
-    assert.equals(thread.synchronizerClass('47114712gris'), null);
+    assert.equal(thread.synchronizerClasses['7c2cd7dd0'], 'java.util.concurrent.locks.AbstractQueuedSynchronizer$ConditionObject');
+    assert.equal(thread.synchronizerClasses['47114712gris'], null);
 });
 
 QUnit.test( "analyze thread holding locks", function(assert) {
@@ -258,17 +258,17 @@ QUnit.test( "analyze thread holding locks", function(assert) {
     assert.equal(threads.length, 1);
     var thread = threads[0];
 
-    assert.equals(thread.wantNotificationOn, null);
-    assert.equals(thread.wantToAcquire, null);
+    assert.equal(thread.wantNotificationOn, null);
+    assert.equal(thread.wantToAcquire, null);
 
     var locksHeld = [ '7c37ef220', '7c392fac0', '7c37f5b88', '7c393f190' ];
     assert.deepEquals(thread.locksHeld, locksHeld);
 
-    assert.equals(thread.synchronizerClass('7c37ef220'), 'io.netty.channel.nio.SelectedSelectionKeySet');
-    assert.equals(thread.synchronizerClass('7c392fac0'), 'java.util.Collections$UnmodifiableSet');
-    assert.equals(thread.synchronizerClass('7c37f5b88'), 'sun.nio.ch.KQueueSelectorImpl');
-    assert.equals(thread.synchronizerClass('7c393f190'), 'java.util.concurrent.locks.ReentrantLock$NonfairSync');
-    assert.equals(thread.synchronizerClass('47114712gris'), null);
+    assert.equal(thread.synchronizerClasses['7c37ef220'], 'io.netty.channel.nio.SelectedSelectionKeySet');
+    assert.equal(thread.synchronizerClasses['7c392fac0'], 'java.util.Collections$UnmodifiableSet');
+    assert.equal(thread.synchronizerClasses['7c37f5b88'], 'sun.nio.ch.KQueueSelectorImpl');
+    assert.equal(thread.synchronizerClasses['7c393f190'], 'java.util.concurrent.locks.ReentrantLock$NonfairSync');
+    assert.equal(thread.synchronizerClasses['47114712gris'], null);
 });
 
 QUnit.test( "analyze two threads with same stack", function(assert) {
