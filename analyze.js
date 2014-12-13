@@ -119,6 +119,15 @@ function Thread(line) {
             return true;
         }
 
+        var SYNCHRONIZATION_STATUS = /^\s+- (.*) <([x0-9a-f]+)> \(a (.*)\)/;
+        match = line.match(SYNCHRONIZATION_STATUS);
+        if (match !== null) {
+            var state = match[1];
+            var id = match[2];
+            var className = match[3];
+            this.synchronizerClasses[id] = className;
+        }
+
         return false;
     };
 
@@ -180,6 +189,10 @@ function Thread(line) {
     }
 
     this.frames = [];
+    this.wantNotificationOn = null;
+    this.wantToAcquire = null;
+    this.locksHeld = null;
+    this.synchronizerClasses = {};
 }
 
 function StringCounter() {
