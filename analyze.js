@@ -126,6 +126,15 @@ function Thread(line) {
             var id = match[2];
             var className = match[3];
             this.synchronizerClasses[id] = className;
+
+            switch (state) {
+            case "waiting on":
+                this.wantNotificationOn = id;
+                return true;
+
+            default:
+                return false;
+            }
         }
 
         return false;
