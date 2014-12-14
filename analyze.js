@@ -136,6 +136,10 @@ function Thread(line) {
                 this.wantToAcquire = id;
                 return true;
 
+            case "locked":
+                this.locksHeld.push(id);
+                return true;
+
             default:
                 return false;
             }
