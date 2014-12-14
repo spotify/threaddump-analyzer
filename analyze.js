@@ -200,7 +200,7 @@ function Thread(line) {
     this.frames = [];
     this.wantNotificationOn = null;
     this.wantToAcquire = null;
-    this.locksHeld = null;
+    this.locksHeld = [];
     this.synchronizerClasses = {};
 }
 
