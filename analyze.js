@@ -145,6 +145,16 @@ function Thread(line) {
             }
         }
 
+        var HELD_LOCK = /^\s+- <([x0-9a-f]+)> \(a (.*)\)/;
+        match = line.match(HELD_LOCK);
+        if (match !== null) {
+            var lockId = match[1];
+            var lockClassName = match[2];
+            this.synchronizerClasses[lockId] = lockClassName;
+            this.locksHeld.push(lockId);
+            return true;
+        }
+
         return false;
     };
 
