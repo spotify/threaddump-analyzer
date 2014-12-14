@@ -119,7 +119,7 @@ function Thread(line) {
             return true;
         }
 
-        var SYNCHRONIZATION_STATUS = /^\s+- (.*) <([x0-9a-f]+)> \(a (.*)\)/;
+        var SYNCHRONIZATION_STATUS = /^\s+- (.*?) +<([x0-9a-f]+)> \(a (.*)\)/;
         match = line.match(SYNCHRONIZATION_STATUS);
         if (match !== null) {
             var state = match[1];
@@ -130,6 +130,10 @@ function Thread(line) {
             switch (state) {
             case "waiting on":
                 this.wantNotificationOn = id;
+                return true;
+
+            case "parking to wait for":
+                this.wantToAcquire = id;
                 return true;
 
             default:
