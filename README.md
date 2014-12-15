@@ -25,6 +25,9 @@ waited-for condition variables from the thread dump.
   from each thread in the thread list to whatever synchronization
   thingie it is involved with.
 
+* Add a table of contents before the first section, making sure only
+the visible sections are in it.
+
 * In the Top Running Methods list, list thread names per top method
 and link them all to the stack traces list.
 

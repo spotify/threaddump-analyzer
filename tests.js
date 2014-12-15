@@ -192,7 +192,7 @@ QUnit.test( "analyze thread waiting for notification", function(assert) {
     assert.equal(thread.synchronizerClasses['47114712gris'], null);
 });
 
-QUnit.test( "analyze thread waiting for lock", function(assert) {
+QUnit.test( "analyze thread waiting for juc lock", function(assert) {
     var threadDump = [
         '"Animations" daemon prio=5 tid=11bad3000 nid=0x11dbcf000 waiting on condition [11dbce000]',
         '   java.lang.Thread.State: WAITING (parking)',
@@ -223,6 +223,34 @@ QUnit.test( "analyze thread waiting for lock", function(assert) {
     assert.deepEqual(thread.locksHeld, locksHeld);
 
     assert.equal(thread.synchronizerClasses['7c2cd7dd0'], 'java.util.concurrent.locks.AbstractQueuedSynchronizer$ConditionObject');
+    assert.equal(thread.synchronizerClasses['47114712gris'], null);
+});
+
+QUnit.test( "analyze thread waiting for traditional lock", function(assert) {
+    var threadDump = [
+        '"DB-Processor-14" daemon prio=5 tid=0x003edf98 nid=0xca waiting for monitor entry [0x000000000825f020]',
+        '   java.lang.Thread.State: BLOCKED (on object monitor)',
+        '	at beans.ConnectionPool.getConnection(ConnectionPool.java:102)',
+        '	- waiting to lock <0xe0375410> (a beans.ConnectionPool)',
+        '	at beans.cus.ServiceCnt.getTodayCount(ServiceCnt.java:111)',
+        '	at beans.cus.ServiceCnt.insertCount(ServiceCnt.java:43)',
+        '',
+        '   Locked ownable synchronizers:',
+        '	- None',
+    ].join('\n');
+
+    var analyzer = new Analyzer(threadDump);
+    var threads = analyzer.threads;
+    assert.equal(threads.length, 1);
+    var thread = threads[0];
+
+    assert.equal(thread.wantNotificationOn, null);
+    assert.equal(thread.wantToAcquire, '0xe0375410');
+
+    var locksHeld = [ /* None */ ];
+    assert.deepEqual(thread.locksHeld, locksHeld);
+
+    assert.equal(thread.synchronizerClasses['0xe0375410'], 'beans.ConnectionPool');
     assert.equal(thread.synchronizerClasses['47114712gris'], null);
 });
 
