@@ -136,6 +136,10 @@ function Thread(line) {
                 this.wantToAcquire = id;
                 return true;
 
+            case "waiting to lock":
+                this.wantToAcquire = id;
+                return true;
+
             case "locked":
                 if (this.wantNotificationOn === id) {
                     // Lock is released while waiting for the notification
