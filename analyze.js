@@ -159,6 +159,20 @@ function Thread(line) {
             return true;
         }
 
+        var LOCKED_OWNABLE_SYNCHRONIZERS = /^\s+Locked ownable synchronizers:/;
+        match = line.match(LOCKED_OWNABLE_SYNCHRONIZERS);
+        if (match !== null) {
+            // Ignore these lines
+            return true;
+        }
+
+        var NONE_HELD = /^\s+- None/;
+        match = line.match(NONE_HELD);
+        if (match !== null) {
+            // Ignore these lines
+            return true;
+        }
+
         return false;
     };
 
