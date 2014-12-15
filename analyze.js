@@ -137,6 +137,10 @@ function Thread(line) {
                 return true;
 
             case "locked":
+                if (this.wantNotificationOn === id) {
+                    // Lock is released while waiting for the notification
+                    return true;
+                }
                 this.locksHeld.push(id);
                 return true;
 
