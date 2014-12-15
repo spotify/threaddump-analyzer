@@ -101,7 +101,7 @@ function Thread(line) {
     };
 
     // Return true if the line was understood, false otherwise
-    this.addStackLine = function(line) {
+    this.addStackLine = function(line) { //jshint ignore:line
         var match;
 
         var FRAME = /^\s+at (.*)/;
