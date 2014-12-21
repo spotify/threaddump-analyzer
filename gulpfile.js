@@ -23,7 +23,8 @@ var htmlhint = require("gulp-htmlhint");
 var csslint = require("gulp-csslint");
 
 gulp.task('test', function() {
-    return gulp.src('./test.html').pipe(qunit());
+    return gulp.src('./test.html')
+        .pipe(qunit({'phantomjs-options': ['--ignore-ssl-errors=true']}));
 });
 
 gulp.task('jslint', function() {
