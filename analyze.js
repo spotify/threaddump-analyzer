@@ -595,6 +595,9 @@ function Analyzer(text) {
     };
 
     this._registerSynchronizer = function(registry, id, synchronizerClasses) {
+        if (id === null) {
+            return;
+        }
         if (registry[id] === undefined) {
             registry[id] = new Synchronizer(id, synchronizerClasses[id]);
         }
@@ -667,5 +670,5 @@ function Analyzer(text) {
     this._analyze(text);
     this.countedRunningMethods = this._countRunningMethods();
     this._synchronizerById = this._createSynchronizerById();
-    this.synchronizers = this._enumerateSynchronizers();
+    this._synchronizers = this._enumerateSynchronizers();
 }
