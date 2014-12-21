@@ -192,7 +192,7 @@ QUnit.test( "analyze thread waiting for notification", function(assert) {
     assert.equal(thread.synchronizerClasses['47114712gris'], null);
 });
 
-QUnit.test( "analyze thread waiting for juc lock", function(assert) {
+QUnit.test( "analyze thread waiting for java.util.concurrent lock", function(assert) {
     var threadDump = [
         '"Animations" daemon prio=5 tid=11bad3000 nid=0x11dbcf000 waiting on condition [11dbce000]',
         '   java.lang.Thread.State: WAITING (parking)',
