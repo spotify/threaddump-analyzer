@@ -31,6 +31,8 @@ function analyzeTextfield() { // jshint ignore: line
     var running = analyzer.toRunningHtml();
     setHtml("RUNNING", running);
 
+    // FIXME: Output synchronizers somewhere
+
     var runningHeader = document.getElementById("RUNNING_HEADER");
     runningHeader.innerHTML = "Top Methods From " +
         analyzer.countedRunningMethods.length +
@@ -310,6 +312,15 @@ function StringCounter() {
     this.length = 0;
 }
 
+function Synchronizer(id, className) {
+    this._id = id;
+    this._className = className;
+
+    this.notificationWaiters = [];
+    this.lockWaiters = [];
+    this.lockHolder = null;
+}
+
 // Create an analyzer object
 function Analyzer(text) {
     this._handleLine = function(line) {
@@ -583,10 +594,78 @@ function Analyzer(text) {
         return countedRunning;
     };
 
+    this._registerSynchronizer = function(registry, id, synchronizerClasses) {
+        if (registry[id] === undefined) {
+            registry[id] = new Synchronizer(id, synchronizerClasses[id]);
+        }
+    };
+
+    // Create a mapping from synchronizer ids to Synchronizer
+    // objects. Note that the Synchronizer objects won't get any cross
+    // references from this method; they are don by
+    // _enumerateSynchronizers() below.
+    this._createSynchronizerById = function() {
+        var returnMe = {};
+
+        for (var i = 0; i < this.threads.length; i++) {
+            var thread = this.threads[i];
+
+            this._registerSynchronizer(
+                returnMe, thread.wantNotificationOn, thread.synchronizerClasses);
+            this._registerSynchronizer(
+                returnMe, thread.wantToAcquire, thread.synchronizerClasses);
+
+            for (var j = 0; j < thread.locksHeld.length; j++) {
+                var lock = thread.locksHeld[j];
+                this._registerSynchronizer(
+                    returnMe, lock, thread.synchronizerClasses);
+            }
+        }
+
+        return returnMe;
+    };
+
+    // Create a properly cross-referenced array with all synchronizers
+    // in the thread dump
+    this._enumerateSynchronizers = function() {
+        for (var i = 0; i < this.threads.length; i++) {
+            var thread = this.threads[i];
+            var synchronizer;
+
+            if (thread.wantNotificationOn !== null) {
+                synchronizer = this._synchronizerById[thread.wantNotificationOn];
+                synchronizer.notificationWaiters.push(thread);
+            }
+
+            if (thread.wantToAcquire !== null) {
+                synchronizer = this._synchronizerById[thread.wantToAcquire];
+                synchronizer.lockWaiters.push(thread);
+            }
+
+            for (var j = 0; i < thread.locksHeld.length; i++) {
+                synchronizer = this._synchronizerById[thread.locksHeld[j]];
+                synchronizer.lockHolder = thread;
+            }
+        }
+
+        // List all synchronizers
+        var synchronizers = [];
+        Object.keys(this._synchronizerById).forEach(function (key) {
+            var synchronizer = synchronizers[key];
+            synchronizers.push(synchronizer);
+        });
+
+        // FIXME: Sort the synchronizers by number of references
+
+        return synchronizers;
+    };
+
     this.threads = [];
     this._ignores = new StringCounter();
     this._currentThread = null;
 
     this._analyze(text);
     this.countedRunningMethods = this._countRunningMethods();
+    this._synchronizerById = this._createSynchronizerById();
+    this.synchronizers = this._enumerateSynchronizers();
 }
