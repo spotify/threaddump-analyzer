@@ -653,10 +653,11 @@ function Analyzer(text) {
 
         // List all synchronizers
         var synchronizers = [];
-        Object.keys(this._synchronizerById).forEach(function (key) {
-            var synchronizer = synchronizers[key];
-            synchronizers.push(synchronizer);
-        });
+        var ids = Object.keys(this._synchronizerById);
+        for (var k = 0; k < ids.length; k++) {
+            var id = ids[k];
+            synchronizers.push(this._synchronizerById[id]);
+        }
 
         // FIXME: Sort the synchronizers by number of references
 

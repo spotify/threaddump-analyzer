@@ -191,7 +191,12 @@ QUnit.test( "analyze thread waiting for notification", function(assert) {
     assert.equal(thread.synchronizerClasses['7c135ea90'], 'java.util.Vector');
     assert.equal(thread.synchronizerClasses['47114712gris'], null);
 
+    // Validate global lock analysis
     assert.deepEqual(Object.keys(analyzer._synchronizerById), ['7c135ea90']);
+    assert.ok(analyzer._synchronizerById['7c135ea90'] !== null);
+    assert.ok(analyzer._synchronizerById['7c135ea90'] !== undefined);
+    assert.deepEqual(analyzer._synchronizers,
+                     [analyzer._synchronizerById['7c135ea90']]);
 });
 
 QUnit.test( "analyze thread waiting for java.util.concurrent lock", function(assert) {
