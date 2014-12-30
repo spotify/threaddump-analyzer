@@ -31,7 +31,8 @@ function analyzeTextfield() { // jshint ignore: line
     var running = analyzer.toRunningHtml();
     setHtml("RUNNING", running);
 
-    // FIXME: Output synchronizers somewhere
+    var synchronizers = analyzer.toSynchronizersHtml();
+    setHtml("SYNCHRONIZERS", synchronizers);
 
     var runningHeader = document.getElementById("RUNNING_HEADER");
     runningHeader.innerHTML = "Top Methods From " +
@@ -313,6 +314,54 @@ function StringCounter() {
 }
 
 function Synchronizer(id, className) {
+    this.toHtmlTableRow = function() {
+        var html = "";
+        html += "<tr>";
+
+        html += "<td>";
+        // FIXME: How should we handle class names like
+        //   "java.lang.Class for
+        //   org.netbeans.modules.profiler.ProfilerControlPanel2"?
+        // FIXME: Strip package names from class names
+        html += this._id + "<br>" + this._className;
+        html += "</td>";
+
+        // Start of lock info
+        html += "<td>";
+
+        if (this.lockHolder !== null) {
+            html += "<div>";
+            html += 'Held by: <span class="raw">' + this.lockHolder.name + '</span>';
+            html += "</div>";
+        }
+
+        if (this.lockWaiters.length > 0) {
+            html += "<div>";
+            html += "Threads waiting to take lock:";
+            for (var i = 0; i < this.lockWaiters.length; i++) {
+                var lockWaiter = this.lockWaiters[i];
+                html += '<br><span class="raw">  ' + lockWaiter.name + '</span>';
+            }
+            html += "</div>";
+        }
+
+        if (this.notificationWaiters.length > 0) {
+            html += "<div>";
+            html += "Threads waiting for notification on lock:";
+            for (var j = 0; j < this.notificationWaiters.length; j++) {
+                var notificationWaiter = this.notificationWaiters[j];
+                html += '<br><span class="raw">  ' + notificationWaiter.name + '</span>';
+            }
+            html += "</div>";
+        }
+
+        // End of lock info
+        html += "</td>";
+
+        html += "</tr>";
+        return html;
+    };
+
     this._id = id;
     this._className = className;
 
@@ -592,6 +641,15 @@ function Analyzer(text) {
         }
 
         return countedRunning;
+    };
+
+    this.toSynchronizersHtml = function() {
+        var html = "";
+        for (var i = 0; i < this._synchronizers.length; i++) {
+            var synchronizer = this._synchronizers[i];
+            html += synchronizer.toHtmlTableRow() + '\n';
+        }
+        return html;
     };
 
     this._registerSynchronizer = function(registry, id, synchronizerClasses) {
