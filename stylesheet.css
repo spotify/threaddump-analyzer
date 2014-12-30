@@ -33,3 +33,11 @@ a.internal:hover {
     color: blue;
     text-decoration: underline;
 }
+
+td.synchronizer {
+    vertical-align: top;
+}
+
+div.synchronizer {
+    margin-top: 0.25em;
+}

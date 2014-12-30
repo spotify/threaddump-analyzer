@@ -323,25 +323,27 @@ function Synchronizer(id, className) {
         var html = "";
         html += "<tr>";
 
-        html += "<td>";
+        html += '<td class="synchronizer">';
+        html += '<div class="synchronizer">';
         // FIXME: How should we handle class names like
         //   "java.lang.Class for
         //   org.netbeans.modules.profiler.ProfilerControlPanel2"?
         // FIXME: Strip package names from class names
         html += this._id + "<br>" + this._className;
+        html += "</div>";
         html += "</td>";
 
         // Start of lock info
-        html += "<td>";
+        html += '<td class="synchronizer">';
 
         if (this.lockHolder !== null) {
-            html += "<div>";
-            html += 'Held by: <span class="raw">' + this.lockHolder.getLinkedName() + '</span>';
+            html += '<div class="synchronizer">';
+            html += 'Held by:<br><span class="raw">  ' + this.lockHolder.getLinkedName() + '</span>';
             html += "</div>";
         }
 
         if (this.lockWaiters.length > 0) {
-            html += "<div>";
+            html += '<div class="synchronizer">';
             html += "Threads waiting to take lock:";
             for (var i = 0; i < this.lockWaiters.length; i++) {
                 var lockWaiter = this.lockWaiters[i];
@@ -351,7 +353,7 @@ function Synchronizer(id, className) {
         }
 
         if (this.notificationWaiters.length > 0) {
-            html += "<div>";
+            html += '<div class="synchronizer">';
             html += "Threads waiting for notification on lock:";
             for (var j = 0; j < this.notificationWaiters.length; j++) {
                 var notificationWaiter = this.notificationWaiters[j];
