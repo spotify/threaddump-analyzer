@@ -304,6 +304,8 @@ QUnit.test( "analyze thread holding locks", function(assert) {
     assert.equal(thread.synchronizerClasses['7c37f5b88'], 'sun.nio.ch.KQueueSelectorImpl');
     assert.equal(thread.synchronizerClasses['7c393f190'], 'java.util.concurrent.locks.ReentrantLock$NonfairSync');
     assert.equal(thread.synchronizerClasses['47114712gris'], null);
+
+    assert.equal(analyzer._synchronizerById['7c37f5b88'].lockHolder, thread);
 });
 
 QUnit.test( "analyze two threads with same stack", function(assert) {

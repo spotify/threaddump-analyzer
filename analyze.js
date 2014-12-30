@@ -645,7 +645,7 @@ function Analyzer(text) {
                 synchronizer.lockWaiters.push(thread);
             }
 
-            for (var j = 0; i < thread.locksHeld.length; i++) {
+            for (var j = 0; j < thread.locksHeld.length; j++) {
                 synchronizer = this._synchronizerById[thread.locksHeld[j]];
                 synchronizer.lockHolder = thread;
             }

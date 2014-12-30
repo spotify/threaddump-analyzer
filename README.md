@@ -34,8 +34,14 @@ and link them all to the stack traces list.
 * Change toString test methods into toHtml test methods and remove the
 corresponding toString methods from the source code.
 
+* Add a line above each <h2> element in the CSS and remove some <hr>s
+from the HTML code.
+
 * Say "... threads with no stack" for threads with no stack, rather
   than "... threads with this stack".
+
+* If all lines share the same prefix, strip it away before analyzing
+so we can parse dumps like this one: http://pastebin.com/fcSqxsku
 
 * If a thread is waiting for another thread to release a lock, make
 sure there's a clickable reference from the waiter to the holder.
