@@ -196,6 +196,11 @@ function Thread(line) {
         return headerString;
     };
 
+    // Get the name of this thread wrapped in an <a href=>
+    this.getLinkedName = function() {
+        return '<a class="internal" href="#' + this.tid + '">' + htmlEscape(this.name) + '</a>';
+    };
+
     var match;
     match = _extract(/\[([0-9a-fx,]+)\]$/, line);
     this.dontKnow = match.value;
@@ -331,7 +336,7 @@ function Synchronizer(id, className) {
 
         if (this.lockHolder !== null) {
             html += "<div>";
-            html += 'Held by: <span class="raw">' + this.lockHolder.name + '</span>';
+            html += 'Held by: <span class="raw">' + this.lockHolder.getLinkedName() + '</span>';
             html += "</div>";
         }
 
@@ -340,7 +345,7 @@ function Synchronizer(id, className) {
             html += "Threads waiting to take lock:";
             for (var i = 0; i < this.lockWaiters.length; i++) {
                 var lockWaiter = this.lockWaiters[i];
-                html += '<br><span class="raw">  ' + lockWaiter.name + '</span>';
+                html += '<br><span class="raw">  ' + lockWaiter.getLinkedName() + '</span>';
             }
             html += "</div>";
         }
@@ -350,7 +355,7 @@ function Synchronizer(id, className) {
             html += "Threads waiting for notification on lock:";
             for (var j = 0; j < this.notificationWaiters.length; j++) {
                 var notificationWaiter = this.notificationWaiters[j];
-                html += '<br><span class="raw">  ' + notificationWaiter.name + '</span>';
+                html += '<br><span class="raw">  ' + notificationWaiter.getLinkedName() + '</span>';
             }
             html += "</div>";
         }
