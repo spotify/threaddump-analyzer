@@ -15,15 +15,13 @@ The Java Thread Dump Analyzer is licensed under
 the copyright belongs to Spotify AB.
 
 ## TODO
-* Make the Thread class parse held locks, waited-for locks and
-waited-for condition variables from the thread dump.
+* Add clickable links from each thread in the thread list to whatever
+  synchronization thingie(s) it is involved with (if any).
 
-* List all synchronization things at the end; both locks and condition
-  variables in the same list. For each, list who's holding it, who's
-  waiting for the lock, and who's waiting for notification. All
-  references should be clickable. And there should be clickable links
-  from each thread in the thread list to whatever synchronization
-  thingie it is involved with.
+* If one thread is holding multiple locks, this should be noted in the
+synchronizers section for all involved locks. Add a "Related locks"
+header to the involved locks, listing which the other locks are held
+simultaneously with this one.
 
 * Add a table of contents before the first section, making sure only
 the visible sections are in it.
@@ -156,3 +154,11 @@ the Top Running Methods section.
   security model: Move unit test data from test.html into iframes of
   test.html and put each unit test data block in its own file,
   referenced from test.html.
+
+* Make the Thread class parse held locks, waited-for locks and
+waited-for condition variables from the thread dump.
+
+* List all synchronization things at the end; both locks and condition
+  variables in the same list. For each, list who's holding it, who's
+  waiting for the lock, and who's waiting for notification. All
+  references should be clickable.
