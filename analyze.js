@@ -31,6 +31,9 @@ function analyzeTextfield() { // jshint ignore: line
     var running = analyzer.toRunningHtml();
     setHtml("RUNNING", running);
 
+    var synchronizers = analyzer.toSynchronizersHtml();
+    setHtml("SYNCHRONIZERS", synchronizers);
+
     var runningHeader = document.getElementById("RUNNING_HEADER");
     runningHeader.innerHTML = "Top Methods From " +
         analyzer.countedRunningMethods.length +
@@ -101,7 +104,7 @@ function Thread(line) {
     };
 
     // Return true if the line was understood, false otherwise
-    this.addStackLine = function(line) {
+    this.addStackLine = function(line) { //jshint ignore:line
         var match;
 
         var FRAME = /^\s+at (.*)/;
@@ -119,6 +122,64 @@ function Thread(line) {
             return true;
         }
 
+        var SYNCHRONIZATION_STATUS = /^\s+- (.*?) +<([x0-9a-f]+)> \(a (.*)\)/;
+        match = line.match(SYNCHRONIZATION_STATUS);
+        if (match !== null) {
+            var state = match[1];
+            var id = match[2];
+            var className = match[3];
+            this.synchronizerClasses[id] = className;
+
+            switch (state) {
+            case "waiting on":
+                this.wantNotificationOn = id;
+                return true;
+
+            case "parking to wait for":
+                this.wantToAcquire = id;
+                return true;
+
+            case "waiting to lock":
+                this.wantToAcquire = id;
+                return true;
+
+            case "locked":
+                if (this.wantNotificationOn === id) {
+                    // Lock is released while waiting for the notification
+                    return true;
+                }
+                this.locksHeld.push(id);
+                return true;
+
+            default:
+                return false;
+            }
+        }
+
+        var HELD_LOCK = /^\s+- <([x0-9a-f]+)> \(a (.*)\)/;
+        match = line.match(HELD_LOCK);
+        if (match !== null) {
+            var lockId = match[1];
+            var lockClassName = match[2];
+            this.synchronizerClasses[lockId] = lockClassName;
+            this.locksHeld.push(lockId);
+            return true;
+        }
+
+        var LOCKED_OWNABLE_SYNCHRONIZERS = /^\s+Locked ownable synchronizers:/;
+        match = line.match(LOCKED_OWNABLE_SYNCHRONIZERS);
+        if (match !== null) {
+            // Ignore these lines
+            return true;
+        }
+
+        var NONE_HELD = /^\s+- None/;
+        match = line.match(NONE_HELD);
+        if (match !== null) {
+            // Ignore these lines
+            return true;
+        }
+
         return false;
     };
 
@@ -133,6 +194,11 @@ function Thread(line) {
         }
         headerString += '"' + this.name + '": ' + (this.daemon ? "daemon, " : "") + this.state;
         return headerString;
+    };
+
+    // Get the name of this thread wrapped in an <a href=>
+    this.getLinkedName = function() {
+        return '<a class="internal" href="#' + this.tid + '">' + htmlEscape(this.name) + '</a>';
     };
 
     var match;
@@ -180,6 +246,10 @@ function Thread(line) {
     }
 
     this.frames = [];
+    this.wantNotificationOn = null;
+    this.wantToAcquire = null;
+    this.locksHeld = [];
+    this.synchronizerClasses = {};
 }
 
 function StringCounter() {
@@ -246,6 +316,65 @@ function StringCounter() {
 
     this._stringsToCounts = {};
     this.length = 0;
+}
+
+function Synchronizer(id, className) {
+    this.toHtmlTableRow = function() {
+        var html = "";
+        html += "<tr>";
+
+        html += '<td class="synchronizer">';
+        html += '<div class="synchronizer">';
+        // FIXME: How should we handle class names like
+        //   "java.lang.Class for
+        //   org.netbeans.modules.profiler.ProfilerControlPanel2"?
+        // FIXME: Strip package names from class names
+        html += this._id + "<br>" + this._className;
+        html += "</div>";
+        html += "</td>";
+
+        // Start of lock info
+        html += '<td class="synchronizer">';
+
+        if (this.lockHolder !== null) {
+            html += '<div class="synchronizer">';
+            html += 'Held by:<br><span class="raw">  ' + this.lockHolder.getLinkedName() + '</span>';
+            html += "</div>";
+        }
+
+        if (this.lockWaiters.length > 0) {
+            html += '<div class="synchronizer">';
+            html += "Threads waiting to take lock:";
+            for (var i = 0; i < this.lockWaiters.length; i++) {
+                var lockWaiter = this.lockWaiters[i];
+                html += '<br><span class="raw">  ' + lockWaiter.getLinkedName() + '</span>';
+            }
+            html += "</div>";
+        }
+
+        if (this.notificationWaiters.length > 0) {
+            html += '<div class="synchronizer">';
+            html += "Threads waiting for notification on lock:";
+            for (var j = 0; j < this.notificationWaiters.length; j++) {
+                var notificationWaiter = this.notificationWaiters[j];
+                html += '<br><span class="raw">  ' + notificationWaiter.getLinkedName() + '</span>';
+            }
+            html += "</div>";
+        }
+
+        // End of lock info
+        html += "</td>";
+
+        html += "</tr>";
+        return html;
+    };
+
+    this._id = id;
+    this._className = className;
+
+    this.notificationWaiters = [];
+    this.lockWaiters = [];
+    this.lockHolder = null;
 }
 
 // Create an analyzer object
@@ -521,10 +650,91 @@ function Analyzer(text) {
         return countedRunning;
     };
 
+    this.toSynchronizersHtml = function() {
+        var html = "";
+        for (var i = 0; i < this._synchronizers.length; i++) {
+            var synchronizer = this._synchronizers[i];
+            html += synchronizer.toHtmlTableRow() + '\n';
+        }
+        return html;
+    };
+
+    this._registerSynchronizer = function(registry, id, synchronizerClasses) {
+        if (id === null) {
+            return;
+        }
+        if (registry[id] === undefined) {
+            registry[id] = new Synchronizer(id, synchronizerClasses[id]);
+        }
+    };
+
+    // Create a mapping from synchronizer ids to Synchronizer
+    // objects. Note that the Synchronizer objects won't get any cross
+    // references from this method; they are don by
+    // _enumerateSynchronizers() below.
+    this._createSynchronizerById = function() {
+        var returnMe = {};
+
+        for (var i = 0; i < this.threads.length; i++) {
+            var thread = this.threads[i];
+
+            this._registerSynchronizer(
+                returnMe, thread.wantNotificationOn, thread.synchronizerClasses);
+            this._registerSynchronizer(
+                returnMe, thread.wantToAcquire, thread.synchronizerClasses);
+
+            for (var j = 0; j < thread.locksHeld.length; j++) {
+                var lock = thread.locksHeld[j];
+                this._registerSynchronizer(
+                    returnMe, lock, thread.synchronizerClasses);
+            }
+        }
+
+        return returnMe;
+    };
+
+    // Create a properly cross-referenced array with all synchronizers
+    // in the thread dump
+    this._enumerateSynchronizers = function() {
+        for (var i = 0; i < this.threads.length; i++) {
+            var thread = this.threads[i];
+            var synchronizer;
+
+            if (thread.wantNotificationOn !== null) {
+                synchronizer = this._synchronizerById[thread.wantNotificationOn];
+                synchronizer.notificationWaiters.push(thread);
+            }
+
+            if (thread.wantToAcquire !== null) {
+                synchronizer = this._synchronizerById[thread.wantToAcquire];
+                synchronizer.lockWaiters.push(thread);
+            }
+
+            for (var j = 0; j < thread.locksHeld.length; j++) {
+                synchronizer = this._synchronizerById[thread.locksHeld[j]];
+                synchronizer.lockHolder = thread;
+            }
+        }
+
+        // List all synchronizers
+        var synchronizers = [];
+        var ids = Object.keys(this._synchronizerById);
+        for (var k = 0; k < ids.length; k++) {
+            var id = ids[k];
+            synchronizers.push(this._synchronizerById[id]);
+        }
+
+        // FIXME: Sort the synchronizers by number of references
+
+        return synchronizers;
+    };
+
     this.threads = [];
     this._ignores = new StringCounter();
     this._currentThread = null;
 
     this._analyze(text);
     this.countedRunningMethods = this._countRunningMethods();
+    this._synchronizerById = this._createSynchronizerById();
+    this._synchronizers = this._enumerateSynchronizers();
 }
