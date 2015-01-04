@@ -96,7 +96,7 @@ function decorateStackFrames(stackFrames) {
 
 function Thread(line) {
     this.toString = function() {
-        return this.toHeaderString() + '\n' + this.toStackString();
+        return '"' + this.name + '": ' + this.state + '\n' + this.toStackString();
     };
 
     this.isValid = function() {
@@ -187,13 +187,22 @@ function Thread(line) {
         return decorateStackFrames(this.frames).join('\n');
     };
 
-    this.toHeaderString = function() {
-        var headerString = "";
+    this.toHeaderHTML = function() {
+        var headerHTML = '<span class="raw">';
         if (this.group !== undefined) {
-            headerString += '"' + this.group + '"/';
+            headerHTML += '"' + htmlEscape(this.group) + '"/';
         }
-        headerString += '"' + this.name + '": ' + (this.daemon ? "daemon, " : "") + this.state;
-        return headerString;
+
+        headerHTML += '"';
+        headerHTML += htmlEscape(this.name);
+
+        headerHTML += '": ';
+
+        headerHTML += (this.daemon ? "daemon, " : "");
+        headerHTML += this.state;
+
+        headerHTML += "</span>";
+        return headerHTML;
     };
 
     // Get the name of this thread wrapped in an <a href=>
@@ -475,12 +484,10 @@ function Analyzer(text) {
             var threads = stacksToThreads[currentStack];
 
             threads.sort(function(a, b){
-                var aHeader = a.toHeaderString();
-                var bHeader = b.toHeaderString();
-                if (aHeader > bHeader) {
+                if (a.name > b.name) {
                     return 1;
                 }
-                if (aHeader < bHeader) {
+                if (a.name < b.name) {
                     return -1;
                 }
                 return 0;
@@ -550,10 +557,10 @@ function Analyzer(text) {
 
             for (var j = 0; j < threads.length; j++) {
                 var thread = threads[j];
-                asHtml += '<div class="raw" id="' +
+                asHtml += '<div id="' +
                     thread.tid +
                     '">' +
-                    htmlEscape(thread.toHeaderString()) +
+                    thread.toHeaderHTML() +
                     '</div>\n';
             }
 
