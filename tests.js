@@ -122,12 +122,14 @@ QUnit.test( "multiline thread name", function(assert) {
     ]);
 
     // Test the Analyzer's toString() method as well now that we have an Analyzer
-    var analysisLines = analyzer.toString().split('\n');
+    var analysisLines = analyzer.toHtml().split('\n');
     assert.deepEqual(analysisLines, [
-        "1 threads found:",
-        "",
-        '"line 1, line 2": runnable',
-        "	<empty stack>",
+        "<h2>1 threads found</h2>",
+        "<div class=\"threadgroup\">",
+        "<div class=\"threadcount\"></div>",
+        "<div class=\"raw\" id=\"0x00007f16a118e000\">\"line 1, line 2\": runnable</div>",
+        "<div class=\"raw\">	&lt;empty stack&gt;</div>",
+        "</div>",
         ""
     ]);
 });
@@ -363,7 +365,7 @@ QUnit.test( "full dump analysis", function(assert) {
     var input = document.getElementById("sample-input").innerHTML;
     var expectedOutput = unescapeHtml(document.getElementById("sample-analysis").innerHTML);
     var analyzer = new Analyzer(input);
-    assert.deepEqual(analyzer.toString().split('\n'), expectedOutput.split('\n'));
+    assert.deepEqual(analyzer.toHtml().split('\n'), expectedOutput.split('\n'));
 
     var expectedIgnores = document.getElementById("sample-ignored").innerHTML;
     assert.deepEqual(analyzer.toIgnoresString().split('\n'), expectedIgnores.split('\n'));

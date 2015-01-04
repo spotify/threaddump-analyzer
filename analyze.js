@@ -495,34 +495,6 @@ function Analyzer(text) {
         return threadsAndStacks;
     };
 
-    this.toString = function() {
-        var threadsAndStacks = this._toThreadsAndStacks();
-
-        var asString = "";
-        asString += "" + this.threads.length + " threads found:\n";
-        for (var i = 0; i < threadsAndStacks.length; i++) {
-            var currentThreadsAndStack = threadsAndStacks[i];
-            var stackFrames = decorateStackFrames(currentThreadsAndStack.stackFrames);
-            var threads = currentThreadsAndStack.threads;
-
-            asString += '\n';
-
-            if (threads.length > 4) {
-                asString += "" + threads.length + " threads with this stack:\n";
-            }
-
-            for (var j = 0; j < threads.length; j++) {
-                asString += threads[j].toHeaderString() + '\n';
-            }
-
-            for (var k = 0; k < stackFrames.length; k++) {
-                asString += stackFrames[k] + "\n";
-            }
-        }
-
-        return asString;
-    };
-
     this._stackToHtml = function(stackFrames) {
         if (stackFrames.length === 0) {
             return '<div class="raw">' + htmlEscape(EMPTY_STACK) + '</div>\n';

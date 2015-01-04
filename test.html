@@ -485,245 +485,293 @@ JNI global references: 8210
 
 </pre>
 
-    <pre id="sample-analysis" style="display: none;">54 threads found:
-
-5 threads with this stack:
-"Animations 2": daemon, waiting on condition
-"Animations": daemon, waiting on condition
-"Change List Updater": daemon, waiting on condition
-"Encoding detection thread": daemon, waiting on condition
-"RMI Scheduler(0)": daemon, waiting on condition
-	at sun.misc.Unsafe.park(Native Method)
-	at java.util.concurrent.locks.LockSupport.park(LockSupport.java:156)
-	at java.util.concurrent.locks.AbstractQueuedSynchronizer$ConditionObject.await(AbstractQueuedSynchronizer.java:1987)
-	at java.util.concurrent.DelayQueue.take(DelayQueue.java:160)
-	at java.util.concurrent.ScheduledThreadPoolExecutor$DelayedWorkQueue.take(ScheduledThreadPoolExecutor.java:609)
-	at java.util.concurrent.ScheduledThreadPoolExecutor$DelayedWorkQueue.take(ScheduledThreadPoolExecutor.java:602)
-	at java.util.concurrent.ThreadPoolExecutor.getTask(ThreadPoolExecutor.java:957)
-	at java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:917)
-	at java.lang.Thread.run(Thread.java:695)
-
-"Flushing thread": daemon, waiting on condition
-"Periodic tasks thread": daemon, waiting on condition
-"timed reference disposer": daemon, waiting on condition
-"timed reference disposer": daemon, waiting on condition
-	at sun.misc.Unsafe.park(Native Method)
-	at java.util.concurrent.locks.LockSupport.parkNanos(LockSupport.java:196)
-	at java.util.concurrent.locks.AbstractQueuedSynchronizer$ConditionObject.awaitNanos(AbstractQueuedSynchronizer.java:2025)
-	at java.util.concurrent.DelayQueue.take(DelayQueue.java:164)
-	at java.util.concurrent.ScheduledThreadPoolExecutor$DelayedWorkQueue.take(ScheduledThreadPoolExecutor.java:609)
-	at java.util.concurrent.ScheduledThreadPoolExecutor$DelayedWorkQueue.take(ScheduledThreadPoolExecutor.java:602)
-	at java.util.concurrent.ThreadPoolExecutor.getTask(ThreadPoolExecutor.java:957)
-	at java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:917)
-	at java.lang.Thread.run(Thread.java:695)
-
-"FocusManager timer": daemon, in Object.wait()
-"Shared SimpleTimer": daemon, in Object.wait()
-"Timer-0": daemon, in Object.wait()
-	at java.lang.Object.wait(Native Method)
-	at java.lang.Object.wait(Object.java:485)
-	at java.util.TimerThread.mainLoop(Timer.java:483)
-	at java.util.TimerThread.run(Timer.java:462)
-
-"Alarm pool(shared)": daemon, waiting on condition
-"FS Synchronizer": daemon, waiting on condition
-"RefCountingStorage write content helper": waiting on condition
-	at sun.misc.Unsafe.park(Native Method)
-	at java.util.concurrent.locks.LockSupport.park(LockSupport.java:156)
-	at java.util.concurrent.locks.AbstractQueuedSynchronizer$ConditionObject.await(AbstractQueuedSynchronizer.java:1987)
-	at java.util.concurrent.LinkedBlockingQueue.take(LinkedBlockingQueue.java:399)
-	at java.util.concurrent.ThreadPoolExecutor.getTask(ThreadPoolExecutor.java:957)
-	at java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:917)
-	at java.lang.Thread.run(Thread.java:695)
-
-"ApplicationImpl pooled thread 1": waiting on condition
-"ApplicationImpl pooled thread 2": waiting on condition
-	at java.lang.Thread.sleep(Native Method)
-	at com.intellij.util.TimeoutUtil.sleep(TimeoutUtil.java:58)
-	at com.intellij.util.io.BaseDataReader.doRun(BaseDataReader.java:105)
-	at com.intellij.util.io.BaseDataReader$1.run(BaseDataReader.java:46)
-	at com.intellij.openapi.application.impl.ApplicationImpl$8.run(ApplicationImpl.java:419)
-	at java.util.concurrent.Executors$RunnableAdapter.call(Executors.java:439)
-	at java.util.concurrent.FutureTask$Sync.innerRun(FutureTask.java:303)
-	at java.util.concurrent.FutureTask.run(FutureTask.java:138)
-	at java.util.concurrent.ThreadPoolExecutor$Worker.runTask(ThreadPoolExecutor.java:895)
-	at java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:918)
-	at java.lang.Thread.run(Thread.java:695)
-	at com.intellij.openapi.application.impl.ApplicationImpl$1$1.run(ApplicationImpl.java:149)
-
-"Document commit thread": in Object.wait()
-	at java.lang.Object.wait(Native Method)
-	at java.lang.Object.wait(Object.java:485)
-	at com.intellij.psi.impl.DocumentCommitThread.pollQueue(DocumentCommitThread.java:262)
-	at com.intellij.psi.impl.DocumentCommitThread.run(DocumentCommitThread.java:238)
-	at java.lang.Thread.run(Thread.java:695)
-
-"AWT-EventQueue-1 0.8.14#AI-135.1538390, eap:true": in Object.wait()
-	at java.lang.Object.wait(Native Method)
-	at java.lang.Object.wait(Object.java:485)
-	at java.awt.EventQueue.getNextEvent(EventQueue.java:558)
-	at java.awt.EventDispatchThread.pumpOneEventForFilters(EventDispatchThread.java:263)
-	at java.awt.EventDispatchThread.pumpEventsForFilter(EventDispatchThread.java:211)
-	at java.awt.EventDispatchThread.pumpEventsForHierarchy(EventDispatchThread.java:201)
-	at java.awt.EventDispatchThread.pumpEvents(EventDispatchThread.java:196)
-	at java.awt.EventDispatchThread.pumpEvents(EventDispatchThread.java:188)
-	at java.awt.EventDispatchThread.run(EventDispatchThread.java:122)
-
-"ApplicationImpl pooled thread 0": in Object.wait()
-	at java.lang.Object.wait(Native Method)
-	at java.lang.Object.wait(Object.java:485)
-	at java.lang.UNIXProcess.waitFor(UNIXProcess.java:115)
-	at com.intellij.execution.process.ProcessWaitFor$1.run(ProcessWaitFor.java:30)
-	at com.intellij.openapi.application.impl.ApplicationImpl$8.run(ApplicationImpl.java:419)
-	at java.util.concurrent.Executors$RunnableAdapter.call(Executors.java:439)
-	at java.util.concurrent.FutureTask$Sync.innerRun(FutureTask.java:303)
-	at java.util.concurrent.FutureTask.run(FutureTask.java:138)
-	at java.util.concurrent.ThreadPoolExecutor$Worker.runTask(ThreadPoolExecutor.java:895)
-	at java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:918)
-	at java.lang.Thread.run(Thread.java:695)
-	at com.intellij.openapi.application.impl.ApplicationImpl$1$1.run(ApplicationImpl.java:149)
-
-"Reference Handler": daemon, in Object.wait()
-	at java.lang.Object.wait(Native Method)
-	at java.lang.Object.wait(Object.java:485)
-	at java.lang.ref.Reference$ReferenceHandler.run(Reference.java:116)
-
-"AWT-Shutdown": in Object.wait()
-	at java.lang.Object.wait(Native Method)
-	at java.lang.Object.wait(Object.java:485)
-	at sun.awt.AWTAutoShutdown.run(AWTAutoShutdown.java:265)
-	at java.lang.Thread.run(Thread.java:695)
-
-"Finalizer": daemon, in Object.wait()
-	at java.lang.Object.wait(Native Method)
-	at java.lang.ref.ReferenceQueue.remove(ReferenceQueue.java:118)
-	at java.lang.ref.ReferenceQueue.remove(ReferenceQueue.java:134)
-	at java.lang.ref.Finalizer$FinalizerThread.run(Finalizer.java:171)
-
-"Java2D Disposer": daemon, in Object.wait()
-	at java.lang.Object.wait(Native Method)
-	at java.lang.ref.ReferenceQueue.remove(ReferenceQueue.java:118)
-	at java.lang.ref.ReferenceQueue.remove(ReferenceQueue.java:134)
-	at sun.java2d.Disposer.run(Disposer.java:125)
-	at java.lang.Thread.run(Thread.java:695)
-
-"RMI Reaper": in Object.wait()
-	at java.lang.Object.wait(Native Method)
-	at java.lang.ref.ReferenceQueue.remove(ReferenceQueue.java:118)
-	at java.lang.ref.ReferenceQueue.remove(ReferenceQueue.java:134)
-	at sun.rmi.transport.ObjectTable$Reaper.run(ObjectTable.java:333)
-	at java.lang.Thread.run(Thread.java:695)
-
-"RMI RenewClean-[localhost:49463]": daemon, in Object.wait()
-	at java.lang.Object.wait(Native Method)
-	at java.lang.ref.ReferenceQueue.remove(ReferenceQueue.java:118)
-	at sun.rmi.transport.DGCClient$EndpointEntry$RenewCleanThread.run(DGCClient.java:516)
-	at java.lang.Thread.run(Thread.java:695)
-
-"TimerQueue": daemon, in Object.wait()
-	at java.lang.Object.wait(Native Method)
-	at javax.swing.TimerQueue.postExpiredTimers(TimerQueue.java:214)
-	at javax.swing.TimerQueue.run(TimerQueue.java:230)
-	at java.lang.Thread.run(Thread.java:695)
-
-"GC Daemon": daemon, in Object.wait()
-	at java.lang.Object.wait(Native Method)
-	at sun.misc.GC$Daemon.run(GC.java:100)
-
-"StoreRefreshStatusThread": daemon, waiting on condition
-	at java.lang.Thread.sleep(Native Method)
-	at com.intellij.util.TimeoutUtil.sleep(TimeoutUtil.java:58)
-	at com.intellij.openapi.vfs.impl.local.LocalFileSystemImpl$StoreRefreshStatusThread.run(LocalFileSystemImpl.java:355)
-
-"process reaper": daemon, runnable
-	at java.lang.UNIXProcess.waitForProcessExit(Native Method)
-	at java.lang.UNIXProcess.access$900(UNIXProcess.java:17)
-	at java.lang.UNIXProcess$2$1.run(UNIXProcess.java:86)
-
-"Lock thread": runnable
-	at java.net.PlainSocketImpl.socketAccept(Native Method)
-	at java.net.PlainSocketImpl.accept(PlainSocketImpl.java:439)
-	at java.net.ServerSocket.implAccept(ServerSocket.java:468)
-	at java.net.ServerSocket.accept(ServerSocket.java:436)
-	at com.intellij.idea.SocketLock$MyRunnable.run(SocketLock.java:224)
-	at java.lang.Thread.run(Thread.java:695)
-
-"RMI TCP Accept-0": daemon, runnable
-	at java.net.PlainSocketImpl.socketAccept(Native Method)
-	at java.net.PlainSocketImpl.accept(PlainSocketImpl.java:439)
-	at java.net.ServerSocket.implAccept(ServerSocket.java:468)
-	at java.net.ServerSocket.accept(ServerSocket.java:436)
-	at sun.rmi.transport.tcp.TCPTransport$AcceptLoop.executeAcceptLoop(TCPTransport.java:369)
-	at sun.rmi.transport.tcp.TCPTransport$AcceptLoop.run(TCPTransport.java:341)
-	at java.lang.Thread.run(Thread.java:695)
-
-"ApplicationImpl pooled thread 32": daemon, waiting on condition
-	at sun.misc.Unsafe.park(Native Method)
-	at java.util.concurrent.locks.LockSupport.parkNanos(LockSupport.java:196)
-	at java.util.concurrent.SynchronousQueue$TransferStack.awaitFulfill(SynchronousQueue.java:424)
-	at java.util.concurrent.SynchronousQueue$TransferStack.transfer(SynchronousQueue.java:323)
-	at java.util.concurrent.SynchronousQueue.poll(SynchronousQueue.java:874)
-	at java.util.concurrent.ThreadPoolExecutor.getTask(ThreadPoolExecutor.java:955)
-	at java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:917)
-	at java.lang.Thread.run(Thread.java:695)
-	at com.intellij.openapi.application.impl.ApplicationImpl$1$1.run(ApplicationImpl.java:149)
-
-"Performance watcher": waiting on condition
-	at sun.misc.Unsafe.park(Native Method)
-	at java.util.concurrent.locks.LockSupport.parkNanos(LockSupport.java:196)
-	at java.util.concurrent.locks.AbstractQueuedSynchronizer.doAcquireSharedNanos(AbstractQueuedSynchronizer.java:1011)
-	at java.util.concurrent.locks.AbstractQueuedSynchronizer.tryAcquireSharedNanos(AbstractQueuedSynchronizer.java:1303)
-	at java.util.concurrent.Semaphore.tryAcquire(Semaphore.java:383)
-	at com.intellij.diagnostic.PerformanceWatcher.checkEDTResponsiveness(PerformanceWatcher.java:158)
-	at com.intellij.diagnostic.PerformanceWatcher.access$100(PerformanceWatcher.java:40)
-	at com.intellij.diagnostic.PerformanceWatcher$2.run(PerformanceWatcher.java:113)
-	at java.lang.Thread.run(Thread.java:695)
-
-"JobScheduler FJ pool 0/4": daemon, waiting on condition
-	at sun.misc.Unsafe.park(Native Method)
-	at jsr166e.ForkJoinPool.awaitWork(ForkJoinPool.java:1756)
-	at jsr166e.ForkJoinPool.scan(ForkJoinPool.java:1694)
-	at jsr166e.ForkJoinPool.runWorker(ForkJoinPool.java:1642)
-	at jsr166e.ForkJoinWorkerThread.run(ForkJoinWorkerThread.java:109)
-
-"ApplicationImpl pooled thread 9": daemon, runnable
-	at sun.nio.ch.KQueueArrayWrapper.kevent0(Native Method)
-	at sun.nio.ch.KQueueArrayWrapper.poll(KQueueArrayWrapper.java:136)
-	at sun.nio.ch.KQueueSelectorImpl.doSelect(KQueueSelectorImpl.java:69)
-	at sun.nio.ch.SelectorImpl.lockAndDoSelect(SelectorImpl.java:69)
-	at sun.nio.ch.SelectorImpl.select(SelectorImpl.java:80)
-	at io.netty.channel.nio.NioEventLoop.select(NioEventLoop.java:618)
-	at io.netty.channel.nio.NioEventLoop.run(NioEventLoop.java:306)
-	at io.netty.util.concurrent.SingleThreadEventExecutor$5.run(SingleThreadEventExecutor.java:824)
-	at com.intellij.openapi.application.impl.ApplicationImpl$8.run(ApplicationImpl.java:419)
-	at java.util.concurrent.Executors$RunnableAdapter.call(Executors.java:439)
-	at java.util.concurrent.FutureTask$Sync.innerRun(FutureTask.java:303)
-	at java.util.concurrent.FutureTask.run(FutureTask.java:138)
-	at java.util.concurrent.ThreadPoolExecutor$Worker.runTask(ThreadPoolExecutor.java:895)
-	at java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:918)
-	at java.lang.Thread.run(Thread.java:695)
-	at com.intellij.openapi.application.impl.ApplicationImpl$1$1.run(ApplicationImpl.java:149)
-
-18 threads with this stack:
-"AWT-AppKit": daemon, runnable
-"Attach Listener": daemon, waiting on condition
-"C2 CompilerThread0": daemon, waiting on condition
-"C2 CompilerThread1": daemon, waiting on condition
-"Concurrent Mark-Sweep GC Thread": runnable
-"DestroyJavaVM": waiting on condition
-"Exception Catcher Thread": runnable
-"GC task thread#7 (ParallelGC)": runnable
-"GC task thread#8 (ParallelGC)": runnable
-"Gang worker#0 (Parallel GC Threads)": runnable
-"Gang worker#1 (Parallel GC Threads)": runnable
-"Gang worker#2 (Parallel GC Threads)": runnable
-"Gang worker#3 (Parallel GC Threads)": runnable
-"Low Memory Detector": daemon, runnable
-"Signal Dispatcher": daemon, runnable
-"Surrogate Locker Thread (Concurrent GC)": daemon, waiting on condition
-"VM Periodic Task Thread": waiting on condition
-"VM Thread": runnable
-	&lt;empty stack&gt;
+    <pre id="sample-analysis" style="display: none;">&lt;h2&gt;54 threads found&lt;/h2&gt;
+&lt;div class="threadgroup"&gt;
+&lt;div class="threadcount"&gt;5 threads with this stack:&lt;/div&gt;
+&lt;div class="raw" id="11c336000"&gt;"Animations 2": daemon, waiting on condition&lt;/div&gt;
+&lt;div class="raw" id="11c336000"&gt;"Animations": daemon, waiting on condition&lt;/div&gt;
+&lt;div class="raw" id="11c4a2000"&gt;"Change List Updater": daemon, waiting on condition&lt;/div&gt;
+&lt;div class="raw" id="105542800"&gt;"Encoding detection thread": daemon, waiting on condition&lt;/div&gt;
+&lt;div class="raw" id="1111d0800"&gt;"RMI Scheduler(0)": daemon, waiting on condition&lt;/div&gt;
+&lt;div class="raw"&gt;	at sun.misc.Unsafe.park(Native Method)&lt;/div&gt;
+&lt;div class="raw"&gt;	at java.util.concurrent.locks.LockSupport.park(LockSupport.java:156)&lt;/div&gt;
+&lt;div class="raw"&gt;	at java.util.concurrent.locks.AbstractQueuedSynchronizer$ConditionObject.await(AbstractQueuedSynchronizer.java:1987)&lt;/div&gt;
+&lt;div class="raw"&gt;	at java.util.concurrent.DelayQueue.take(DelayQueue.java:160)&lt;/div&gt;
+&lt;div class="raw"&gt;	at java.util.concurrent.ScheduledThreadPoolExecutor$DelayedWorkQueue.take(ScheduledThreadPoolExecutor.java:609)&lt;/div&gt;
+&lt;div class="raw"&gt;	at java.util.concurrent.ScheduledThreadPoolExecutor$DelayedWorkQueue.take(ScheduledThreadPoolExecutor.java:602)&lt;/div&gt;
+&lt;div class="raw"&gt;	at java.util.concurrent.ThreadPoolExecutor.getTask(ThreadPoolExecutor.java:957)&lt;/div&gt;
+&lt;div class="raw"&gt;	at java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:917)&lt;/div&gt;
+&lt;div class="raw"&gt;	at java.lang.Thread.run(Thread.java:695)&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class="threadgroup"&gt;
+&lt;div class="threadcount"&gt;&lt;/div&gt;
+&lt;div class="raw" id="11c048000"&gt;"Flushing thread": daemon, waiting on condition&lt;/div&gt;
+&lt;div class="raw" id="105201000"&gt;"Periodic tasks thread": daemon, waiting on condition&lt;/div&gt;
+&lt;div class="raw" id="1052a9000"&gt;"timed reference disposer": daemon, waiting on condition&lt;/div&gt;
+&lt;div class="raw" id="10c1af800"&gt;"timed reference disposer": daemon, waiting on condition&lt;/div&gt;
+&lt;div class="raw"&gt;	at sun.misc.Unsafe.park(Native Method)&lt;/div&gt;
+&lt;div class="raw"&gt;	at java.util.concurrent.locks.LockSupport.parkNanos(LockSupport.java:196)&lt;/div&gt;
+&lt;div class="raw"&gt;	at java.util.concurrent.locks.AbstractQueuedSynchronizer$ConditionObject.awaitNanos(AbstractQueuedSynchronizer.java:2025)&lt;/div&gt;
+&lt;div class="raw"&gt;	at java.util.concurrent.DelayQueue.take(DelayQueue.java:164)&lt;/div&gt;
+&lt;div class="raw"&gt;	at java.util.concurrent.ScheduledThreadPoolExecutor$DelayedWorkQueue.take(ScheduledThreadPoolExecutor.java:609)&lt;/div&gt;
+&lt;div class="raw"&gt;	at java.util.concurrent.ScheduledThreadPoolExecutor$DelayedWorkQueue.take(ScheduledThreadPoolExecutor.java:602)&lt;/div&gt;
+&lt;div class="raw"&gt;	at java.util.concurrent.ThreadPoolExecutor.getTask(ThreadPoolExecutor.java:957)&lt;/div&gt;
+&lt;div class="raw"&gt;	at java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:917)&lt;/div&gt;
+&lt;div class="raw"&gt;	at java.lang.Thread.run(Thread.java:695)&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class="threadgroup"&gt;
+&lt;div class="threadcount"&gt;&lt;/div&gt;
+&lt;div class="raw" id="11c141800"&gt;"FocusManager timer": daemon, in Object.wait()&lt;/div&gt;
+&lt;div class="raw" id="112bce000"&gt;"Shared SimpleTimer": daemon, in Object.wait()&lt;/div&gt;
+&lt;div class="raw" id="11c3f7000"&gt;"Timer-0": daemon, in Object.wait()&lt;/div&gt;
+&lt;div class="raw"&gt;	at java.lang.Object.wait(Native Method)&lt;/div&gt;
+&lt;div class="raw"&gt;	at java.lang.Object.wait(Object.java:485)&lt;/div&gt;
+&lt;div class="raw"&gt;	at java.util.TimerThread.mainLoop(Timer.java:483)&lt;/div&gt;
+&lt;div class="raw"&gt;	at java.util.TimerThread.run(Timer.java:462)&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class="threadgroup"&gt;
+&lt;div class="threadcount"&gt;&lt;/div&gt;
+&lt;div class="raw" id="1111c3000"&gt;"Alarm pool(shared)": daemon, waiting on condition&lt;/div&gt;
+&lt;div class="raw" id="10555a800"&gt;"FS Synchronizer": daemon, waiting on condition&lt;/div&gt;
+&lt;div class="raw" id="11299f800"&gt;"RefCountingStorage write content helper": waiting on condition&lt;/div&gt;
+&lt;div class="raw"&gt;	at sun.misc.Unsafe.park(Native Method)&lt;/div&gt;
+&lt;div class="raw"&gt;	at java.util.concurrent.locks.LockSupport.park(LockSupport.java:156)&lt;/div&gt;
+&lt;div class="raw"&gt;	at java.util.concurrent.locks.AbstractQueuedSynchronizer$ConditionObject.await(AbstractQueuedSynchronizer.java:1987)&lt;/div&gt;
+&lt;div class="raw"&gt;	at java.util.concurrent.LinkedBlockingQueue.take(LinkedBlockingQueue.java:399)&lt;/div&gt;
+&lt;div class="raw"&gt;	at java.util.concurrent.ThreadPoolExecutor.getTask(ThreadPoolExecutor.java:957)&lt;/div&gt;
+&lt;div class="raw"&gt;	at java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:917)&lt;/div&gt;
+&lt;div class="raw"&gt;	at java.lang.Thread.run(Thread.java:695)&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class="threadgroup"&gt;
+&lt;div class="threadcount"&gt;&lt;/div&gt;
+&lt;div class="raw" id="11296d000"&gt;"ApplicationImpl pooled thread 1": waiting on condition&lt;/div&gt;
+&lt;div class="raw" id="112836000"&gt;"ApplicationImpl pooled thread 2": waiting on condition&lt;/div&gt;
+&lt;div class="raw"&gt;	at java.lang.Thread.sleep(Native Method)&lt;/div&gt;
+&lt;div class="raw"&gt;	at com.intellij.util.TimeoutUtil.sleep(TimeoutUtil.java:58)&lt;/div&gt;
+&lt;div class="raw"&gt;	at com.intellij.util.io.BaseDataReader.doRun(BaseDataReader.java:105)&lt;/div&gt;
+&lt;div class="raw"&gt;	at com.intellij.util.io.BaseDataReader$1.run(BaseDataReader.java:46)&lt;/div&gt;
+&lt;div class="raw"&gt;	at com.intellij.openapi.application.impl.ApplicationImpl$8.run(ApplicationImpl.java:419)&lt;/div&gt;
+&lt;div class="raw"&gt;	at java.util.concurrent.Executors$RunnableAdapter.call(Executors.java:439)&lt;/div&gt;
+&lt;div class="raw"&gt;	at java.util.concurrent.FutureTask$Sync.innerRun(FutureTask.java:303)&lt;/div&gt;
+&lt;div class="raw"&gt;	at java.util.concurrent.FutureTask.run(FutureTask.java:138)&lt;/div&gt;
+&lt;div class="raw"&gt;	at java.util.concurrent.ThreadPoolExecutor$Worker.runTask(ThreadPoolExecutor.java:895)&lt;/div&gt;
+&lt;div class="raw"&gt;	at java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:918)&lt;/div&gt;
+&lt;div class="raw"&gt;	at java.lang.Thread.run(Thread.java:695)&lt;/div&gt;
+&lt;div class="raw"&gt;	at com.intellij.openapi.application.impl.ApplicationImpl$1$1.run(ApplicationImpl.java:149)&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class="threadgroup"&gt;
+&lt;div class="threadcount"&gt;&lt;/div&gt;
+&lt;div class="raw" id="11c45e800"&gt;"Document commit thread": in Object.wait()&lt;/div&gt;
+&lt;div class="raw"&gt;	at java.lang.Object.wait(Native Method)&lt;/div&gt;
+&lt;div class="raw"&gt;	at java.lang.Object.wait(Object.java:485)&lt;/div&gt;
+&lt;div class="raw"&gt;	at com.intellij.psi.impl.DocumentCommitThread.pollQueue(DocumentCommitThread.java:262)&lt;/div&gt;
+&lt;div class="raw"&gt;	at com.intellij.psi.impl.DocumentCommitThread.run(DocumentCommitThread.java:238)&lt;/div&gt;
+&lt;div class="raw"&gt;	at java.lang.Thread.run(Thread.java:695)&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class="threadgroup"&gt;
+&lt;div class="threadcount"&gt;&lt;/div&gt;
+&lt;div class="raw" id="10c2dc800"&gt;"AWT-EventQueue-1 0.8.14#AI-135.1538390, eap:true": in Object.wait()&lt;/div&gt;
+&lt;div class="raw"&gt;	at java.lang.Object.wait(Native Method)&lt;/div&gt;
+&lt;div class="raw"&gt;	at java.lang.Object.wait(Object.java:485)&lt;/div&gt;
+&lt;div class="raw"&gt;	at java.awt.EventQueue.getNextEvent(EventQueue.java:558)&lt;/div&gt;
+&lt;div class="raw"&gt;	at java.awt.EventDispatchThread.pumpOneEventForFilters(EventDispatchThread.java:263)&lt;/div&gt;
+&lt;div class="raw"&gt;	at java.awt.EventDispatchThread.pumpEventsForFilter(EventDispatchThread.java:211)&lt;/div&gt;
+&lt;div class="raw"&gt;	at java.awt.EventDispatchThread.pumpEventsForHierarchy(EventDispatchThread.java:201)&lt;/div&gt;
+&lt;div class="raw"&gt;	at java.awt.EventDispatchThread.pumpEvents(EventDispatchThread.java:196)&lt;/div&gt;
+&lt;div class="raw"&gt;	at java.awt.EventDispatchThread.pumpEvents(EventDispatchThread.java:188)&lt;/div&gt;
+&lt;div class="raw"&gt;	at java.awt.EventDispatchThread.run(EventDispatchThread.java:122)&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class="threadgroup"&gt;
+&lt;div class="threadcount"&gt;&lt;/div&gt;
+&lt;div class="raw" id="11c049800"&gt;"ApplicationImpl pooled thread 0": in Object.wait()&lt;/div&gt;
+&lt;div class="raw"&gt;	at java.lang.Object.wait(Native Method)&lt;/div&gt;
+&lt;div class="raw"&gt;	at java.lang.Object.wait(Object.java:485)&lt;/div&gt;
+&lt;div class="raw"&gt;	at java.lang.UNIXProcess.waitFor(UNIXProcess.java:115)&lt;/div&gt;
+&lt;div class="raw"&gt;	at com.intellij.execution.process.ProcessWaitFor$1.run(ProcessWaitFor.java:30)&lt;/div&gt;
+&lt;div class="raw"&gt;	at com.intellij.openapi.application.impl.ApplicationImpl$8.run(ApplicationImpl.java:419)&lt;/div&gt;
+&lt;div class="raw"&gt;	at java.util.concurrent.Executors$RunnableAdapter.call(Executors.java:439)&lt;/div&gt;
+&lt;div class="raw"&gt;	at java.util.concurrent.FutureTask$Sync.innerRun(FutureTask.java:303)&lt;/div&gt;
+&lt;div class="raw"&gt;	at java.util.concurrent.FutureTask.run(FutureTask.java:138)&lt;/div&gt;
+&lt;div class="raw"&gt;	at java.util.concurrent.ThreadPoolExecutor$Worker.runTask(ThreadPoolExecutor.java:895)&lt;/div&gt;
+&lt;div class="raw"&gt;	at java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:918)&lt;/div&gt;
+&lt;div class="raw"&gt;	at java.lang.Thread.run(Thread.java:695)&lt;/div&gt;
+&lt;div class="raw"&gt;	at com.intellij.openapi.application.impl.ApplicationImpl$1$1.run(ApplicationImpl.java:149)&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class="threadgroup"&gt;
+&lt;div class="threadcount"&gt;&lt;/div&gt;
+&lt;div class="raw" id="111018800"&gt;"Reference Handler": daemon, in Object.wait()&lt;/div&gt;
+&lt;div class="raw"&gt;	at java.lang.Object.wait(Native Method)&lt;/div&gt;
+&lt;div class="raw"&gt;	at java.lang.Object.wait(Object.java:485)&lt;/div&gt;
+&lt;div class="raw"&gt;	at java.lang.ref.Reference$ReferenceHandler.run(Reference.java:116)&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class="threadgroup"&gt;
+&lt;div class="threadcount"&gt;&lt;/div&gt;
+&lt;div class="raw" id="10524b800"&gt;"AWT-Shutdown": in Object.wait()&lt;/div&gt;
+&lt;div class="raw"&gt;	at java.lang.Object.wait(Native Method)&lt;/div&gt;
+&lt;div class="raw"&gt;	at java.lang.Object.wait(Object.java:485)&lt;/div&gt;
+&lt;div class="raw"&gt;	at sun.awt.AWTAutoShutdown.run(AWTAutoShutdown.java:265)&lt;/div&gt;
+&lt;div class="raw"&gt;	at java.lang.Thread.run(Thread.java:695)&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class="threadgroup"&gt;
+&lt;div class="threadcount"&gt;&lt;/div&gt;
+&lt;div class="raw" id="111019800"&gt;"Finalizer": daemon, in Object.wait()&lt;/div&gt;
+&lt;div class="raw"&gt;	at java.lang.Object.wait(Native Method)&lt;/div&gt;
+&lt;div class="raw"&gt;	at java.lang.ref.ReferenceQueue.remove(ReferenceQueue.java:118)&lt;/div&gt;
+&lt;div class="raw"&gt;	at java.lang.ref.ReferenceQueue.remove(ReferenceQueue.java:134)&lt;/div&gt;
+&lt;div class="raw"&gt;	at java.lang.ref.Finalizer$FinalizerThread.run(Finalizer.java:171)&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class="threadgroup"&gt;
+&lt;div class="threadcount"&gt;&lt;/div&gt;
+&lt;div class="raw" id="10c261800"&gt;"Java2D Disposer": daemon, in Object.wait()&lt;/div&gt;
+&lt;div class="raw"&gt;	at java.lang.Object.wait(Native Method)&lt;/div&gt;
+&lt;div class="raw"&gt;	at java.lang.ref.ReferenceQueue.remove(ReferenceQueue.java:118)&lt;/div&gt;
+&lt;div class="raw"&gt;	at java.lang.ref.ReferenceQueue.remove(ReferenceQueue.java:134)&lt;/div&gt;
+&lt;div class="raw"&gt;	at sun.java2d.Disposer.run(Disposer.java:125)&lt;/div&gt;
+&lt;div class="raw"&gt;	at java.lang.Thread.run(Thread.java:695)&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class="threadgroup"&gt;
+&lt;div class="threadcount"&gt;&lt;/div&gt;
+&lt;div class="raw" id="105667800"&gt;"RMI Reaper": in Object.wait()&lt;/div&gt;
+&lt;div class="raw"&gt;	at java.lang.Object.wait(Native Method)&lt;/div&gt;
+&lt;div class="raw"&gt;	at java.lang.ref.ReferenceQueue.remove(ReferenceQueue.java:118)&lt;/div&gt;
+&lt;div class="raw"&gt;	at java.lang.ref.ReferenceQueue.remove(ReferenceQueue.java:134)&lt;/div&gt;
+&lt;div class="raw"&gt;	at sun.rmi.transport.ObjectTable$Reaper.run(ObjectTable.java:333)&lt;/div&gt;
+&lt;div class="raw"&gt;	at java.lang.Thread.run(Thread.java:695)&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class="threadgroup"&gt;
+&lt;div class="threadcount"&gt;&lt;/div&gt;
+&lt;div class="raw" id="10566c000"&gt;"RMI RenewClean-[localhost:49463]": daemon, in Object.wait()&lt;/div&gt;
+&lt;div class="raw"&gt;	at java.lang.Object.wait(Native Method)&lt;/div&gt;
+&lt;div class="raw"&gt;	at java.lang.ref.ReferenceQueue.remove(ReferenceQueue.java:118)&lt;/div&gt;
+&lt;div class="raw"&gt;	at sun.rmi.transport.DGCClient$EndpointEntry$RenewCleanThread.run(DGCClient.java:516)&lt;/div&gt;
+&lt;div class="raw"&gt;	at java.lang.Thread.run(Thread.java:695)&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class="threadgroup"&gt;
+&lt;div class="threadcount"&gt;&lt;/div&gt;
+&lt;div class="raw" id="105479800"&gt;"TimerQueue": daemon, in Object.wait()&lt;/div&gt;
+&lt;div class="raw"&gt;	at java.lang.Object.wait(Native Method)&lt;/div&gt;
+&lt;div class="raw"&gt;	at javax.swing.TimerQueue.postExpiredTimers(TimerQueue.java:214)&lt;/div&gt;
+&lt;div class="raw"&gt;	at javax.swing.TimerQueue.run(TimerQueue.java:230)&lt;/div&gt;
+&lt;div class="raw"&gt;	at java.lang.Thread.run(Thread.java:695)&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class="threadgroup"&gt;
+&lt;div class="threadcount"&gt;&lt;/div&gt;
+&lt;div class="raw" id="112a4e800"&gt;"GC Daemon": daemon, in Object.wait()&lt;/div&gt;
+&lt;div class="raw"&gt;	at java.lang.Object.wait(Native Method)&lt;/div&gt;
+&lt;div class="raw"&gt;	at sun.misc.GC$Daemon.run(GC.java:100)&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class="threadgroup"&gt;
+&lt;div class="threadcount"&gt;&lt;/div&gt;
+&lt;div class="raw" id="11c031000"&gt;"StoreRefreshStatusThread": daemon, waiting on condition&lt;/div&gt;
+&lt;div class="raw"&gt;	at java.lang.Thread.sleep(Native Method)&lt;/div&gt;
+&lt;div class="raw"&gt;	at com.intellij.util.TimeoutUtil.sleep(TimeoutUtil.java:58)&lt;/div&gt;
+&lt;div class="raw"&gt;	at com.intellij.openapi.vfs.impl.local.LocalFileSystemImpl$StoreRefreshStatusThread.run(LocalFileSystemImpl.java:355)&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class="threadgroup"&gt;
+&lt;div class="threadcount"&gt;&lt;/div&gt;
+&lt;div class="raw" id="11c048800"&gt;"process reaper": daemon, runnable&lt;/div&gt;
+&lt;div class="raw"&gt;	at &lt;a class="internal" href="#java.lang.UNIXProcess.waitForProcessExit(Native%20Method)"&gt;java.lang.UNIXProcess.waitForProcessExit(Native Method)&lt;/a&gt;&lt;/div&gt;
+&lt;div class="raw"&gt;	at java.lang.UNIXProcess.access$900(UNIXProcess.java:17)&lt;/div&gt;
+&lt;div class="raw"&gt;	at java.lang.UNIXProcess$2$1.run(UNIXProcess.java:86)&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class="threadgroup"&gt;
+&lt;div class="threadcount"&gt;&lt;/div&gt;
+&lt;div class="raw" id="105001800"&gt;"Lock thread": runnable&lt;/div&gt;
+&lt;div class="raw"&gt;	at &lt;a class="internal" href="#java.net.PlainSocketImpl.socketAccept(Native%20Method)"&gt;java.net.PlainSocketImpl.socketAccept(Native Method)&lt;/a&gt;&lt;/div&gt;
+&lt;div class="raw"&gt;	at java.net.PlainSocketImpl.accept(PlainSocketImpl.java:439)&lt;/div&gt;
+&lt;div class="raw"&gt;	at java.net.ServerSocket.implAccept(ServerSocket.java:468)&lt;/div&gt;
+&lt;div class="raw"&gt;	at java.net.ServerSocket.accept(ServerSocket.java:436)&lt;/div&gt;
+&lt;div class="raw"&gt;	at com.intellij.idea.SocketLock$MyRunnable.run(SocketLock.java:224)&lt;/div&gt;
+&lt;div class="raw"&gt;	at java.lang.Thread.run(Thread.java:695)&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class="threadgroup"&gt;
+&lt;div class="threadcount"&gt;&lt;/div&gt;
+&lt;div class="raw" id="11c319800"&gt;"RMI TCP Accept-0": daemon, runnable&lt;/div&gt;
+&lt;div class="raw"&gt;	at &lt;a class="internal" href="#java.net.PlainSocketImpl.socketAccept(Native%20Method)"&gt;java.net.PlainSocketImpl.socketAccept(Native Method)&lt;/a&gt;&lt;/div&gt;
+&lt;div class="raw"&gt;	at java.net.PlainSocketImpl.accept(PlainSocketImpl.java:439)&lt;/div&gt;
+&lt;div class="raw"&gt;	at java.net.ServerSocket.implAccept(ServerSocket.java:468)&lt;/div&gt;
+&lt;div class="raw"&gt;	at java.net.ServerSocket.accept(ServerSocket.java:436)&lt;/div&gt;
+&lt;div class="raw"&gt;	at sun.rmi.transport.tcp.TCPTransport$AcceptLoop.executeAcceptLoop(TCPTransport.java:369)&lt;/div&gt;
+&lt;div class="raw"&gt;	at sun.rmi.transport.tcp.TCPTransport$AcceptLoop.run(TCPTransport.java:341)&lt;/div&gt;
+&lt;div class="raw"&gt;	at java.lang.Thread.run(Thread.java:695)&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class="threadgroup"&gt;
+&lt;div class="threadcount"&gt;&lt;/div&gt;
+&lt;div class="raw" id="11c652000"&gt;"ApplicationImpl pooled thread 32": daemon, waiting on condition&lt;/div&gt;
+&lt;div class="raw"&gt;	at sun.misc.Unsafe.park(Native Method)&lt;/div&gt;
+&lt;div class="raw"&gt;	at java.util.concurrent.locks.LockSupport.parkNanos(LockSupport.java:196)&lt;/div&gt;
+&lt;div class="raw"&gt;	at java.util.concurrent.SynchronousQueue$TransferStack.awaitFulfill(SynchronousQueue.java:424)&lt;/div&gt;
+&lt;div class="raw"&gt;	at java.util.concurrent.SynchronousQueue$TransferStack.transfer(SynchronousQueue.java:323)&lt;/div&gt;
+&lt;div class="raw"&gt;	at java.util.concurrent.SynchronousQueue.poll(SynchronousQueue.java:874)&lt;/div&gt;
+&lt;div class="raw"&gt;	at java.util.concurrent.ThreadPoolExecutor.getTask(ThreadPoolExecutor.java:955)&lt;/div&gt;
+&lt;div class="raw"&gt;	at java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:917)&lt;/div&gt;
+&lt;div class="raw"&gt;	at java.lang.Thread.run(Thread.java:695)&lt;/div&gt;
+&lt;div class="raw"&gt;	at com.intellij.openapi.application.impl.ApplicationImpl$1$1.run(ApplicationImpl.java:149)&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class="threadgroup"&gt;
+&lt;div class="threadcount"&gt;&lt;/div&gt;
+&lt;div class="raw" id="11c10b800"&gt;"Performance watcher": waiting on condition&lt;/div&gt;
+&lt;div class="raw"&gt;	at sun.misc.Unsafe.park(Native Method)&lt;/div&gt;
+&lt;div class="raw"&gt;	at java.util.concurrent.locks.LockSupport.parkNanos(LockSupport.java:196)&lt;/div&gt;
+&lt;div class="raw"&gt;	at java.util.concurrent.locks.AbstractQueuedSynchronizer.doAcquireSharedNanos(AbstractQueuedSynchronizer.java:1011)&lt;/div&gt;
+&lt;div class="raw"&gt;	at java.util.concurrent.locks.AbstractQueuedSynchronizer.tryAcquireSharedNanos(AbstractQueuedSynchronizer.java:1303)&lt;/div&gt;
+&lt;div class="raw"&gt;	at java.util.concurrent.Semaphore.tryAcquire(Semaphore.java:383)&lt;/div&gt;
+&lt;div class="raw"&gt;	at com.intellij.diagnostic.PerformanceWatcher.checkEDTResponsiveness(PerformanceWatcher.java:158)&lt;/div&gt;
+&lt;div class="raw"&gt;	at com.intellij.diagnostic.PerformanceWatcher.access$100(PerformanceWatcher.java:40)&lt;/div&gt;
+&lt;div class="raw"&gt;	at com.intellij.diagnostic.PerformanceWatcher$2.run(PerformanceWatcher.java:113)&lt;/div&gt;
+&lt;div class="raw"&gt;	at java.lang.Thread.run(Thread.java:695)&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class="threadgroup"&gt;
+&lt;div class="threadcount"&gt;&lt;/div&gt;
+&lt;div class="raw" id="12af67800"&gt;"JobScheduler FJ pool 0/4": daemon, waiting on condition&lt;/div&gt;
+&lt;div class="raw"&gt;	at sun.misc.Unsafe.park(Native Method)&lt;/div&gt;
+&lt;div class="raw"&gt;	at jsr166e.ForkJoinPool.awaitWork(ForkJoinPool.java:1756)&lt;/div&gt;
+&lt;div class="raw"&gt;	at jsr166e.ForkJoinPool.scan(ForkJoinPool.java:1694)&lt;/div&gt;
+&lt;div class="raw"&gt;	at jsr166e.ForkJoinPool.runWorker(ForkJoinPool.java:1642)&lt;/div&gt;
+&lt;div class="raw"&gt;	at jsr166e.ForkJoinWorkerThread.run(ForkJoinWorkerThread.java:109)&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class="threadgroup"&gt;
+&lt;div class="threadcount"&gt;&lt;/div&gt;
+&lt;div class="raw" id="11c386000"&gt;"ApplicationImpl pooled thread 9": daemon, runnable&lt;/div&gt;
+&lt;div class="raw"&gt;	at &lt;a class="internal" href="#sun.nio.ch.KQueueArrayWrapper.kevent0(Native%20Method)"&gt;sun.nio.ch.KQueueArrayWrapper.kevent0(Native Method)&lt;/a&gt;&lt;/div&gt;
+&lt;div class="raw"&gt;	at sun.nio.ch.KQueueArrayWrapper.poll(KQueueArrayWrapper.java:136)&lt;/div&gt;
+&lt;div class="raw"&gt;	at sun.nio.ch.KQueueSelectorImpl.doSelect(KQueueSelectorImpl.java:69)&lt;/div&gt;
+&lt;div class="raw"&gt;	at sun.nio.ch.SelectorImpl.lockAndDoSelect(SelectorImpl.java:69)&lt;/div&gt;
+&lt;div class="raw"&gt;	at sun.nio.ch.SelectorImpl.select(SelectorImpl.java:80)&lt;/div&gt;
+&lt;div class="raw"&gt;	at io.netty.channel.nio.NioEventLoop.select(NioEventLoop.java:618)&lt;/div&gt;
+&lt;div class="raw"&gt;	at io.netty.channel.nio.NioEventLoop.run(NioEventLoop.java:306)&lt;/div&gt;
+&lt;div class="raw"&gt;	at io.netty.util.concurrent.SingleThreadEventExecutor$5.run(SingleThreadEventExecutor.java:824)&lt;/div&gt;
+&lt;div class="raw"&gt;	at com.intellij.openapi.application.impl.ApplicationImpl$8.run(ApplicationImpl.java:419)&lt;/div&gt;
+&lt;div class="raw"&gt;	at java.util.concurrent.Executors$RunnableAdapter.call(Executors.java:439)&lt;/div&gt;
+&lt;div class="raw"&gt;	at java.util.concurrent.FutureTask$Sync.innerRun(FutureTask.java:303)&lt;/div&gt;
+&lt;div class="raw"&gt;	at java.util.concurrent.FutureTask.run(FutureTask.java:138)&lt;/div&gt;
+&lt;div class="raw"&gt;	at java.util.concurrent.ThreadPoolExecutor$Worker.runTask(ThreadPoolExecutor.java:895)&lt;/div&gt;
+&lt;div class="raw"&gt;	at java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:918)&lt;/div&gt;
+&lt;div class="raw"&gt;	at java.lang.Thread.run(Thread.java:695)&lt;/div&gt;
+&lt;div class="raw"&gt;	at com.intellij.openapi.application.impl.ApplicationImpl$1$1.run(ApplicationImpl.java:149)&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class="threadgroup"&gt;
+&lt;div class="threadcount"&gt;18 threads with this stack:&lt;/div&gt;
+&lt;div class="raw" id="1052d6000"&gt;"AWT-AppKit": daemon, runnable&lt;/div&gt;
+&lt;div class="raw" id="1115e9000"&gt;"Attach Listener": daemon, waiting on condition&lt;/div&gt;
+&lt;div class="raw" id="105058800"&gt;"C2 CompilerThread0": daemon, waiting on condition&lt;/div&gt;
+&lt;div class="raw" id="105059000"&gt;"C2 CompilerThread1": daemon, waiting on condition&lt;/div&gt;
+&lt;div class="raw" id="10c07c000"&gt;"Concurrent Mark-Sweep GC Thread": runnable&lt;/div&gt;
+&lt;div class="raw" id="111090800"&gt;"DestroyJavaVM": waiting on condition&lt;/div&gt;
+&lt;div class="raw" id="105002000"&gt;"Exception Catcher Thread": runnable&lt;/div&gt;
+&lt;div class="raw" id="0x00007fddb280d000"&gt;"GC task thread#7 (ParallelGC)": runnable&lt;/div&gt;
+&lt;div class="raw" id="0x00007fddb280d000"&gt;"GC task thread#8 (ParallelGC)": runnable&lt;/div&gt;
+&lt;div class="raw" id="10c000000"&gt;"Gang worker#0 (Parallel GC Threads)": runnable&lt;/div&gt;
+&lt;div class="raw" id="105002800"&gt;"Gang worker#1 (Parallel GC Threads)": runnable&lt;/div&gt;
+&lt;div class="raw" id="105003800"&gt;"Gang worker#2 (Parallel GC Threads)": runnable&lt;/div&gt;
+&lt;div class="raw" id="10c001000"&gt;"Gang worker#3 (Parallel GC Threads)": runnable&lt;/div&gt;
+&lt;div class="raw" id="10505a000"&gt;"Low Memory Detector": daemon, runnable&lt;/div&gt;
+&lt;div class="raw" id="105057800"&gt;"Signal Dispatcher": daemon, runnable&lt;/div&gt;
+&lt;div class="raw" id="10c0a2800"&gt;"Surrogate Locker Thread (Concurrent GC)": daemon, waiting on condition&lt;/div&gt;
+&lt;div class="raw" id="10506b800"&gt;"VM Periodic Task Thread": waiting on condition&lt;/div&gt;
+&lt;div class="raw" id="105047000"&gt;"VM Thread": runnable&lt;/div&gt;
+&lt;div class="raw"&gt;	&amp;lt;empty stack&amp;gt;&lt;/div&gt;
+&lt;/div&gt;
 </pre>
     <pre id="sample-ignored" style="display: none;">2 	- locked <7c1f0b388> (a javax.swing.TimerQueue)
 2 	- parking to wait for  <7c1da4188> (a java.util.concurrent.locks.AbstractQueuedSynchronizer$ConditionObject)
