@@ -20,6 +20,7 @@ limitations under the License.
 /* global Analyzer */
 /* global document */
 /* global stringToId */
+/* global Synchronizer */
 /* global StringCounter */
 
 QUnit.test( "thread header 1", function(assert) {
@@ -455,4 +456,11 @@ QUnit.test( "Analyzer.stackToHtml()", function(assert) {
         '<div class="raw">	&lt;empty stack&gt;</div>',
         '',
     ]);
+});
+
+QUnit.test("Synchronizer class name", function(assert) {
+    assert.equal(new Synchronizer("x", "java.lang.Foo").getPrettyClassName(), "Foo");
+    assert.equal(new Synchronizer("x", "java.lang.Class for java.lang.Foo").getPrettyClassName(), "Foo.class");
+    assert.equal(new Synchronizer("x", "Foo").getPrettyClassName(), "Foo");
+    assert.equal(new Synchronizer("x", undefined).getPrettyClassName(), undefined);
 });

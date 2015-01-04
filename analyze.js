@@ -328,17 +328,33 @@ function StringCounter() {
 }
 
 function Synchronizer(id, className) {
+    this.getPrettyClassName = function() {
+        if (this._className === undefined) {
+            return undefined;
+        }
+
+        var CLASS_FOR = /^java.lang.Class for .*\.([^.]*)$/;
+        var match = this._className.match(CLASS_FOR);
+        if (match !== null) {
+            return match[1] + ".class";
+        }
+
+        var PACKAGE = /^.*\.([^.]*)$/;
+        match = this._className.match(PACKAGE);
+        if (match !== null) {
+            return match[1];
+        }
+
+        return this._className;
+    };
+
     this.toHtmlTableRow = function() {
         var html = "";
         html += "<tr>";
 
         html += '<td class="synchronizer">';
         html += '<div class="synchronizer">';
-        // FIXME: How should we handle class names like
-        //   "java.lang.Class for
-        //   org.netbeans.modules.profiler.ProfilerControlPanel2"?
-        // FIXME: Strip package names from class names
-        html += this._id + "<br>" + this._className;
+        html += this._id + "<br>" + this.getPrettyClassName();
         html += "</div>";
         html += "</td>";
 

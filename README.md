@@ -19,9 +19,12 @@ the copyright belongs to Spotify AB.
   synchronization thingie(s) it is involved with (if any).
 
 * If one thread is holding multiple locks, this should be noted in the
-synchronizers section for all involved locks. Add a "Related locks"
-header to the involved locks, listing which the other locks are held
+synchronizers section for all involved locks. Add a "Held with" header
+to the involved locks, listing which the other locks are held
 simultaneously with this one.
+
+* Make up new lock identifiers using the prettyClassName() +
+counter. These should be more human-readable than the raw pointers.
 
 * Add a table of contents before the first section, making sure only
 the visible sections are in it.
