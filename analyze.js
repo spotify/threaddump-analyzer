@@ -187,7 +187,7 @@ function Thread(line) {
         return decorateStackFrames(this.frames).join('\n');
     };
 
-    this.toHeaderHTML = function() {
+    this.toHeaderHtml = function() {
         var headerHTML = '<span class="raw">';
         if (this.group !== undefined) {
             headerHTML += '"' + htmlEscape(this.group) + '"/';
@@ -560,7 +560,7 @@ function Analyzer(text) {
                 asHtml += '<div id="' +
                     thread.tid +
                     '">' +
-                    thread.toHeaderHTML() +
+                    thread.toHeaderHtml() +
                     '</div>\n';
             }
 

@@ -24,63 +24,63 @@ limitations under the License.
 
 QUnit.test( "thread header 1", function(assert) {
     var header = '"thread name" prio=10 tid=0x00007f16a118e000 nid=0x6e5a runnable [0x00007f18b91d0000]';
-    assert.equal(new Thread(header).toHeaderHTML(), '<span class="raw">"thread name": runnable</span>');
+    assert.equal(new Thread(header).toHeaderHtml(), '<span class="raw">"thread name": runnable</span>');
 });
 
 QUnit.test( "thread header 2", function(assert) {
     var header = '"ApplicationImpl pooled thread 1" prio=4 tid=11296d000 nid=0x118a84000 waiting on condition [118a83000]';
-    assert.equal(new Thread(header).toHeaderHTML(), '<span class="raw">"ApplicationImpl pooled thread 1": waiting on condition</span>');
+    assert.equal(new Thread(header).toHeaderHtml(), '<span class="raw">"ApplicationImpl pooled thread 1": waiting on condition</span>');
 });
 
 QUnit.test( "thread header 3", function(assert) {
     var header = '"Gang worker#1 (Parallel GC Threads)" prio=9 tid=105002800 nid=0x10bc88000 runnable';
-    assert.equal(new Thread(header).toHeaderHTML(), '<span class="raw">"Gang worker#1 (Parallel GC Threads)": runnable</span>');
+    assert.equal(new Thread(header).toHeaderHtml(), '<span class="raw">"Gang worker#1 (Parallel GC Threads)": runnable</span>');
 });
 
 QUnit.test( "thread header 4", function(assert) {
     var header = '"Attach Listener" #10 daemon prio=9 os_prio=31 tid=0x00007fddb280e000 nid=0x380b waiting on condition [0x0000000000000000]';
-    assert.equal(new Thread(header).toHeaderHTML(), '<span class="raw">"Attach Listener": daemon, waiting on condition</span>');
+    assert.equal(new Thread(header).toHeaderHtml(), '<span class="raw">"Attach Listener": daemon, waiting on condition</span>');
 });
 
 QUnit.test( "thread header 5", function(assert) {
     var header = '"Attach Listener" #10 daemon prio=9 os_prio=31 tid=0x00007fddb280e000 nid=0x380b waiting on condition';
-    assert.equal(new Thread(header).toHeaderHTML(), '<span class="raw">"Attach Listener": daemon, waiting on condition</span>');
+    assert.equal(new Thread(header).toHeaderHtml(), '<span class="raw">"Attach Listener": daemon, waiting on condition</span>');
 });
 
 QUnit.test( "thread header 6", function(assert) {
     var header = '"VM Thread" os_prio=31 tid=0x00007fddb2049800 nid=0x3103 runnable';
-    assert.equal(new Thread(header).toHeaderHTML(), '<span class="raw">"VM Thread": runnable</span>');
+    assert.equal(new Thread(header).toHeaderHtml(), '<span class="raw">"VM Thread": runnable</span>');
 });
 
 QUnit.test( "thread header 7", function(assert) {
     var header = '"Queued build chains changes collector 8" daemon group="main" prio=5 tid=431,909 nid=431,909 waiting ';
-    assert.equal(new Thread(header).toHeaderHTML(),
+    assert.equal(new Thread(header).toHeaderHtml(),
                  '<span class="raw">"main"/"Queued build chains changes collector 8": daemon, waiting</span>');
 });
 
 QUnit.test( "thread header 8", function(assert) {
     var header = '"Attach Listener" #10 prio=9 os_prio=31 tid=0x00007fddb280e000 nid=0x380b waiting on condition [0x0000000000000000]';
-    assert.equal(new Thread(header).toHeaderHTML(), '<span class="raw">"Attach Listener": waiting on condition</span>');
+    assert.equal(new Thread(header).toHeaderHtml(), '<span class="raw">"Attach Listener": waiting on condition</span>');
 });
 
 QUnit.test( "daemon thread", function(assert) {
     var header = '"thread name" daemon prio=10 tid=0x00007f16a118e000 nid=0x6e5a runnable [0x00007f18b91d0000]';
-    assert.equal(new Thread(header).toHeaderHTML(), '<span class="raw">"thread name": daemon, runnable</span>');
+    assert.equal(new Thread(header).toHeaderHtml(), '<span class="raw">"thread name": daemon, runnable</span>');
 });
 
 QUnit.test( "vm thread", function(assert) {
     var header = '"VM Periodic Task Thread" prio=10 tid=0x00007f1af00c9800 nid=0x3c2c waiting on condition ';
-    assert.equal(new Thread(header).toHeaderHTML(), '<span class="raw">"VM Periodic Task Thread": waiting on condition</span>');
+    assert.equal(new Thread(header).toHeaderHtml(), '<span class="raw">"VM Periodic Task Thread": waiting on condition</span>');
 });
 
 QUnit.test( "sleeping daemon thread", function(assert) {
     var header = '"Store spotify-uuid Spool Thread" daemon prio=10 tid=0x00007f1a16aa0800 nid=0x3f5b sleeping[0x00007f199997a000]';
-    assert.equal(new Thread(header).toHeaderHTML(), '<span class="raw">"Store spotify-uuid Spool Thread": daemon, sleeping</span>');
+    assert.equal(new Thread(header).toHeaderHtml(), '<span class="raw">"Store spotify-uuid Spool Thread": daemon, sleeping</span>');
 });
 
 QUnit.test( "sleeping thread", function(assert) {
     var header = '"git@github.com:caoliang2598/ta-zelda-test.git#master"}; 09:09:58 Task started; VCS Periodical executor 39" prio=10 tid=0x00007f1728056000 nid=0x1347 sleeping[0x00007f169cdcb000]';
-    assert.equal(new Thread(header).toHeaderHTML(),
+    assert.equal(new Thread(header).toHeaderHtml(),
                  '<span class="raw">"git@github.com:caoliang2598/ta-zelda-test.git#master"}; 09:09:58 Task started; VCS Periodical executor 39": sleeping</span>');
 });
 
