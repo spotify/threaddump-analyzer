@@ -35,7 +35,7 @@ gulp.task('jslint', function() {
 });
 
 gulp.task('htmllint', function() {
-    return gulp.src(["*.html", "!test.html"])
+    return gulp.src(["*.html"])
         .pipe(htmlhint())
         .pipe(htmlhint.reporter())
         .pipe(htmlhint.failReporter());

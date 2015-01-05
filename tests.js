@@ -130,7 +130,7 @@ QUnit.test( "multiline thread name", function(assert) {
         "<h2>1 threads found</h2>",
         "<div class=\"threadgroup\">",
         "<div class=\"threadcount\"></div>",
-        '<div id="0x00007f16a118e000"><span class="raw">"line 1, line 2": runnable</span></div>',
+        '<div id="thread-0x00007f16a118e000"><span class="raw">"line 1, line 2": runnable</span></div>',
         "<div class=\"raw\">	&lt;empty stack&gt;</div>",
         "</div>",
         ""
@@ -358,15 +358,9 @@ QUnit.test( "thread stack", function(assert) {
     ]);
 });
 
-function unescapeHtml(escaped) {
-  var e = document.createElement('div');
-  e.innerHTML = escaped;
-  return e.childNodes.length === 0 ? "" : e.childNodes[0].nodeValue;
-}
-
 QUnit.test( "full dump analysis", function(assert) {
     var input = document.getElementById("sample-input").innerHTML;
-    var expectedOutput = unescapeHtml(document.getElementById("sample-analysis").innerHTML);
+    var expectedOutput = document.getElementById("sample-analysis").innerHTML;
     var analyzer = new Analyzer(input);
     assert.deepEqual(analyzer.toHtml().split('\n'), expectedOutput.split('\n'));
 

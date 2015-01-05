@@ -573,7 +573,7 @@ function Analyzer(text) {
 
             for (var j = 0; j < threads.length; j++) {
                 var thread = threads[j];
-                asHtml += '<div id="' +
+                asHtml += '<div id="thread-' +
                     thread.tid +
                     '">' +
                     thread.toHeaderHtml() +
@@ -614,7 +614,7 @@ function Analyzer(text) {
 
             // Link to the thread currently executing this method
             if (countedString.count === 1) {
-                html += '<a class="internal" href="#' + countedString.sources[0].tid + '">';
+                html += '<a class="internal" href="#thread-' + countedString.sources[0].tid + '">';
             }
             html += htmlEscape(countedString.string);
             if (countedString.count === 1) {

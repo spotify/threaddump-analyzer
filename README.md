@@ -29,6 +29,10 @@ counter. These should be more human-readable than the raw pointers.
 * Add a table of contents before the first section, making sure only
 the visible sections are in it.
 
+* If multiple threads have the same names in the Synchronizers
+section, uniquify the thread names by appending their tids to their
+names.
+
 * In the Top Running Methods list, list thread names per top method
 and link them all to the stack traces list.
 
