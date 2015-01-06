@@ -350,7 +350,7 @@ function Synchronizer(id, className) {
 
     this.toHtmlTableRow = function() {
         var html = "";
-        html += "<tr>";
+        html += '<tr id="' + this._id + '">';
 
         html += '<td class="synchronizer">';
         html += '<div class="synchronizer">';
