@@ -461,7 +461,7 @@ QUnit.test("Synchronizer class name", function(assert) {
 
 QUnit.test("Synchronizer.toHtmlTableRow()", function(assert) {
     assert.equal(new Synchronizer("1234", "g.w.Bush").toHtmlTableRow(),
-                 '<tr id="1234">' +
+                 '<tr id="synchronizer-1234">' +
                  '<td class="synchronizer"><div class="synchronizer">1234<br>Bush</div></td>' +
                  '<td class="synchronizer"></td>' +
                  '</tr>');
