@@ -496,14 +496,34 @@ QUnit.test("thread status sleeping", function(assert) {
     var threadStatus = new ThreadStatus();
     threadStatus.setWantNotificationOn(null);
     threadStatus.setWantToAcquire(null);
-    threadStatus.setLocksHeld([]);
+    threadStatus.setLocksHeld(['aaa']);
     threadStatus.setThreadState("TIMED_WAITING (sleeping)");
     assert.ok(!threadStatus.isRunning());
-    assert.equal(threadStatus.toHtml(), 'sleeping');
+    assert.equal(threadStatus.toHtml(), 'sleeping, holding [<a href="#lock-aaa">aaa</a>]');
 });
 
-// FIXME: Add thread status tests for waiting for lock
-// FIXME: Add thread status tests for waiting for notification
+QUnit.test("thread status waiting for lock", function(assert) {
+    var threadStatus = new ThreadStatus();
+    threadStatus.setWantNotificationOn(null);
+    threadStatus.setWantToAcquire('1234');
+    threadStatus.setLocksHeld(['aaa', 'bbb']);
+    threadStatus.setThreadState("whatever");
+    assert.ok(!threadStatus.isRunning());
+    assert.equal(threadStatus.toHtml(),
+                 'waiting to acquire [<a href="#lock-1234">1234</a>], holding [<a href="#lock-aaa">aaa</a>, <a href="#lock-bbb">bbb</a>]');
+});
+
+QUnit.test("thread status waiting for notification", function(assert) {
+    var threadStatus = new ThreadStatus();
+    threadStatus.setWantNotificationOn('1234');
+    threadStatus.setWantToAcquire(null);
+    threadStatus.setLocksHeld([]);
+    threadStatus.setThreadState("whatever");
+    assert.ok(!threadStatus.isRunning());
+    assert.equal(threadStatus.toHtml(),
+                 'awaiting notification on [<a href="#lock-1234">1234</a>]');
+});
+
 // FIXME: Add thread status tests for new threads
 // FIXME: Add thread status tests for terminated threads
 // FIXME: Add thread status tests for parking threads
