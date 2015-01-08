@@ -136,7 +136,7 @@ function Thread(line) {
                 return true;
 
             case "parking to wait for":
-                this.wantToAcquire = id;
+                this.wantNotificationOn = id;
                 return true;
 
             case "waiting to lock":

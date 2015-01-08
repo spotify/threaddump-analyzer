@@ -242,8 +242,8 @@ QUnit.test( "analyze thread waiting for java.util.concurrent lock", function(ass
     assert.equal(threads.length, 1);
     var thread = threads[0];
 
-    assert.equal(thread.wantNotificationOn, null);
-    assert.equal(thread.wantToAcquire, '7c2cd7dd0');
+    assert.equal(thread.wantNotificationOn, '7c2cd7dd0');
+    assert.equal(thread.wantToAcquire, null);
 
     var locksHeld = [ /* None */ ];
     assert.deepEqual(thread.locksHeld, locksHeld);
