@@ -23,6 +23,12 @@ limitations under the License.
 /* global Synchronizer */
 /* global StringCounter */
 
+QUnit.test( "thread.getLinkedName()", function(assert) {
+    var header = '"thread name" prio=10 tid=0x00007f16a118e000 nid=0x6e5a runnable [0x00007f18b91d0000]';
+    assert.equal(new Thread(header).getLinkedName(),
+                 '<a class="internal" href="#thread-0x00007f16a118e000">thread name</a>');
+});
+
 QUnit.test( "thread header 1", function(assert) {
     var header = '"thread name" prio=10 tid=0x00007f16a118e000 nid=0x6e5a runnable [0x00007f18b91d0000]';
     assert.equal(new Thread(header).toHeaderHtml(), '<span class="raw">"thread name": runnable</span>');

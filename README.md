@@ -18,6 +18,9 @@ the copyright belongs to Spotify AB.
 * Add clickable links from each thread in the thread list to whatever
   synchronization thingie(s) it is involved with (if any).
 
+* Add a warnings section. To begin with, warn about free locks that
+somebody wants to take.
+
 * If one thread is holding multiple locks, this should be noted in the
 synchronizers section for all involved locks. Add a "Held with" header
 to the involved locks, listing which the other locks are held

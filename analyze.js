@@ -207,7 +207,7 @@ function Thread(line) {
 
     // Get the name of this thread wrapped in an <a href=>
     this.getLinkedName = function() {
-        return '<a class="internal" href="#' + this.tid + '">' + htmlEscape(this.name) + '</a>';
+        return '<a class="internal" href="#thread-' + this.tid + '">' + htmlEscape(this.name) + '</a>';
     };
 
     var match;
