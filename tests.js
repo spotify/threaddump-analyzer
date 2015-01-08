@@ -21,6 +21,7 @@ limitations under the License.
 /* global document */
 /* global stringToId */
 /* global Synchronizer */
+/* global ThreadStatus */
 /* global StringCounter */
 
 QUnit.test( "thread.getLinkedName()", function(assert) {
@@ -480,3 +481,30 @@ QUnit.test("Synchronizer.toHtmlTableRow()", function(assert) {
                  '<td class="synchronizer"></td>' +
                  '</tr>');
 });
+
+QUnit.test("thread status running", function(assert) {
+    var threadStatus = new ThreadStatus();
+    threadStatus.setWantNotificationOn(null);
+    threadStatus.setWantToAcquire(null);
+    threadStatus.setLocksHeld([]);
+    threadStatus.setThreadState("RUNNABLE");
+    assert.ok(threadStatus.isRunning());
+    assert.equal(threadStatus.toHtml(), 'running');
+});
+
+QUnit.test("thread status sleeping", function(assert) {
+    var threadStatus = new ThreadStatus();
+    threadStatus.setWantNotificationOn(null);
+    threadStatus.setWantToAcquire(null);
+    threadStatus.setLocksHeld([]);
+    threadStatus.setThreadState("TIMED_WAITING (sleeping)");
+    assert.ok(!threadStatus.isRunning());
+    assert.equal(threadStatus.toHtml(), 'sleeping');
+});
+
+// FIXME: Add thread status tests for waiting for lock
+// FIXME: Add thread status tests for waiting for notification
+// FIXME: Add thread status tests for new threads
+// FIXME: Add thread status tests for terminated threads
+// FIXME: Add thread status tests for parking threads
+// FIXME: Add thread status tests for parked threads
