@@ -64,6 +64,14 @@ QUnit.test( "thread header 8", function(assert) {
     assert.equal(new Thread(header).toHeaderHtml(), '<span class="raw">"Attach Listener": waiting on condition</span>');
 });
 
+QUnit.test( "thread header 9", function(assert) {
+    var header = '"Connect thread foo.net session" prio=5 tid=8,057,104 nid=8,057,104';
+    var thread = new Thread(header);
+
+    assert.equal(thread.name, "Connect thread foo.net session");
+    assert.equal(thread.toHeaderHtml(), '<span class="raw">"Connect thread foo.net session": </span>');
+});
+
 QUnit.test( "daemon thread", function(assert) {
     var header = '"thread name" daemon prio=10 tid=0x00007f16a118e000 nid=0x6e5a runnable [0x00007f18b91d0000]';
     assert.equal(new Thread(header).toHeaderHtml(), '<span class="raw">"thread name": daemon, runnable</span>');

@@ -247,6 +247,12 @@ function Thread(line) {
     this.name = match.value;
     line = match.shorterString;
 
+    if (this.name === undefined) {
+        match = _extract(/^"(.*)"$/, line);
+        this.name = match.value;
+        line = match.shorterString;
+    }
+
     this.state = line.trim();
     this.running = false;
 
