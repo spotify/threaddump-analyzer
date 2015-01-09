@@ -104,6 +104,7 @@ function ThreadStatus() {
     };
 
     this.setLocksHeld = function(locks) {
+        this.locksHeld = locks
     };
 
     this.setThreadState = function(state) {
@@ -118,13 +119,13 @@ function ThreadStatus() {
         var html = '';
 
         if (this.wantNotificationOn !== null) {
-            html += 'awaiting notification on [<a href="#lock-';
+            html += 'awaiting notification on [<a href="#synchronizer-';
             html += this.wantNotificationOn;
             html += '">';
             html += this.wantNotificationOn;
             html += '</a>]';
         } else if (this.wantToAcquire !== null) {
-            html += 'waiting to acquire [<a href="#lock-';
+            html += 'waiting to acquire [<a href="#synchronizer-';
             html += this.wantToAcquire;
             html += '">';
             html += this.wantToAcquire;
@@ -137,6 +138,23 @@ function ThreadStatus() {
             html += 'terminated';
         } else {
             html += 'running';
+        }
+
+        if (this.locksHeld.length > 0) {
+            html += ', holding [';
+            for (var i = 0; i < this.locksHeld.length; i++) {
+                if (i > 0) {
+                    html += ', ';
+                }
+
+                var lock = this.locksHeld[i];
+                html += '<a href="#synchronizer-';
+                html += lock;
+                html += '">';
+                html += lock;
+                html += '</a>';
+            }
+            html += ']';
         }
 
         return html;
