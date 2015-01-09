@@ -105,10 +105,11 @@ function ThreadStatus() {
     };
 
     this.setThreadState = function(state) {
+        this.state = state;
     };
 
     this.isRunning = function() {
-        return true;
+        return this.state === "RUNNABLE";
     };
 
     this.toHtml = function() {
