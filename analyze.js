@@ -96,9 +96,11 @@ function decorateStackFrames(stackFrames) {
 
 function ThreadStatus() {
     this.setWantNotificationOn = function(lock) {
+        this.wantNotificationOn = lock;
     };
 
     this.setWantToAcquire = function(lock) {
+        this.wantToAcquire = lock;
     };
 
     this.setLocksHeld = function(locks) {
@@ -113,8 +115,37 @@ function ThreadStatus() {
     };
 
     this.toHtml = function() {
-        return 'running';
+        var html = '';
+
+        if (this.wantNotificationOn !== null) {
+            html += 'awaiting notification on [<a href="#lock-';
+            html += this.wantNotificationOn;
+            html += '">';
+            html += this.wantNotificationOn;
+            html += '</a>]';
+        } else if (this.wantToAcquire !== null) {
+            html += 'waiting to acquire [<a href="#lock-';
+            html += this.wantToAcquire;
+            html += '">';
+            html += this.wantToAcquire;
+            html += '</a>]';
+        } else if (this.state === 'TIMED_WAITING (sleeping)') {
+            html += 'sleeping';
+        } else if (this.state === 'NEW') {
+            html += 'not started';
+        } else if (this.state === 'TERMINATED') {
+            html += 'terminated';
+        } else {
+            html += 'running';
+        }
+
+        return html;
     };
+
+    this.wantNotificationOn = null;
+    this.wantToAcquire = null;
+    this.locksHeld = [];
+    this.state = null;
 }
 
 function Thread(line) {
