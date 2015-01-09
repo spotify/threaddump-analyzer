@@ -524,7 +524,22 @@ QUnit.test("thread status waiting for notification", function(assert) {
                  'awaiting notification on [<a href="#lock-1234">1234</a>]');
 });
 
-// FIXME: Add thread status tests for new threads
-// FIXME: Add thread status tests for terminated threads
-// FIXME: Add thread status tests for parking threads
-// FIXME: Add thread status tests for parked threads
+QUnit.test("thread status running", function(assert) {
+    var threadStatus = new ThreadStatus();
+    threadStatus.setWantNotificationOn(null);
+    threadStatus.setWantToAcquire(null);
+    threadStatus.setLocksHeld([]);
+    threadStatus.setThreadState("NEW");
+    assert.ok(!threadStatus.isRunning());
+    assert.equal(threadStatus.toHtml(), 'not started');
+});
+
+QUnit.test("thread status running", function(assert) {
+    var threadStatus = new ThreadStatus();
+    threadStatus.setWantNotificationOn(null);
+    threadStatus.setWantToAcquire(null);
+    threadStatus.setLocksHeld([]);
+    threadStatus.setThreadState("TERMINATED");
+    assert.ok(!threadStatus.isRunning());
+    assert.equal(threadStatus.toHtml(), 'terminated');
+});
