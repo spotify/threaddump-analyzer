@@ -94,6 +94,28 @@ function decorateStackFrames(stackFrames) {
     return decorated;
 }
 
+function ThreadStatus() {
+    this.setWantNotificationOn = function(lock) {
+    };
+
+    this.setWantToAcquire = function(lock) {
+    };
+
+    this.setLocksHeld = function(locks) {
+    };
+
+    this.setThreadState = function(state) {
+    };
+
+    this.isRunning = function() {
+        return true;
+    };
+
+    this.toHtml = function() {
+        return 'running';
+    };
+}
+
 function Thread(line) {
     this.toString = function() {
         return '"' + this.name + '": ' + this.state + '\n' + this.toStackString();

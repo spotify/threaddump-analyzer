@@ -524,7 +524,7 @@ QUnit.test("thread status waiting for notification", function(assert) {
                  'awaiting notification on [<a href="#lock-1234">1234</a>]');
 });
 
-QUnit.test("thread status running", function(assert) {
+QUnit.test("thread status not started", function(assert) {
     var threadStatus = new ThreadStatus();
     threadStatus.setWantNotificationOn(null);
     threadStatus.setWantToAcquire(null);
@@ -534,7 +534,7 @@ QUnit.test("thread status running", function(assert) {
     assert.equal(threadStatus.toHtml(), 'not started');
 });
 
-QUnit.test("thread status running", function(assert) {
+QUnit.test("thread status terminated", function(assert) {
     var threadStatus = new ThreadStatus();
     threadStatus.setWantNotificationOn(null);
     threadStatus.setWantToAcquire(null);
