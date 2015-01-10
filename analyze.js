@@ -94,6 +94,10 @@ function decorateStackFrames(stackFrames) {
     return decorated;
 }
 
+function toSynchronizerHref(id) {
+    return '<a href="#synchronizer-' + id + '" class="internal">' + id + '</a>';
+}
+
 function ThreadStatus() {
     this.setWantNotificationOn = function(lock) {
         this.wantNotificationOn = lock;
@@ -104,7 +108,7 @@ function ThreadStatus() {
     };
 
     this.setLocksHeld = function(locks) {
-        this.locksHeld = locks
+        this.locksHeld = locks;
     };
 
     this.setThreadState = function(state) {
@@ -119,23 +123,21 @@ function ThreadStatus() {
         var html = '';
 
         if (this.wantNotificationOn !== null) {
-            html += 'awaiting notification on [<a href="#synchronizer-';
-            html += this.wantNotificationOn;
-            html += '">';
-            html += this.wantNotificationOn;
-            html += '</a>]';
+            html += 'awaiting notification on [';
+            html += toSynchronizerHref(this.wantNotificationOn);
+            html += ']';
         } else if (this.wantToAcquire !== null) {
-            html += 'waiting to acquire [<a href="#synchronizer-';
-            html += this.wantToAcquire;
-            html += '">';
-            html += this.wantToAcquire;
-            html += '</a>]';
+            html += 'waiting to acquire [';
+            html += toSynchronizerHref(this.wantToAcquire);
+            html += ']';
         } else if (this.state === 'TIMED_WAITING (sleeping)') {
             html += 'sleeping';
         } else if (this.state === 'NEW') {
             html += 'not started';
         } else if (this.state === 'TERMINATED') {
             html += 'terminated';
+        } else if (this.state === null) {
+            html += 'non-Java thread';
         } else {
             html += 'running';
         }
@@ -147,12 +149,7 @@ function ThreadStatus() {
                     html += ', ';
                 }
 
-                var lock = this.locksHeld[i];
-                html += '<a href="#synchronizer-';
-                html += lock;
-                html += '">';
-                html += lock;
-                html += '</a>';
+                html += toSynchronizerHref(this.locksHeld[i]);
             }
             html += ']';
         }
@@ -344,6 +341,7 @@ function Thread(line) {
     this.wantToAcquire = null;
     this.locksHeld = [];
     this.synchronizerClasses = {};
+    this.threadState = null;
 }
 
 function StringCounter() {
