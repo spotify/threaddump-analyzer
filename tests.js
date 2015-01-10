@@ -107,23 +107,23 @@ QUnit.test("thread.running", function(assert) {
 
     thread = new Thread('"thread" prio=10 runnable');
     thread.addStackLine("	java.lang.Thread.State: RUNNABLE");
-    assert.ok(thread.running);
+    assert.ok(thread.getStatus().isRunning());
 
     thread = new Thread('"thread" prio=10 not runnable');
     thread.addStackLine("	java.lang.Thread.State: RUNNABLE");
-    assert.ok(!thread.running);
+    assert.ok(!thread.getStatus().isRunning());
 
     thread = new Thread('"thread" prio=10 runnable');
     thread.addStackLine("	java.lang.Thread.State: TERMINATED");
-    assert.ok(!thread.running);
+    assert.ok(!thread.getStatus().isRunning());
 
     thread = new Thread('"thread" prio=10 not runnable');
     thread.addStackLine("	java.lang.Thread.State: TERMINATED");
-    assert.ok(!thread.running);
+    assert.ok(!thread.getStatus().isRunning());
 
     // Thread without Thread.State
     thread = new Thread('"thread" prio=10 runnable');
-    assert.ok(!thread.running);
+    assert.ok(!thread.getStatus().isRunning());
 });
 
 QUnit.test( "multiline thread name", function(assert) {

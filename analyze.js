@@ -190,7 +190,6 @@ function Thread(line) {
         match = line.match(THREAD_STATE);
         if (match !== null) {
             this.threadState = match[1];
-            this.running = (this.threadState === "RUNNABLE") && (this.state === 'runnable');
             return true;
         }
 
@@ -282,6 +281,15 @@ function Thread(line) {
         return '<a class="internal" href="#thread-' + this.tid + '">' + htmlEscape(this.name) + '</a>';
     };
 
+    this.getStatus = function() {
+        var status = new ThreadStatus();
+        status.setWantToAcquire(this.wantToAcquire);
+        status.setWantNotificationOn(this.wantNotificationOn);
+        status.setLocksHeld(this.locksHeld);
+        status.setThreadState(this.threadState);
+        return status;
+    };
+
     var match;
     match = _extract(/\[([0-9a-fx,]+)\]$/, line);
     this.dontKnow = match.value;
@@ -326,7 +334,6 @@ function Thread(line) {
     }
 
     this.state = line.trim();
-    this.running = false;
 
     if (this.name === undefined) {
         return undefined;
@@ -708,7 +715,7 @@ function Analyzer(text) {
         var countedRunning = new StringCounter();
         for (var i = 0; i < this.threads.length; i++) {
             var thread = this.threads[i];
-            if (!thread.running) {
+            if (!thread.getStatus().isRunning()) {
                 continue;
             }
 
