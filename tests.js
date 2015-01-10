@@ -492,6 +492,28 @@ QUnit.test("thread status running", function(assert) {
     assert.equal(threadStatus.toHtml(), 'running');
 });
 
+QUnit.test("thread status unset", function(assert) {
+    var threadStatus = new ThreadStatus();
+    threadStatus.setWantNotificationOn(null);
+    threadStatus.setWantToAcquire(null);
+    threadStatus.setLocksHeld([]);
+    threadStatus.setThreadState(null /* = missing from thread dump*/);
+    assert.ok(!threadStatus.isRunning());
+
+    assert.equal(threadStatus.toHtml(), 'non-Java thread');
+});
+
+QUnit.test("thread status unset, locks held", function(assert) {
+    var threadStatus = new ThreadStatus();
+    threadStatus.setWantNotificationOn(null);
+    threadStatus.setWantToAcquire(null);
+    threadStatus.setLocksHeld(['aaa']);
+    threadStatus.setThreadState(null /* = missing from thread dump*/);
+    assert.ok(!threadStatus.isRunning());
+
+    assert.equal(threadStatus.toHtml(), 'non-Java thread, holding [<a href="#synchronizer-aaa" class="internal">aaa</a>]');
+});
+
 QUnit.test("thread status sleeping", function(assert) {
     var threadStatus = new ThreadStatus();
     threadStatus.setWantNotificationOn(null);
