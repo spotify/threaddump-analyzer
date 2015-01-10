@@ -109,9 +109,10 @@ QUnit.test("thread.running", function(assert) {
     thread.addStackLine("	java.lang.Thread.State: RUNNABLE");
     assert.ok(thread.getStatus().isRunning());
 
+    // We don't care about the free-text "not runnable" status
     thread = new Thread('"thread" prio=10 not runnable');
     thread.addStackLine("	java.lang.Thread.State: RUNNABLE");
-    assert.ok(!thread.getStatus().isRunning());
+    assert.ok(thread.getStatus().isRunning());
 
     thread = new Thread('"thread" prio=10 runnable');
     thread.addStackLine("	java.lang.Thread.State: TERMINATED");
