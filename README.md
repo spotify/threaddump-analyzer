@@ -15,9 +15,6 @@ The Java Thread Dump Analyzer is licensed under
 the copyright belongs to Spotify AB.
 
 ## TODO
-* Add clickable links from each thread in the thread list to whatever
-  synchronization thingie(s) it is involved with (if any).
-
 * Add a warnings section. To begin with, warn about free locks that
 somebody wants to take.
 
@@ -172,3 +169,6 @@ waited-for condition variables from the thread dump.
   variables in the same list. For each, list who's holding it, who's
   waiting for the lock, and who's waiting for notification. All
   references should be clickable.
+
+* Add clickable links from each thread in the thread list to whatever
+  synchronization thingie(s) it is involved with (if any).

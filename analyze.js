@@ -265,9 +265,7 @@ function Thread(line) {
         headerHTML += htmlEscape(this.name);
 
         headerHTML += '": ';
-
-        headerHTML += (this.daemon ? "daemon, " : "");
-        headerHTML += this.state;
+        headerHTML += this.getStatus().toHtml();
 
         headerHTML += "</span>";
         return headerHTML;
