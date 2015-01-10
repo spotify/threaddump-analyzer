@@ -521,7 +521,7 @@ QUnit.test("thread status sleeping", function(assert) {
     threadStatus.setLocksHeld(['aaa']);
     threadStatus.setThreadState("TIMED_WAITING (sleeping)");
     assert.ok(!threadStatus.isRunning());
-    assert.equal(threadStatus.toHtml(), 'sleeping, holding [<a href="#synchronizer-aaa">aaa</a>]');
+    assert.equal(threadStatus.toHtml(), 'sleeping, holding [<a href="#synchronizer-aaa" class="internal">aaa</a>]');
 });
 
 QUnit.test("thread status waiting for lock", function(assert) {
@@ -532,8 +532,8 @@ QUnit.test("thread status waiting for lock", function(assert) {
     threadStatus.setThreadState("whatever");
     assert.ok(!threadStatus.isRunning());
     assert.equal(threadStatus.toHtml(),
-                 'waiting to acquire [<a href="#synchronizer-1234">1234</a>], ' +
-                 'holding [<a href="#synchronizer-aaa">aaa</a>, <a href="#synchronizer-bbb">bbb</a>]');
+                 'waiting to acquire [<a href="#synchronizer-1234" class="internal">1234</a>], ' +
+                 'holding [<a href="#synchronizer-aaa" class="internal">aaa</a>, <a href="#synchronizer-bbb" class="internal">bbb</a>]');
 });
 
 QUnit.test("thread status waiting for notification", function(assert) {
@@ -544,7 +544,7 @@ QUnit.test("thread status waiting for notification", function(assert) {
     threadStatus.setThreadState("whatever");
     assert.ok(!threadStatus.isRunning());
     assert.equal(threadStatus.toHtml(),
-                 'awaiting notification on [<a href="#synchronizer-1234">1234</a>]');
+                 'awaiting notification on [<a href="#synchronizer-1234" class="internal">1234</a>]');
 });
 
 QUnit.test("thread status not started", function(assert) {
