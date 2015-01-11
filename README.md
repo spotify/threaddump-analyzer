@@ -39,9 +39,6 @@ and link them all to the stack traces list.
 * Change toString test methods into toHtml test methods and remove the
 corresponding toString methods from the source code.
 
-* If the user clicks on a cross reference, see if we can highlight the
-link target.
-
 * Add a line above each <h2> element in the CSS and remove some <hr>s
 from the HTML code.
 
@@ -172,3 +169,6 @@ waited-for condition variables from the thread dump.
 
 * Add clickable links from each thread in the thread list to whatever
   synchronization thingie(s) it is involved with (if any).
+
+* Highlight the link target if the user clicks on an in-page cross
+reference.

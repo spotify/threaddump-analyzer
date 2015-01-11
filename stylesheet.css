@@ -41,3 +41,7 @@ td.synchronizer {
 div.synchronizer {
     margin-top: 0.25em;
 }
+
+:target {
+   background-color: #ffa;
+}
