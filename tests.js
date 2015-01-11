@@ -573,3 +573,17 @@ QUnit.test("thread status terminated", function(assert) {
     assert.ok(!threadStatus.isRunning());
     assert.equal(threadStatus.toHtml(), 'terminated');
 });
+
+QUnit.test("thread status no stack trace", function(assert) {
+    var threadDump =
+        '"Attach Listener" daemon prio=10 tid=0x00007f1b5c001000 nid=0x1bd4 waiting on condition [0x0000000000000000]\n' +
+        '   java.lang.Thread.State: RUNNABLE';
+    var analyzer = new Analyzer(threadDump);
+    var threads = analyzer.threads;
+    assert.equal(threads.length, 1);
+    var thread = threads[0];
+    var threadStatus = thread.getStatus();
+
+    assert.ok(!threadStatus.isRunning());
+    assert.equal(threadStatus.toHtml(), 'non-Java thread');
+});
