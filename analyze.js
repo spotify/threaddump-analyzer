@@ -98,58 +98,45 @@ function toSynchronizerHref(id) {
     return '<a href="#synchronizer-' + id + '" class="internal">' + id + '</a>';
 }
 
-function ThreadStatus() {
-    this.setWantNotificationOn = function(lock) {
-        this.wantNotificationOn = lock;
-    };
-
-    this.setWantToAcquire = function(lock) {
-        this.wantToAcquire = lock;
-    };
-
-    this.setLocksHeld = function(locks) {
-        this.locksHeld = locks;
-    };
-
-    this.setThreadState = function(state) {
-        this.state = state;
-    };
-
+function ThreadStatus(thread) {
     this.isRunning = function() {
-        return this.state === "RUNNABLE";
+        return this.thread.frames.length > 0 &&
+            this.thread.threadState === "RUNNABLE";
     };
 
     this.toHtml = function() {
         var html = '';
 
-        if (this.wantNotificationOn !== null) {
+        if (this.thread.wantNotificationOn !== null) {
             html += 'awaiting notification on [';
-            html += toSynchronizerHref(this.wantNotificationOn);
+            html += toSynchronizerHref(this.thread.wantNotificationOn);
             html += ']';
-        } else if (this.wantToAcquire !== null) {
+        } else if (this.thread.wantToAcquire !== null) {
             html += 'waiting to acquire [';
-            html += toSynchronizerHref(this.wantToAcquire);
+            html += toSynchronizerHref(this.thread.wantToAcquire);
             html += ']';
-        } else if (this.state === 'TIMED_WAITING (sleeping)') {
+        } else if (this.thread.threadState === 'TIMED_WAITING (sleeping)') {
             html += 'sleeping';
-        } else if (this.state === 'NEW') {
+        } else if (this.thread.threadState === 'NEW') {
             html += 'not started';
-        } else if (this.state === 'TERMINATED') {
+        } else if (this.thread.threadState === 'TERMINATED') {
             html += 'terminated';
-        } else if (this.state === null) {
+        } else if (this.thread.threadState === null) {
+            html += 'non-Java thread';
+        } else if (this.thread.frames.length === 0 ) {
             html += 'non-Java thread';
         } else {
             html += 'running';
         }
 
-        if (this.locksHeld.length > 0) {
+        if (this.thread.locksHeld.length > 0) {
             html += ', holding [';
-            for (var i = 0; i < this.locksHeld.length; i++) {
+            for (var i = 0; i < this.thread.locksHeld.length; i++) {
                 if (i > 0) {
                     html += ', ';
                 }
 
-                html += toSynchronizerHref(this.locksHeld[i]);
+                html += toSynchronizerHref(this.thread.locksHeld[i]);
             }
             html += ']';
         }
@@ -157,10 +144,7 @@ function ThreadStatus() {
         return html;
     };
 
-    this.wantNotificationOn = null;
-    this.wantToAcquire = null;
-    this.locksHeld = [];
-    this.state = null;
+    this.thread = thread;
 }
 
 function Thread(line) {
@@ -277,12 +261,7 @@ function Thread(line) {
     };
 
     this.getStatus = function() {
-        var status = new ThreadStatus();
-        status.setWantToAcquire(this.wantToAcquire);
-        status.setWantNotificationOn(this.wantNotificationOn);
-        status.setLocksHeld(this.locksHeld);
-        status.setThreadState(this.threadState);
-        return status;
+        return new ThreadStatus(this);
     };
 
     var match;
