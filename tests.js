@@ -21,6 +21,7 @@ limitations under the License.
 /* global document */
 /* global stringToId */
 /* global Synchronizer */
+/* global ThreadStatus */
 /* global StringCounter */
 
 QUnit.test( "thread.getLinkedName()", function(assert) {
@@ -31,98 +32,126 @@ QUnit.test( "thread.getLinkedName()", function(assert) {
 
 QUnit.test( "thread header 1", function(assert) {
     var header = '"thread name" prio=10 tid=0x00007f16a118e000 nid=0x6e5a runnable [0x00007f18b91d0000]';
-    assert.equal(new Thread(header).toHeaderHtml(), '<span class="raw">"thread name": runnable</span>');
+    assert.equal(new Thread(header).name, 'thread name');
+    assert.equal(new Thread(header).tid, '0x00007f16a118e000');
+    assert.equal(new Thread(header).group, undefined);
 });
 
 QUnit.test( "thread header 2", function(assert) {
     var header = '"ApplicationImpl pooled thread 1" prio=4 tid=11296d000 nid=0x118a84000 waiting on condition [118a83000]';
-    assert.equal(new Thread(header).toHeaderHtml(), '<span class="raw">"ApplicationImpl pooled thread 1": waiting on condition</span>');
+    assert.equal(new Thread(header).name, 'ApplicationImpl pooled thread 1');
+    assert.equal(new Thread(header).tid, '11296d000');
+    assert.equal(new Thread(header).group, undefined);
 });
 
 QUnit.test( "thread header 3", function(assert) {
     var header = '"Gang worker#1 (Parallel GC Threads)" prio=9 tid=105002800 nid=0x10bc88000 runnable';
-    assert.equal(new Thread(header).toHeaderHtml(), '<span class="raw">"Gang worker#1 (Parallel GC Threads)": runnable</span>');
+    assert.equal(new Thread(header).name, 'Gang worker#1 (Parallel GC Threads)');
+    assert.equal(new Thread(header).tid, '105002800');
+    assert.equal(new Thread(header).group, undefined);
 });
 
 QUnit.test( "thread header 4", function(assert) {
     var header = '"Attach Listener" #10 daemon prio=9 os_prio=31 tid=0x00007fddb280e000 nid=0x380b waiting on condition [0x0000000000000000]';
-    assert.equal(new Thread(header).toHeaderHtml(), '<span class="raw">"Attach Listener": daemon, waiting on condition</span>');
+    assert.equal(new Thread(header).name, 'Attach Listener');
+    assert.equal(new Thread(header).tid, '0x00007fddb280e000');
+    assert.equal(new Thread(header).group, undefined);
 });
 
 QUnit.test( "thread header 5", function(assert) {
     var header = '"Attach Listener" #10 daemon prio=9 os_prio=31 tid=0x00007fddb280e000 nid=0x380b waiting on condition';
-    assert.equal(new Thread(header).toHeaderHtml(), '<span class="raw">"Attach Listener": daemon, waiting on condition</span>');
+    assert.equal(new Thread(header).name, 'Attach Listener');
+    assert.equal(new Thread(header).tid, '0x00007fddb280e000');
+    assert.equal(new Thread(header).group, undefined);
 });
 
 QUnit.test( "thread header 6", function(assert) {
     var header = '"VM Thread" os_prio=31 tid=0x00007fddb2049800 nid=0x3103 runnable';
-    assert.equal(new Thread(header).toHeaderHtml(), '<span class="raw">"VM Thread": runnable</span>');
+    assert.equal(new Thread(header).name, 'VM Thread');
+    assert.equal(new Thread(header).tid, '0x00007fddb2049800');
+    assert.equal(new Thread(header).group, undefined);
 });
 
 QUnit.test( "thread header 7", function(assert) {
     var header = '"Queued build chains changes collector 8" daemon group="main" prio=5 tid=431,909 nid=431,909 waiting ';
-    assert.equal(new Thread(header).toHeaderHtml(),
-                 '<span class="raw">"main"/"Queued build chains changes collector 8": daemon, waiting</span>');
+    assert.equal(new Thread(header).name, 'Queued build chains changes collector 8');
+    assert.equal(new Thread(header).tid, '431,909');
+    assert.equal(new Thread(header).group, 'main');
 });
 
 QUnit.test( "thread header 8", function(assert) {
     var header = '"Attach Listener" #10 prio=9 os_prio=31 tid=0x00007fddb280e000 nid=0x380b waiting on condition [0x0000000000000000]';
-    assert.equal(new Thread(header).toHeaderHtml(), '<span class="raw">"Attach Listener": waiting on condition</span>');
+    assert.equal(new Thread(header).name, 'Attach Listener');
+    assert.equal(new Thread(header).tid, '0x00007fddb280e000');
+    assert.equal(new Thread(header).group, undefined);
 });
 
 QUnit.test( "thread header 9", function(assert) {
     var header = '"Connect thread foo.net session" prio=5 tid=8,057,104 nid=8,057,104';
-    var thread = new Thread(header);
-
-    assert.equal(thread.name, "Connect thread foo.net session");
-    assert.equal(thread.toHeaderHtml(), '<span class="raw">"Connect thread foo.net session": </span>');
+    assert.equal(new Thread(header).name, 'Connect thread foo.net session');
+    assert.equal(new Thread(header).tid, '8,057,104');
+    assert.equal(new Thread(header).group, undefined);
 });
 
-QUnit.test( "daemon thread", function(assert) {
+QUnit.test( "thread header 10", function(assert) {
     var header = '"thread name" daemon prio=10 tid=0x00007f16a118e000 nid=0x6e5a runnable [0x00007f18b91d0000]';
-    assert.equal(new Thread(header).toHeaderHtml(), '<span class="raw">"thread name": daemon, runnable</span>');
+    assert.equal(new Thread(header).name, 'thread name');
+    assert.equal(new Thread(header).tid, '0x00007f16a118e000');
+    assert.equal(new Thread(header).group, undefined);
 });
 
-QUnit.test( "vm thread", function(assert) {
+QUnit.test( "thread header 11", function(assert) {
     var header = '"VM Periodic Task Thread" prio=10 tid=0x00007f1af00c9800 nid=0x3c2c waiting on condition ';
-    assert.equal(new Thread(header).toHeaderHtml(), '<span class="raw">"VM Periodic Task Thread": waiting on condition</span>');
+    assert.equal(new Thread(header).name, 'VM Periodic Task Thread');
+    assert.equal(new Thread(header).tid, '0x00007f1af00c9800');
+    assert.equal(new Thread(header).group, undefined);
 });
 
-QUnit.test( "sleeping daemon thread", function(assert) {
+QUnit.test( "thread header 12", function(assert) {
     var header = '"Store spotify-uuid Spool Thread" daemon prio=10 tid=0x00007f1a16aa0800 nid=0x3f5b sleeping[0x00007f199997a000]';
-    assert.equal(new Thread(header).toHeaderHtml(), '<span class="raw">"Store spotify-uuid Spool Thread": daemon, sleeping</span>');
+    assert.equal(new Thread(header).name, 'Store spotify-uuid Spool Thread');
+    assert.equal(new Thread(header).tid, '0x00007f1a16aa0800');
+    assert.equal(new Thread(header).group, undefined);
 });
 
-QUnit.test( "sleeping thread", function(assert) {
+QUnit.test( "thread header 13", function(assert) {
     var header = '"git@github.com:caoliang2598/ta-zelda-test.git#master"}; 09:09:58 Task started; VCS Periodical executor 39" prio=10 tid=0x00007f1728056000 nid=0x1347 sleeping[0x00007f169cdcb000]';
-    assert.equal(new Thread(header).toHeaderHtml(),
-                 '<span class="raw">"git@github.com:caoliang2598/ta-zelda-test.git#master"}; 09:09:58 Task started; VCS Periodical executor 39": sleeping</span>');
+    assert.equal(new Thread(header).name,
+                 'git@github.com:caoliang2598/ta-zelda-test.git#master"}; 09:09:58 Task started; VCS Periodical executor 39');
+    assert.equal(new Thread(header).tid, '0x00007f1728056000');
+    assert.equal(new Thread(header).group, undefined);
 });
 
-// Our definition of a "running" thread is one that is both in
-// Thread.State RUNNABLE and free text state "runnable".
+// A thread should be considered running if it has a stack trace and
+// is RUNNABLE
 QUnit.test("thread.running", function(assert) {
     var thread;
 
     thread = new Thread('"thread" prio=10 runnable');
     thread.addStackLine("	java.lang.Thread.State: RUNNABLE");
-    assert.ok(thread.running);
+    thread.addStackLine(" at hej");
+    assert.ok(thread.getStatus().isRunning());
 
+    // We don't care about the free-text "not runnable" status
     thread = new Thread('"thread" prio=10 not runnable');
     thread.addStackLine("	java.lang.Thread.State: RUNNABLE");
-    assert.ok(!thread.running);
+    thread.addStackLine(" at hej");
+    assert.ok(thread.getStatus().isRunning());
 
     thread = new Thread('"thread" prio=10 runnable');
     thread.addStackLine("	java.lang.Thread.State: TERMINATED");
-    assert.ok(!thread.running);
+    thread.addStackLine(" at hej");
+    assert.ok(!thread.getStatus().isRunning());
 
     thread = new Thread('"thread" prio=10 not runnable');
     thread.addStackLine("	java.lang.Thread.State: TERMINATED");
-    assert.ok(!thread.running);
+    thread.addStackLine(" at hej");
+    assert.ok(!thread.getStatus().isRunning());
 
     // Thread without Thread.State
     thread = new Thread('"thread" prio=10 runnable');
-    assert.ok(!thread.running);
+    thread.addStackLine(" at hej");
+    assert.ok(!thread.getStatus().isRunning());
 });
 
 QUnit.test( "multiline thread name", function(assert) {
@@ -144,7 +173,7 @@ QUnit.test( "multiline thread name", function(assert) {
         "<h2>1 threads found</h2>",
         "<div class=\"threadgroup\">",
         "<div class=\"threadcount\"></div>",
-        '<div id="thread-0x00007f16a118e000"><span class="raw">"line 1, line 2": runnable</span></div>',
+        '<div id="thread-0x00007f16a118e000"><span class="raw">"line 1, line 2": non-Java thread</span></div>',
         "<div class=\"raw\">	&lt;empty stack&gt;</div>",
         "</div>",
         ""
@@ -372,11 +401,17 @@ QUnit.test( "thread stack", function(assert) {
     ]);
 });
 
+function unescapeHtml(escaped) {
+    var e = document.createElement('div');
+    e.innerHTML = escaped;
+    return e.childNodes.length === 0 ? "" : e.childNodes[0].nodeValue;
+}
+
 QUnit.test( "full dump analysis", function(assert) {
-    var input = document.getElementById("sample-input").innerHTML;
-    var expectedOutput = document.getElementById("sample-analysis").innerHTML;
+    var input = unescapeHtml(document.getElementById("sample-input").innerHTML);
+    var expectedAnalysis = document.getElementById("sample-analysis").innerHTML;
     var analyzer = new Analyzer(input);
-    assert.deepEqual(analyzer.toHtml().split('\n'), expectedOutput.split('\n'));
+    assert.deepEqual(analyzer.toHtml().split('\n'), expectedAnalysis.split('\n'));
 
     var expectedIgnores = document.getElementById("sample-ignored").innerHTML;
     assert.deepEqual(analyzer.toIgnoresString().split('\n'), expectedIgnores.split('\n'));
@@ -479,4 +514,125 @@ QUnit.test("Synchronizer.toHtmlTableRow()", function(assert) {
                  '<td class="synchronizer"><div class="synchronizer">1234<br>Bush</div></td>' +
                  '<td class="synchronizer"></td>' +
                  '</tr>');
+});
+
+QUnit.test("thread status running", function(assert) {
+    var threadStatus = new ThreadStatus({
+        frames: ['frame'],
+        wantNotificationOn: null,
+        wantToAcquire: null,
+        locksHeld: [],
+        threadState: 'RUNNABLE',
+    });
+
+    assert.ok(threadStatus.isRunning());
+    assert.equal(threadStatus.toHtml(), 'running');
+});
+
+QUnit.test("thread status unset", function(assert) {
+    var threadStatus = new ThreadStatus({
+        frames: ['frame'],
+        wantNotificationOn: null,
+        wantToAcquire: null,
+        locksHeld: [],
+        threadState: null /* = missing from thread dump */,
+    });
+
+    assert.ok(!threadStatus.isRunning());
+    assert.equal(threadStatus.toHtml(), 'non-Java thread');
+});
+
+QUnit.test("thread status unset, locks held", function(assert) {
+    var threadStatus = new ThreadStatus({
+        frames: ['frame'],
+        wantNotificationOn: null,
+        wantToAcquire: null,
+        locksHeld: ['aaa'],
+        threadState: null /* = missing from thread dump */,
+    });
+
+    assert.ok(!threadStatus.isRunning());
+    assert.equal(threadStatus.toHtml(), 'non-Java thread, holding [<a href="#synchronizer-aaa" class="internal">aaa</a>]');
+});
+
+QUnit.test("thread status sleeping", function(assert) {
+    var threadStatus = new ThreadStatus({
+        frames: ['frame'],
+        wantNotificationOn: null,
+        wantToAcquire: null,
+        locksHeld: ['aaa'],
+        threadState: 'TIMED_WAITING (sleeping)',
+    });
+
+    assert.ok(!threadStatus.isRunning());
+    assert.equal(threadStatus.toHtml(), 'sleeping, holding [<a href="#synchronizer-aaa" class="internal">aaa</a>]');
+});
+
+QUnit.test("thread status waiting for lock", function(assert) {
+    var threadStatus = new ThreadStatus({
+        frames: ['frame'],
+        wantNotificationOn: null,
+        wantToAcquire: '1234',
+        locksHeld: ['aaa', 'bbb'],
+        threadState: 'whatever',
+    });
+
+    assert.ok(!threadStatus.isRunning());
+    assert.equal(threadStatus.toHtml(),
+                 'waiting to acquire [<a href="#synchronizer-1234" class="internal">1234</a>], ' +
+                 'holding [<a href="#synchronizer-aaa" class="internal">aaa</a>, <a href="#synchronizer-bbb" class="internal">bbb</a>]');
+});
+
+QUnit.test("thread status waiting for notification", function(assert) {
+    var threadStatus = new ThreadStatus({
+        frames: ['frame'],
+        wantNotificationOn: '1234',
+        wantToAcquire: null,
+        locksHeld: [],
+        threadState: 'whatever',
+    });
+
+    assert.ok(!threadStatus.isRunning());
+    assert.equal(threadStatus.toHtml(),
+                 'awaiting notification on [<a href="#synchronizer-1234" class="internal">1234</a>]');
+});
+
+QUnit.test("thread status not started", function(assert) {
+    var threadStatus = new ThreadStatus({
+        frames: ['frame'],
+        wantNotificationOn: null,
+        wantToAcquire: null,
+        locksHeld: [],
+        threadState: 'NEW',
+    });
+
+    assert.ok(!threadStatus.isRunning());
+    assert.equal(threadStatus.toHtml(), 'not started');
+});
+
+QUnit.test("thread status terminated", function(assert) {
+    var threadStatus = new ThreadStatus({
+        frames: ['frame'],
+        wantNotificationOn: null,
+        wantToAcquire: null,
+        locksHeld: [],
+        threadState: 'TERMINATED',
+    });
+
+    assert.ok(!threadStatus.isRunning());
+    assert.equal(threadStatus.toHtml(), 'terminated');
+});
+
+QUnit.test("thread status no stack trace", function(assert) {
+    var threadDump =
+        '"Attach Listener" daemon prio=10 tid=0x00007f1b5c001000 nid=0x1bd4 waiting on condition [0x0000000000000000]\n' +
+        '   java.lang.Thread.State: RUNNABLE';
+    var analyzer = new Analyzer(threadDump);
+    var threads = analyzer.threads;
+    assert.equal(threads.length, 1);
+    var thread = threads[0];
+    var threadStatus = thread.getStatus();
+
+    assert.ok(!threadStatus.isRunning());
+    assert.equal(threadStatus.toHtml(), 'non-Java thread');
 });

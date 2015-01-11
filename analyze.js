@@ -94,6 +94,59 @@ function decorateStackFrames(stackFrames) {
     return decorated;
 }
 
+function toSynchronizerHref(id) {
+    return '<a href="#synchronizer-' + id + '" class="internal">' + id + '</a>';
+}
+
+function ThreadStatus(thread) {
+    this.isRunning = function() {
+        return this.thread.frames.length > 0 &&
+            this.thread.threadState === "RUNNABLE";
+    };
+
+    this.toHtml = function() { //jshint ignore:line
+        var html = '';
+
+        if (this.thread.wantNotificationOn !== null) {
+            html += 'awaiting notification on [';
+            html += toSynchronizerHref(this.thread.wantNotificationOn);
+            html += ']';
+        } else if (this.thread.wantToAcquire !== null) {
+            html += 'waiting to acquire [';
+            html += toSynchronizerHref(this.thread.wantToAcquire);
+            html += ']';
+        } else if (this.thread.threadState === 'TIMED_WAITING (sleeping)') {
+            html += 'sleeping';
+        } else if (this.thread.threadState === 'NEW') {
+            html += 'not started';
+        } else if (this.thread.threadState === 'TERMINATED') {
+            html += 'terminated';
+        } else if (this.thread.threadState === null) {
+            html += 'non-Java thread';
+        } else if (this.thread.frames.length === 0 ) {
+            html += 'non-Java thread';
+        } else {
+            html += 'running';
+        }
+
+        if (this.thread.locksHeld.length > 0) {
+            html += ', holding [';
+            for (var i = 0; i < this.thread.locksHeld.length; i++) {
+                if (i > 0) {
+                    html += ', ';
+                }
+
+                html += toSynchronizerHref(this.thread.locksHeld[i]);
+            }
+            html += ']';
+        }
+
+        return html;
+    };
+
+    this.thread = thread;
+}
+
 function Thread(line) {
     this.toString = function() {
         return '"' + this.name + '": ' + this.state + '\n' + this.toStackString();
@@ -118,7 +171,6 @@ function Thread(line) {
         match = line.match(THREAD_STATE);
         if (match !== null) {
             this.threadState = match[1];
-            this.running = (this.threadState === "RUNNABLE") && (this.state === 'runnable');
             return true;
         }
 
@@ -197,9 +249,7 @@ function Thread(line) {
         headerHTML += htmlEscape(this.name);
 
         headerHTML += '": ';
-
-        headerHTML += (this.daemon ? "daemon, " : "");
-        headerHTML += this.state;
+        headerHTML += this.getStatus().toHtml();
 
         headerHTML += "</span>";
         return headerHTML;
@@ -208,6 +258,10 @@ function Thread(line) {
     // Get the name of this thread wrapped in an <a href=>
     this.getLinkedName = function() {
         return '<a class="internal" href="#thread-' + this.tid + '">' + htmlEscape(this.name) + '</a>';
+    };
+
+    this.getStatus = function() {
+        return new ThreadStatus(this);
     };
 
     var match;
@@ -254,7 +308,6 @@ function Thread(line) {
     }
 
     this.state = line.trim();
-    this.running = false;
 
     if (this.name === undefined) {
         return undefined;
@@ -265,6 +318,7 @@ function Thread(line) {
     this.wantToAcquire = null;
     this.locksHeld = [];
     this.synchronizerClasses = {};
+    this.threadState = null;
 }
 
 function StringCounter() {
@@ -636,7 +690,7 @@ function Analyzer(text) {
         var countedRunning = new StringCounter();
         for (var i = 0; i < this.threads.length; i++) {
             var thread = this.threads[i];
-            if (!thread.running) {
+            if (!thread.getStatus().isRunning()) {
                 continue;
             }
 
