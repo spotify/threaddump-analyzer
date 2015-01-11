@@ -104,7 +104,7 @@ function ThreadStatus(thread) {
             this.thread.threadState === "RUNNABLE";
     };
 
-    this.toHtml = function() {
+    this.toHtml = function() { //jshint ignore:line
         var html = '';
 
         if (this.thread.wantNotificationOn !== null) {
