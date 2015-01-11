@@ -374,8 +374,14 @@ QUnit.test( "thread stack", function(assert) {
     ]);
 });
 
+function unescapeHtml(escaped) {
+    var e = document.createElement('div');
+    e.innerHTML = escaped;
+    return e.childNodes.length === 0 ? "" : e.childNodes[0].nodeValue;
+}
+
 QUnit.test( "full dump analysis", function(assert) {
-    var input = document.getElementById("sample-input").innerHTML;
+    var input = unescapeHtml(document.getElementById("sample-input").innerHTML);
     var expectedOutput = document.getElementById("sample-analysis").innerHTML;
     var analyzer = new Analyzer(input);
     assert.deepEqual(analyzer.toHtml().split('\n'), expectedOutput.split('\n'));
