@@ -183,6 +183,11 @@ function Thread(line) {
             this.synchronizerClasses[id] = className;
 
             switch (state) {
+            case "eliminated":
+                // JVM internal optimization, not sure why it's in the
+                // thread dump at all
+                return true;
+
             case "waiting on":
                 this.wantNotificationOn = id;
                 return true;

@@ -386,10 +386,10 @@ QUnit.test( "analyze two threads with same stack", function(assert) {
 QUnit.test( "thread stack", function(assert) {
     var header = '"Thread name" prio=10 tid=0x00007f1728056000 nid=0x1347 sleeping[0x00007f169cdcb000]';
     var thread = new Thread(header);
-    thread.addStackLine("	at java.security.AccessController.doPrivileged(Native Method)");
-    thread.addStackLine("	- eliminated <0x00000006b3ccb178> (a java.io.PipedInputStream)");
-    thread.addStackLine("	at java.net.SocksSocketImpl.connect(SocksSocketImpl.java:353)");
-    thread.addStackLine("	- parking to wait for  <0x00000003138d65d0> (a java.util.concurrent.locks.AbstractQueuedSynchronizer$ConditionObject)");
+    assert.ok(thread.addStackLine("	at java.security.AccessController.doPrivileged(Native Method)"));
+    assert.ok(thread.addStackLine("	- eliminated <0x00000006b3ccb178> (a java.io.PipedInputStream)"));
+    assert.ok(thread.addStackLine("	at java.net.SocksSocketImpl.connect(SocksSocketImpl.java:353)"));
+    assert.ok(thread.addStackLine("	- parking to wait for  <0x00000003138d65d0> (a java.util.concurrent.locks.AbstractQueuedSynchronizer$ConditionObject)"));
 
     // When adding stack frames we should just ignore unsupported
     // lines, and the end result should contain only supported data.
