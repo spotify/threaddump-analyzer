@@ -15,8 +15,17 @@ The Java Thread Dump Analyzer is licensed under
 the copyright belongs to Spotify AB.
 
 ## TODO
-* Add a warnings section. To begin with, warn about free locks that
-somebody wants to take.
+* Sort the synchronizers section by number of threads involved, class
+name and address, in that order.
+
+* In the Top Running Methods list, list thread names per top method
+and link them all to the stack traces list.
+
+* Add a warnings section. To begin with, warn about threads holding
+locks without running.
+
+* Warn about free locks that somebody wants to take. This would be an
+internal error or a problem with the thread dump.
 
 * If one thread is holding multiple locks, this should be noted in the
 synchronizers section for all involved locks. Add a "Held with" header
@@ -32,9 +41,6 @@ the visible sections are in it.
 * If multiple threads have the same names in the Synchronizers
 section, uniquify the thread names by appending their tids to their
 names.
-
-* In the Top Running Methods list, list thread names per top method
-and link them all to the stack traces list.
 
 * Change toString test methods into toHtml test methods and remove the
 corresponding toString methods from the source code.
@@ -172,3 +178,6 @@ waited-for condition variables from the thread dump.
 
 * Highlight the link target if the user clicks on an in-page cross
 reference.
+
+* If a synchronizer has five or more lock waiters or synchronization
+waiters, print the count before the headline.

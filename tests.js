@@ -23,6 +23,7 @@ limitations under the License.
 /* global Synchronizer */
 /* global ThreadStatus */
 /* global StringCounter */
+/* global createLockUsersHtml */
 
 QUnit.test( "thread.getLinkedName()", function(assert) {
     var header = '"thread name" prio=10 tid=0x00007f16a118e000 nid=0x6e5a runnable [0x00007f18b91d0000]';
@@ -635,4 +636,44 @@ QUnit.test("thread status no stack trace", function(assert) {
 
     assert.ok(!threadStatus.isRunning());
     assert.equal(threadStatus.toHtml(), 'non-Java thread');
+});
+
+QUnit.test("lock user html creator", function(assert) {
+    var thread = new Thread('"Thread" prio=10 tid=1234 nid=0x6e5a runnable');
+
+    assert.equal(createLockUsersHtml('Threads waiting to take lock', []),
+                 '');
+
+    assert.equal(createLockUsersHtml('Threads waiting to take lock', [thread]),
+                 '<div class="synchronizer">Threads waiting to take lock:<br>' +
+                 '<span class="raw">' +
+                 '  <a class="internal" href="#thread-1234">Thread</a>' +
+                 '</span>' +
+                 '</div>');
+
+    assert.equal(createLockUsersHtml('Threads waiting to take lock', [thread, thread, thread, thread]),
+                 '<div class="synchronizer">Threads waiting to take lock:' +
+                 '<br><span class="raw">' +
+                 '  <a class="internal" href="#thread-1234">Thread</a></span>' +
+                 '<br><span class="raw">' +
+                 '  <a class="internal" href="#thread-1234">Thread</a></span>' +
+                 '<br><span class="raw">' +
+                 '  <a class="internal" href="#thread-1234">Thread</a></span>' +
+                 '<br><span class="raw">' +
+                 '  <a class="internal" href="#thread-1234">Thread</a></span>' +
+                 '</div>');
+
+    assert.equal(createLockUsersHtml('Threads waiting to take lock', [thread, thread, thread, thread, thread]),
+                 '<div class="synchronizer">5 threads waiting to take lock:' +
+                 '<br><span class="raw">' +
+                 '  <a class="internal" href="#thread-1234">Thread</a></span>' +
+                 '<br><span class="raw">' +
+                 '  <a class="internal" href="#thread-1234">Thread</a></span>' +
+                 '<br><span class="raw">' +
+                 '  <a class="internal" href="#thread-1234">Thread</a></span>' +
+                 '<br><span class="raw">' +
+                 '  <a class="internal" href="#thread-1234">Thread</a></span>' +
+                 '<br><span class="raw">' +
+                 '  <a class="internal" href="#thread-1234">Thread</a></span>' +
+                 '</div>');
 });

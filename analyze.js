@@ -392,6 +392,28 @@ function StringCounter() {
     this.length = 0;
 }
 
+function createLockUsersHtml(title, threads) {
+    if (threads.length === 0) {
+        return '';
+    }
+
+    var html = '';
+
+    html += '<div class="synchronizer">';
+    if (threads.length > 4) {
+        html += threads.length + ' ';
+        title = title.charAt(0).toLowerCase() + title.slice(1);
+    }
+    html += title + ':';
+    for (var i = 0; i < threads.length; i++) {
+        var thread = threads[i];
+        html += '<br><span class="raw">  ' + thread.getLinkedName() + '</span>';
+    }
+    html += "</div>";
+
+    return html;
+}
+
 function Synchronizer(id, className) {
     this.getPrettyClassName = function() {
         if (this._className === undefined) {
@@ -432,25 +454,9 @@ function Synchronizer(id, className) {
             html += "</div>";
         }
 
-        if (this.lockWaiters.length > 0) {
-            html += '<div class="synchronizer">';
-            html += "Threads waiting to take lock:";
-            for (var i = 0; i < this.lockWaiters.length; i++) {
-                var lockWaiter = this.lockWaiters[i];
-                html += '<br><span class="raw">  ' + lockWaiter.getLinkedName() + '</span>';
-            }
-            html += "</div>";
-        }
+        html += createLockUsersHtml("Threads waiting to take lock", this.lockWaiters);
 
-        if (this.notificationWaiters.length > 0) {
-            html += '<div class="synchronizer">';
-            html += "Threads waiting for notification on lock:";
-            for (var j = 0; j < this.notificationWaiters.length; j++) {
-                var notificationWaiter = this.notificationWaiters[j];
-                html += '<br><span class="raw">  ' + notificationWaiter.getLinkedName() + '</span>';
-            }
-            html += "</div>";
-        }
+        html += createLockUsersHtml("Threads waiting for notification on lock", this.notificationWaiters);
 
         // End of lock info
         html += "</td>";
