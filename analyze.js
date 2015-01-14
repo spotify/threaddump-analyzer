@@ -405,6 +405,7 @@ function createLockUsersHtml(title, threads) {
         title = title.charAt(0).toLowerCase() + title.slice(1);
     }
     html += title + ':';
+    threads.sort();
     for (var i = 0; i < threads.length; i++) {
         var thread = threads[i];
         html += '<br><span class="raw">  ' + thread.getLinkedName() + '</span>';

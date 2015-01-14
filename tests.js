@@ -640,42 +640,46 @@ QUnit.test("thread status no stack trace", function(assert) {
 });
 
 QUnit.test("lock user html creator", function(assert) {
-    var thread = new Thread('"Thread" prio=10 tid=1234 nid=0x6e5a runnable');
+    var thread1 = new Thread('"Thread1" prio=10 tid=1234 nid=0x6e5a runnable');
+    var thread2 = new Thread('"Thread2" prio=10 tid=1234 nid=0x6e5a runnable');
+    var thread3 = new Thread('"Thread3" prio=10 tid=1234 nid=0x6e5a runnable');
+    var thread4 = new Thread('"Thread4" prio=10 tid=1234 nid=0x6e5a runnable');
+    var thread5 = new Thread('"Thread5" prio=10 tid=1234 nid=0x6e5a runnable');
 
     assert.equal(createLockUsersHtml('Threads waiting to take lock', []),
                  '');
 
-    assert.equal(createLockUsersHtml('Threads waiting to take lock', [thread]),
+    assert.equal(createLockUsersHtml('Threads waiting to take lock', [thread1]),
                  '<div class="synchronizer">Threads waiting to take lock:<br>' +
                  '<span class="raw">' +
-                 '  <a class="internal" href="#thread-1234">Thread</a>' +
+                 '  <a class="internal" href="#thread-1234">Thread1</a>' +
                  '</span>' +
                  '</div>');
 
-    assert.equal(createLockUsersHtml('Threads waiting to take lock', [thread, thread, thread, thread]),
+    assert.equal(createLockUsersHtml('Threads waiting to take lock', [thread3, thread1, thread4, thread2]),
                  '<div class="synchronizer">Threads waiting to take lock:' +
                  '<br><span class="raw">' +
-                 '  <a class="internal" href="#thread-1234">Thread</a></span>' +
+                 '  <a class="internal" href="#thread-1234">Thread1</a></span>' +
                  '<br><span class="raw">' +
-                 '  <a class="internal" href="#thread-1234">Thread</a></span>' +
+                 '  <a class="internal" href="#thread-1234">Thread2</a></span>' +
                  '<br><span class="raw">' +
-                 '  <a class="internal" href="#thread-1234">Thread</a></span>' +
+                 '  <a class="internal" href="#thread-1234">Thread3</a></span>' +
                  '<br><span class="raw">' +
-                 '  <a class="internal" href="#thread-1234">Thread</a></span>' +
+                 '  <a class="internal" href="#thread-1234">Thread4</a></span>' +
                  '</div>');
 
-    assert.equal(createLockUsersHtml('Threads waiting to take lock', [thread, thread, thread, thread, thread]),
+    assert.equal(createLockUsersHtml('Threads waiting to take lock', [thread2, thread1, thread4, thread5, thread3]),
                  '<div class="synchronizer">5 threads waiting to take lock:' +
                  '<br><span class="raw">' +
-                 '  <a class="internal" href="#thread-1234">Thread</a></span>' +
+                 '  <a class="internal" href="#thread-1234">Thread1</a></span>' +
                  '<br><span class="raw">' +
-                 '  <a class="internal" href="#thread-1234">Thread</a></span>' +
+                 '  <a class="internal" href="#thread-1234">Thread2</a></span>' +
                  '<br><span class="raw">' +
-                 '  <a class="internal" href="#thread-1234">Thread</a></span>' +
+                 '  <a class="internal" href="#thread-1234">Thread3</a></span>' +
                  '<br><span class="raw">' +
-                 '  <a class="internal" href="#thread-1234">Thread</a></span>' +
+                 '  <a class="internal" href="#thread-1234">Thread4</a></span>' +
                  '<br><span class="raw">' +
-                 '  <a class="internal" href="#thread-1234">Thread</a></span>' +
+                 '  <a class="internal" href="#thread-1234">Thread5</a></span>' +
                  '</div>');
 });
 
