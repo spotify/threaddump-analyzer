@@ -435,6 +435,18 @@ function Synchronizer(id, className) {
         return this._className;
     };
 
+    /* How many threads are involved with this synchronizer? Used as a
+     * sort key in the Synchronizers section. */
+    this.getThreadCount = function() {
+        var count = 0;
+        if (this.lockHolder !== null) {
+            count += 1;
+        }
+        count += this.lockWaiters.length;
+        count += this.notificationWaiters.length;
+        return count;
+    };
+
     this.toHtmlTableRow = function() {
         var html = "";
         html += '<tr id="synchronizer-' + this._id + '">';
@@ -471,6 +483,21 @@ function Synchronizer(id, className) {
     this.notificationWaiters = [];
     this.lockWaiters = [];
     this.lockHolder = null;
+}
+
+function synchronizerComparator(a, b) {
+    var countDiff = b.getThreadCount() - a.getThreadCount();
+    if (countDiff !== 0) {
+        return countDiff;
+    }
+
+    var prettyA = a.getPrettyClassName();
+    var prettyB = b.getPrettyClassName();
+    if (prettyA !== prettyB) {
+        return prettyA.localeCompare(prettyB);
+    }
+
+    return a._id.localeCompare(b._id);
 }
 
 // Create an analyzer object
@@ -790,7 +817,8 @@ function Analyzer(text) {
             synchronizers.push(this._synchronizerById[id]);
         }
 
-        // FIXME: Sort the synchronizers by number of references
+        // Sort the synchronizers by number of references
+        synchronizers.sort(synchronizerComparator);
 
         return synchronizers;
     };

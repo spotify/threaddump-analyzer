@@ -15,9 +15,6 @@ The Java Thread Dump Analyzer is licensed under
 the copyright belongs to Spotify AB.
 
 ## TODO
-* Sort the synchronizers section by number of threads involved, class
-name and address, in that order.
-
 * In the Top Running Methods list, list thread names per top method
 and link them all to the stack traces list.
 
@@ -181,3 +178,6 @@ reference.
 
 * If a synchronizer has five or more lock waiters or synchronization
 waiters, print the count before the headline.
+
+* Sort the synchronizers section by number of threads involved, class
+name and address, in that order.

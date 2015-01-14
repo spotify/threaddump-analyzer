@@ -24,6 +24,7 @@ limitations under the License.
 /* global ThreadStatus */
 /* global StringCounter */
 /* global createLockUsersHtml */
+/* global synchronizerComparator */
 
 QUnit.test( "thread.getLinkedName()", function(assert) {
     var header = '"thread name" prio=10 tid=0x00007f16a118e000 nid=0x6e5a runnable [0x00007f18b91d0000]';
@@ -676,4 +677,34 @@ QUnit.test("lock user html creator", function(assert) {
                  '<br><span class="raw">' +
                  '  <a class="internal" href="#thread-1234">Thread</a></span>' +
                  '</div>');
+});
+
+QUnit.test("synchronizer thread count", function(assert) {
+    var thread = new Thread('"Thread" prio=10 tid=1234 nid=0x6e5a runnable');
+    var synchronizer = new Synchronizer("foo", "bar");
+    synchronizer.notificationWaiters = [thread, thread, thread];
+    synchronizer.lockWaiters = [thread, thread];
+    synchronizer.lockHolder = thread;
+
+    assert.equal(synchronizer.getThreadCount(), 6);
+});
+
+QUnit.test("synchronizer sort function", function(assert) {
+    var unused = new Synchronizer("id", "ClassName");
+
+    assert.equal(synchronizerComparator(unused, unused), 0);
+
+    var thread = new Thread('"Thread" prio=10 tid=1234 nid=0x6e5a runnable');
+    var held = new Synchronizer("id", "ClassName");
+    held.lockHolder = thread;
+    assert.deepEqual([unused, held].sort(synchronizerComparator), [held, unused]);
+
+    var zebra = new Synchronizer("id", "Zebra");
+    assert.deepEqual([zebra, unused].sort(synchronizerComparator), [unused, zebra]);
+    assert.deepEqual([zebra, unused, held].sort(synchronizerComparator),
+                     [held, unused, zebra]);
+
+    var biggerId = new Synchronizer("jd", "ClassName");
+    assert.deepEqual([zebra, biggerId, unused, held].sort(synchronizerComparator),
+                     [held, unused, biggerId, zebra]);
 });
