@@ -125,8 +125,12 @@ function ThreadStatus(thread) {
             html += 'non-Java thread';
         } else if (this.thread.frames.length === 0 ) {
             html += 'non-Java thread';
-        } else {
+        } else if (this.thread.threadState === 'RUNNABLE') {
             html += 'running';
+        } else {
+            // FIXME: Write something in the warnings section (that
+            // doesn't exist yet)
+            html += '<span class="warn" title="Thread is neither RUNNABLE nor waiting for anything">inconsistent</span>';
         }
 
         if (this.thread.locksHeld.length > 0) {

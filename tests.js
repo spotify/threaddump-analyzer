@@ -625,6 +625,20 @@ QUnit.test("thread status terminated", function(assert) {
     assert.equal(threadStatus.toHtml(), 'terminated');
 });
 
+QUnit.test("thread waiting for nothing", function(assert) {
+    var threadStatus = new ThreadStatus({
+        frames: ['frame'],
+        wantNotificationOn: null,
+        wantToAcquire: null,
+        locksHeld: ['aaa'],
+        threadState: 'TIMED_WAITING (on object monitor)',
+    });
+
+    assert.ok(!threadStatus.isRunning());
+    assert.equal(threadStatus.toHtml(),
+                 '<span class="warn" title="Thread is neither RUNNABLE nor waiting for anything">inconsistent</span>, holding [<a href="#synchronizer-aaa" class="internal">aaa</a>]');
+});
+
 QUnit.test("thread status no stack trace", function(assert) {
     var threadDump =
         '"Attach Listener" daemon prio=10 tid=0x00007f1b5c001000 nid=0x1bd4 waiting on condition [0x0000000000000000]\n' +

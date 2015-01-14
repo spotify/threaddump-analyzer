@@ -19,6 +19,10 @@
     font-weight: bold;
 }
 
+.warn {
+    color: red;
+}
+
 a.internal:link {
     color: blue;
     text-decoration: none;
