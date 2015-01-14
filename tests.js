@@ -625,7 +625,7 @@ QUnit.test("thread status terminated", function(assert) {
     assert.equal(threadStatus.toHtml(), 'terminated');
 });
 
-QUnit.test("thread waiting for nothing", function(assert) {
+QUnit.test("thread waiting for unspecified notification 1", function(assert) {
     var threadStatus = new ThreadStatus({
         frames: ['frame'],
         wantNotificationOn: null,
@@ -635,8 +635,30 @@ QUnit.test("thread waiting for nothing", function(assert) {
     });
 
     assert.ok(!threadStatus.isRunning());
+
+    // Since it's holding only one lock, that has to be the lock it's
+    // awaiting notification for. Make sure this is what we present in
+    // the UI.
     assert.equal(threadStatus.toHtml(),
-                 '<span class="warn" title="Thread is neither RUNNABLE nor waiting for anything">inconsistent</span>, holding [<a href="#synchronizer-aaa" class="internal">aaa</a>]');
+                 'awaiting notification on [<a href="#synchronizer-aaa" class="internal">aaa</a>]');
+});
+
+QUnit.test("thread waiting for unspecified notification 2", function(assert) {
+    var threadStatus = new ThreadStatus({
+        frames: ['frame'],
+        wantNotificationOn: null,
+        wantToAcquire: null,
+        locksHeld: ['aaa', 'bbb'],
+        threadState: 'TIMED_WAITING (on object monitor)',
+    });
+
+    assert.ok(!threadStatus.isRunning());
+
+    // Since it's holding more than one lock, we can't tell which lock
+    // it's awaiting notification for. Make sure we present exactly
+    // what we have in the UI.
+    assert.equal(threadStatus.toHtml(),
+                 'awaiting notification, holding [<a href="#synchronizer-aaa" class="internal">aaa</a>, <a href="#synchronizer-bbb" class="internal">bbb</a>]');
 });
 
 QUnit.test("thread status no stack trace", function(assert) {
