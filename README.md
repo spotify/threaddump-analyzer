@@ -18,11 +18,10 @@ the copyright belongs to Spotify AB.
 * In the Top Running Methods list, list thread names per top method
 and link them all to the stack traces list.
 
-* Add a warnings section. To begin with, warn about threads holding
-locks without running.
+* Support uploading thread dumps from the local file system:
+<http://www.html5rocks.com/en/tutorials/file/dndfiles/>
 
-* Warn about free locks that somebody wants to take. This would be an
-internal error or a problem with the thread dump.
+* Support parsing gzipped thread dumps.
 
 * If one thread is holding multiple locks, this should be noted in the
 synchronizers section for all involved locks. Add a "Held with" header
@@ -31,6 +30,12 @@ simultaneously with this one.
 
 * Make up new lock identifiers using the prettyClassName() +
 counter. These should be more human-readable than the raw pointers.
+
+* Add a warnings section. To begin with, warn about threads holding
+locks without running.
+
+* Warn about free locks that somebody wants to take. This would be an
+internal error or a problem with the thread dump.
 
 * Add a table of contents before the first section, making sure only
 the visible sections are in it.
@@ -45,9 +50,6 @@ corresponding toString methods from the source code.
 * Add a line above each <h2> element in the CSS and remove some <hr>s
 from the HTML code.
 
-* Say "... threads with no stack" for threads with no stack, rather
-  than "... threads with this stack".
-
 * If all lines share the same prefix, strip it away before analyzing
 so we can parse dumps like this one: http://pastebin.com/fcSqxsku
 
@@ -56,11 +58,6 @@ sure there's a clickable reference from the waiter to the holder.
 
 * Detect deadlocks and display deadlock information prominently at the
 top if detected.
-
-* Support uploading thread dumps from the local file system:
-<http://www.html5rocks.com/en/tutorials/file/dndfiles/>
-
-* Support parsing gzipped thread dumps.
 
 * Support parsing multiple consecutive thread dumps.
 
@@ -181,3 +178,6 @@ waiters, print the count before the headline.
 
 * Sort the synchronizers section by number of threads involved, class
 name and address, in that order.
+
+* Say "... threads with no stack" for threads with no stack, rather
+  than "... threads with this stack".

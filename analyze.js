@@ -662,8 +662,9 @@ function Analyzer(text) {
             var threads = currentThreadsAndStack.threads;
 
             asHtml += '<div class="threadgroup">\n';
+            var noOrThis = (currentThreadsAndStack.stackFrames.length === 0) ? "no" : "this";
             if (threads.length > 4) {
-                asHtml += '<div class="threadcount">' + threads.length + " threads with this stack:</div>\n";
+                asHtml += '<div class="threadcount">' + threads.length + " threads with " + noOrThis + " stack:</div>\n";
             } else {
                 // Having an empty div here makes all paragraphs, both
                 // those with and those without headings evenly spaced.
