@@ -625,18 +625,79 @@ QUnit.test("thread status terminated", function(assert) {
     assert.equal(threadStatus.toHtml(), 'terminated');
 });
 
-QUnit.test("thread waiting for nothing", function(assert) {
-    var threadStatus = new ThreadStatus({
-        frames: ['frame'],
-        wantNotificationOn: null,
-        wantToAcquire: null,
-        locksHeld: ['aaa'],
-        threadState: 'TIMED_WAITING (on object monitor)',
-    });
+QUnit.test( "analyze thread waiting for unspecified notification 1", function(assert) {
+    var threadDump = [
+        '"Thread Name" daemon prio=10 tid=0x000000000219d000 nid=0x3fa3 in Object.wait() [0x00007f0fc985d000]',
+        '   java.lang.Thread.State: TIMED_WAITING (on object monitor)',
+        '        at java.lang.Object.wait(Native Method)',
+        '        at java.lang.ref.ReferenceQueue.remove(ReferenceQueue.java:136)',
+        '        - locked <0x0000000780b17bc8> (a java.lang.ref.ReferenceQueue$Lock)',
+        '        at org.netbeans.lib.profiler.server.ProfilerRuntimeObjLiveness$ReferenceManagerThread.run(ProfilerRuntimeObjLiveness.java:54)'
+    ].join('\n');
+    var analyzer = new Analyzer(threadDump);
+    var threads = analyzer.threads;
+    assert.equal(threads.length, 1);
+    var thread = threads[0];
+    var threadStatus = thread.getStatus();
 
     assert.ok(!threadStatus.isRunning());
+
+    // Since it's holding only one lock, that has to be the lock it's
+    // awaiting notification for. Make sure this is what we present in
+    // the UI.
     assert.equal(threadStatus.toHtml(),
-                 '<span class="warn" title="Thread is neither RUNNABLE nor waiting for anything">inconsistent</span>, holding [<a href="#synchronizer-aaa" class="internal">aaa</a>]');
+                 'awaiting notification on [<a href="#synchronizer-0x0000000780b17bc8" class="internal">0x0000000780b17bc8</a>]');
+});
+
+QUnit.test( "analyze thread waiting for unspecified notification 2", function(assert) {
+    var threadDump = [
+        '"Thread Name" daemon prio=10 tid=0x00007f0fd45cf800 nid=0x2937 in Object.wait() [0x00007f0fc995e000]',
+        '   java.lang.Thread.State: TIMED_WAITING (on object monitor)',
+        '        at java.lang.Object.wait(Native Method)',
+        '        at org.hsqldb.lib.HsqlTimer$TaskQueue.park(Unknown Source)',
+        '        - locked <0x00000007805debf8> (a org.hsqldb.lib.HsqlTimer$TaskQueue)',
+        '        at org.hsqldb.lib.HsqlTimer.nextTask(Unknown Source)',
+        '        - locked <0x00000007805debf8> (a org.hsqldb.lib.HsqlTimer$TaskQueue)',
+        '        at org.hsqldb.lib.HsqlTimer$TaskRunner.run(Unknown Source)',
+        '        at java.lang.Thread.run(Thread.java:745)'
+    ].join('\n');
+    var analyzer = new Analyzer(threadDump);
+    var threads = analyzer.threads;
+    assert.equal(threads.length, 1);
+    var thread = threads[0];
+    var threadStatus = thread.getStatus();
+
+    assert.ok(!threadStatus.isRunning());
+
+    // Since it's holding only one lock (that it has taken twice),
+    // that has to be the lock it's awaiting notification for. Make
+    // sure this is what we present in the UI.
+    assert.equal(threadStatus.toHtml(),
+                 'awaiting notification on [<a href="#synchronizer-0x00000007805debf8" class="internal">0x00000007805debf8</a>]');
+});
+
+QUnit.test( "analyze thread waiting for unspecified notification 3", function(assert) {
+    var threadDump = [
+        '"Thread Name" daemon prio=10 tid=0x000000000219d000 nid=0x3fa3 in Object.wait() [0x00007f0fc985d000]',
+        '   java.lang.Thread.State: WAITING (on object monitor)',
+        '        at java.lang.Object.wait(Native Method)',
+        '        at java.lang.ref.ReferenceQueue.remove(ReferenceQueue.java:136)',
+        '        - locked <0x0000000780b17bc8> (a java.lang.ref.ReferenceQueue$Lock)',
+        '        at org.netbeans.lib.profiler.server.ProfilerRuntimeObjLiveness$ReferenceManagerThread.run(ProfilerRuntimeObjLiveness.java:54)'
+    ].join('\n');
+    var analyzer = new Analyzer(threadDump);
+    var threads = analyzer.threads;
+    assert.equal(threads.length, 1);
+    var thread = threads[0];
+    var threadStatus = thread.getStatus();
+
+    assert.ok(!threadStatus.isRunning());
+
+    // Since it's holding only one lock, that has to be the lock it's
+    // awaiting notification for. Make sure this is what we present in
+    // the UI.
+    assert.equal(threadStatus.toHtml(),
+                 'awaiting notification on [<a href="#synchronizer-0x0000000780b17bc8" class="internal">0x0000000780b17bc8</a>]');
 });
 
 QUnit.test("thread status no stack trace", function(assert) {

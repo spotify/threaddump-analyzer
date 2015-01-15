@@ -209,7 +209,13 @@ function Thread(line) {
                     // Lock is released while waiting for the notification
                     return true;
                 }
-                this.locksHeld.push(id);
+                if (this.locksHeld.indexOf(id) === -1) {
+                    // Threads can take the same lock in different
+                    // frames, but we just want a mapping between
+                    // threads and locks so we must not list any lock
+                    // more than once.
+                    this.locksHeld.push(id);
+                }
                 return true;
 
             default:
@@ -223,7 +229,13 @@ function Thread(line) {
             var lockId = match[1];
             var lockClassName = match[2];
             this.synchronizerClasses[lockId] = lockClassName;
-            this.locksHeld.push(lockId);
+            if (this.locksHeld.indexOf(lockId) === -1) {
+                // Threads can take the same lock in different
+                // frames, but we just want a mapping between
+                // threads and locks so we must not list any lock
+                // more than once.
+                this.locksHeld.push(lockId);
+            }
             return true;
         }
 
@@ -526,6 +538,34 @@ function Analyzer(text) {
         }
     };
 
+    /* Some threads are waiting for notification, but the thread dump
+     * doesn't say on which object. This function guesses in the
+     * simple case where those threads are holding only a single lock.
+     */
+    this._identifyWaitedForSynchronizers = function() {
+        for (var i = 0; i < this.threads.length; i++) {
+            var thread = this.threads[i];
+
+            if (-1 === ['TIMED_WAITING (on object monitor)',
+                        'WAITING (on object monitor)'].indexOf(thread.threadState))
+            {
+                // Not waiting for notification
+                continue;
+            }
+
+            if (thread.wantNotificationOn !== null) {
+                continue;
+            }
+
+            if (thread.locksHeld.length !== 1) {
+                continue;
+            }
+
+            thread.wantNotificationOn = thread.locksHeld[0];
+            thread.locksHeld = [];
+        }
+    }
+
     this._analyze = function(text) {
         var lines = text.split('\n');
         for (var i = 0; i < lines.length; i++) {
@@ -543,6 +583,8 @@ function Analyzer(text) {
 
             this._handleLine(line);
         }
+
+        this._identifyWaitedForSynchronizers();
     };
 
     // Returns an array [{threads:, stackFrames:,} ...]. The threads:
