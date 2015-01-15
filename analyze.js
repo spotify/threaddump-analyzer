@@ -209,7 +209,13 @@ function Thread(line) {
                     // Lock is released while waiting for the notification
                     return true;
                 }
-                this.locksHeld.push(id);
+                if (this.locksHeld.indexOf(id) === -1) {
+                    // Threads can take the same lock in different
+                    // frames, but we just want a mapping between
+                    // threads and locks so we must not list any lock
+                    // more than once.
+                    this.locksHeld.push(id);
+                }
                 return true;
 
             default:
@@ -223,7 +229,13 @@ function Thread(line) {
             var lockId = match[1];
             var lockClassName = match[2];
             this.synchronizerClasses[lockId] = lockClassName;
-            this.locksHeld.push(lockId);
+            if (this.locksHeld.indexOf(lockId) === -1) {
+                // Threads can take the same lock in different
+                // frames, but we just want a mapping between
+                // threads and locks so we must not list any lock
+                // more than once.
+                this.locksHeld.push(lockId);
+            }
             return true;
         }
 

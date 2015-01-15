@@ -15,9 +15,6 @@ The Java Thread Dump Analyzer is licensed under
 the copyright belongs to Spotify AB.
 
 ## TODO
-* If a thread is listed as holding the same lock more than once,
-remove duplicates from that list.
-
 * Enable multiple threads to hold the same lock in the Synchronizers
   section. This will happen when we have threads waiting on unnamed
   locks and we can't find out which lock it's waiting for. And of
@@ -189,3 +186,6 @@ name and address, in that order.
 
 * Say "... threads with no stack" for threads with no stack, rather
   than "... threads with this stack".
+
+* If a thread is listed as holding the same lock more than once,
+remove duplicates from that list.
