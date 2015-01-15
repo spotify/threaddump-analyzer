@@ -546,7 +546,10 @@ function Analyzer(text) {
         for (var i = 0; i < this.threads.length; i++) {
             var thread = this.threads[i];
 
-            if (thread.threadState !== 'TIMED_WAITING (on object monitor)') {
+            if (-1 === ['TIMED_WAITING (on object monitor)',
+                        'WAITING (on object monitor)'].indexOf(thread.threadState))
+            {
+                // Not waiting for notification
                 continue;
             }
 
