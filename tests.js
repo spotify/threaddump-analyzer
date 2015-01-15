@@ -678,35 +678,6 @@ QUnit.test( "analyze thread waiting for unspecified notification 2", function(as
 
 QUnit.test( "analyze thread waiting for unspecified notification 3", function(assert) {
     var threadDump = [
-        '"Thread Name" daemon prio=10 tid=0x00007f0fd45cf800 nid=0x2937 in Object.wait() [0x00007f0fc995e000]',
-        '   java.lang.Thread.State: TIMED_WAITING (on object monitor)',
-        '        at java.lang.Object.wait(Native Method)',
-        '        at org.hsqldb.lib.HsqlTimer$TaskQueue.park(Unknown Source)',
-        '        - locked <0x00000007805debf8> (a org.hsqldb.lib.HsqlTimer$TaskQueue)',
-        '        at org.hsqldb.lib.HsqlTimer.nextTask(Unknown Source)',
-        '        - locked <0x00000007805dcafe> (a org.hsqldb.lib.HsqlTimer$TaskQueue)',
-        '        at org.hsqldb.lib.HsqlTimer$TaskRunner.run(Unknown Source)',
-        '        at java.lang.Thread.run(Thread.java:745)'
-    ].join('\n');
-    var analyzer = new Analyzer(threadDump);
-    var threads = analyzer.threads;
-    assert.equal(threads.length, 1);
-    var thread = threads[0];
-    var threadStatus = thread.getStatus();
-
-    assert.ok(!threadStatus.isRunning());
-
-    // Since it's holding more than one lock, we can't tell which lock
-    // it's awaiting notification for. Make sure we present exactly
-    // what we have in the UI.
-    assert.equal(threadStatus.toHtml(),
-                 'awaiting notification, holding ' +
-                 '[<a href="#synchronizer-0x00000007805debf8" class="internal">0x00000007805debf8</a>,' +
-                 ' <a href="#synchronizer-0x00000007805dcafe" class="internal">0x00000007805dcafe</a>]');
-});
-
-QUnit.test( "analyze thread waiting for unspecified notification 4", function(assert) {
-    var threadDump = [
         '"Thread Name" daemon prio=10 tid=0x000000000219d000 nid=0x3fa3 in Object.wait() [0x00007f0fc985d000]',
         '   java.lang.Thread.State: WAITING (on object monitor)',
         '        at java.lang.Object.wait(Native Method)',
