@@ -526,6 +526,31 @@ function Analyzer(text) {
         }
     };
 
+    /* Some threads are waiting for notification, but the thread dump
+     * doesn't say on which object. This function guesses in the
+     * simple case where those threads are holding only a single lock.
+     */
+    this._identifyWaitedForSynchronizers = function() {
+        for (var i = 0; i < this.threads.length; i++) {
+            var thread = this.threads[i];
+
+            if (thread.threadState !== 'TIMED_WAITING (on object monitor)') {
+                continue;
+            }
+
+            if (thread.wantNotificationOn !== null) {
+                continue;
+            }
+
+            if (thread.locksHeld.length !== 1) {
+                continue;
+            }
+
+            thread.wantNotificationOn = thread.locksHeld[0];
+            thread.locksHeld = [];
+        }
+    }
+
     this._analyze = function(text) {
         var lines = text.split('\n');
         for (var i = 0; i < lines.length; i++) {
@@ -543,6 +568,8 @@ function Analyzer(text) {
 
             this._handleLine(line);
         }
+
+        this._identifyWaitedForSynchronizers();
     };
 
     // Returns an array [{threads:, stackFrames:,} ...]. The threads:
