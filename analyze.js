@@ -130,7 +130,9 @@ function ThreadStatus(thread) {
         } else {
             // FIXME: Write something in the warnings section (that
             // doesn't exist yet)
-            html += '<span class="warn" title="Thread is neither RUNNABLE nor waiting for anything">inconsistent</span>';
+            html += '<span class="warn" title="Thread is &quot;';
+            html += this.thread.threadState;
+            html += '&quot; without waiting for anything">inconsistent</span>';
         }
 
         if (this.thread.locksHeld.length > 0) {
