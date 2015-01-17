@@ -700,6 +700,41 @@ QUnit.test( "analyze thread waiting for unspecified notification 3", function(as
                  'awaiting notification on [<a href="#synchronizer-0x0000000780b17bc8" class="internal">0x0000000780b17bc8</a>]');
 });
 
+QUnit.test( "analyze thread waiting for unspecified notification 4", function(assert) {
+    var threadDump = [
+        '"Monkey" daemon prio=10 tid=0x00007f56b52a2000 nid=0x75f5 in Object.wait() [0x00007f5b01201000]',
+        '   java.lang.Thread.State: TIMED_WAITING (on object monitor)',
+        '	at java.lang.Object.wait(Native Method)',
+        '	at java.io.PipedReader.read(PipedReader.java:257)',
+        '	- eliminated <0x000000057c46ee20> (a java.io.PipedReader)',
+        '	at java.io.PipedReader.read(PipedReader.java:309)',
+        '	- locked <0x000000057c46ee20> (a java.io.PipedReader)',
+        '	at org.cyberneko.html.HTMLScanner.load(HTMLScanner.java:1082)',
+        '	at org.cyberneko.html.HTMLScanner.read(HTMLScanner.java:1043)',
+        '	at java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:615)',
+        '	at java.lang.Thread.run(Thread.java:744)',
+        '',
+        '   Locked ownable synchronizers:',
+        '	- <0x00000004f00094c0> (a java.util.concurrent.ThreadPoolExecutor$Worker)'
+    ].join('\n');
+    var analyzer = new Analyzer(threadDump);
+    var threads = analyzer.threads;
+    assert.equal(threads.length, 1);
+    var thread = threads[0];
+    var threadStatus = thread.getStatus();
+
+    assert.ok(!threadStatus.isRunning());
+
+    // Since it's holding only one synchronized(){}-style lock, that
+    // has to be the lock it's awaiting notification for. Make sure
+    // this is what we present in the UI.
+    assert.equal(threadStatus.toHtml(),
+                 'awaiting notification on ' +
+                 '[<a href="#synchronizer-0x000000057c46ee20" class="internal">0x000000057c46ee20</a>]' +
+                 ', holding ' +
+                 '[<a href="#synchronizer-0x00000004f00094c0" class="internal">0x00000004f00094c0</a>]');
+});
+
 QUnit.test("thread status no stack trace", function(assert) {
     var threadDump =
         '"Attach Listener" daemon prio=10 tid=0x00007f1b5c001000 nid=0x1bd4 waiting on condition [0x0000000000000000]\n' +
