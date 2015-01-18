@@ -153,6 +153,12 @@ function ThreadStatus(thread) {
     this.thread = thread;
 }
 
+function arrayAddUnique(array, toAdd) {
+    if (array.indexOf(toAdd) === -1) {
+        array.push(toAdd);
+    }
+}
+
 function Thread(line) {
     this.toString = function() {
         return '"' + this.name + '": ' + this.state + '\n' + this.toStackString();
@@ -211,13 +217,10 @@ function Thread(line) {
                     // Lock is released while waiting for the notification
                     return true;
                 }
-                if (this.locksHeld.indexOf(id) === -1) {
-                    // Threads can take the same lock in different
-                    // frames, but we just want a mapping between
-                    // threads and locks so we must not list any lock
-                    // more than once.
-                    this.locksHeld.push(id);
-                }
+                // Threads can take the same lock in different frames,
+                // but we just want a mapping between threads and
+                // locks so we must not list any lock more than once.
+                arrayAddUnique(this.locksHeld, id);
                 return true;
 
             default:
@@ -231,13 +234,10 @@ function Thread(line) {
             var lockId = match[1];
             var lockClassName = match[2];
             this.synchronizerClasses[lockId] = lockClassName;
-            if (this.locksHeld.indexOf(lockId) === -1) {
-                // Threads can take the same lock in different
-                // frames, but we just want a mapping between
-                // threads and locks so we must not list any lock
-                // more than once.
-                this.locksHeld.push(lockId);
-            }
+            // Threads can take the same lock in different frames, but
+            // we just want a mapping between threads and locks so we
+            // must not list any lock more than once.
+            arrayAddUnique(this.locksHeld, lockId);
             return true;
         }
 
