@@ -153,6 +153,12 @@ function ThreadStatus(thread) {
     this.thread = thread;
 }
 
+function arrayAddUnique(array, toAdd) {
+    if (array.indexOf(toAdd) === -1) {
+        array.push(toAdd);
+    }
+}
+
 function Thread(line) {
     this.toString = function() {
         return '"' + this.name + '": ' + this.state + '\n' + this.toStackString();
@@ -211,13 +217,11 @@ function Thread(line) {
                     // Lock is released while waiting for the notification
                     return true;
                 }
-                if (this.locksHeld.indexOf(id) === -1) {
-                    // Threads can take the same lock in different
-                    // frames, but we just want a mapping between
-                    // threads and locks so we must not list any lock
-                    // more than once.
-                    this.locksHeld.push(id);
-                }
+                // Threads can take the same lock in different frames,
+                // but we just want a mapping between threads and
+                // locks so we must not list any lock more than once.
+                arrayAddUnique(this.locksHeld, id);
+                arrayAddUnique(this.classicalLocksHeld, id);
                 return true;
 
             default:
@@ -231,13 +235,10 @@ function Thread(line) {
             var lockId = match[1];
             var lockClassName = match[2];
             this.synchronizerClasses[lockId] = lockClassName;
-            if (this.locksHeld.indexOf(lockId) === -1) {
-                // Threads can take the same lock in different
-                // frames, but we just want a mapping between
-                // threads and locks so we must not list any lock
-                // more than once.
-                this.locksHeld.push(lockId);
-            }
+            // Threads can take the same lock in different frames, but
+            // we just want a mapping between threads and locks so we
+            // must not list any lock more than once.
+            arrayAddUnique(this.locksHeld, lockId);
             return true;
         }
 
@@ -285,6 +286,20 @@ function Thread(line) {
 
     this.getStatus = function() {
         return new ThreadStatus(this);
+    };
+
+    this.setWantNotificationOn = function(lockId) {
+        this.wantNotificationOn = lockId;
+
+        var lockIndex = this.locksHeld.indexOf(lockId);
+        if (lockIndex >= 0) {
+            this.locksHeld.splice(lockIndex, 1);
+        }
+
+        var classicalLockIndex = this.classicalLocksHeld.indexOf(lockId);
+        if (classicalLockIndex >= 0) {
+            this.classicalLocksHeld.splice(classicalLockIndex, 1);
+        }
     };
 
     var match;
@@ -342,6 +357,9 @@ function Thread(line) {
     this.locksHeld = [];
     this.synchronizerClasses = {};
     this.threadState = null;
+
+    // Only synchronized(){} style locks
+    this.classicalLocksHeld = [];
 }
 
 function StringCounter() {
@@ -559,14 +577,13 @@ function Analyzer(text) {
                 continue;
             }
 
-            if (thread.locksHeld.length !== 1) {
+            if (thread.classicalLocksHeld.length !== 1) {
                 continue;
             }
 
-            thread.wantNotificationOn = thread.locksHeld[0];
-            thread.locksHeld = [];
+            thread.setWantNotificationOn(thread.classicalLocksHeld[0]);
         }
-    }
+    };
 
     this._analyze = function(text) {
         var lines = text.split('\n');
