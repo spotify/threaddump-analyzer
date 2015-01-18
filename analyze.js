@@ -221,6 +221,7 @@ function Thread(line) {
                 // but we just want a mapping between threads and
                 // locks so we must not list any lock more than once.
                 arrayAddUnique(this.locksHeld, id);
+                arrayAddUnique(this.classicalLocksHeld, id);
                 return true;
 
             default:
@@ -287,6 +288,20 @@ function Thread(line) {
         return new ThreadStatus(this);
     };
 
+    this.setWantNotificationOn = function(lockId) {
+        this.wantNotificationOn = lockId;
+
+        var lockIndex = this.locksHeld.indexOf(lockId);
+        if (lockIndex >= 0) {
+            this.locksHeld.splice(lockIndex, 1);
+        }
+
+        var classicalLockIndex = this.classicalLocksHeld.indexOf(lockId);
+        if (classicalLockIndex >= 0) {
+            this.classicalLocksHeld.splice(classicalLockIndex, 1);
+        }
+    };
+
     var match;
     match = _extract(/\[([0-9a-fx,]+)\]$/, line);
     this.dontKnow = match.value;
@@ -342,6 +357,9 @@ function Thread(line) {
     this.locksHeld = [];
     this.synchronizerClasses = {};
     this.threadState = null;
+
+    // Only synchronized(){} style locks
+    this.classicalLocksHeld = [];
 }
 
 function StringCounter() {
@@ -559,14 +577,13 @@ function Analyzer(text) {
                 continue;
             }
 
-            if (thread.locksHeld.length !== 1) {
+            if (thread.classicalLocksHeld.length !== 1) {
                 continue;
             }
 
-            thread.wantNotificationOn = thread.locksHeld[0];
-            thread.locksHeld = [];
+            thread.setWantNotificationOn(thread.classicalLocksHeld[0]);
         }
-    }
+    };
 
     this._analyze = function(text) {
         var lines = text.split('\n');
