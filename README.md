@@ -52,7 +52,7 @@ names.
 * Change toString test methods into toHtml test methods and remove the
 corresponding toString methods from the source code.
 
-* Add a line above each <h2> element in the CSS and remove some <hr>s
+* Add a line above each \<h2\> element in the CSS and remove some \<hr\>s
 from the HTML code.
 
 * If all lines share the same prefix, strip it away before analyzing
