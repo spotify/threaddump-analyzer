@@ -315,6 +315,12 @@ function Thread(line) {
     this.tid = match.value;
     line = match.shorterString;
 
+    if(this.tid === undefined){
+        match = _extract(/ - Thread t@([0-9a-fx]+)/,line)
+        this.tid = match.value
+        line = match.shorterString
+    }
+
     match = _extract(/ prio=([0-9]+)/, line);
     this.prio = match.value;
     line = match.shorterString;
@@ -589,7 +595,7 @@ function Analyzer(text) {
         var lines = text.split('\n');
         for (var i = 0; i < lines.length; i++) {
             var line = lines[i];
-            while (line.charAt(0) === '"' && line.indexOf('prio=') === -1) {
+            while (line.charAt(0) === '"' && line.indexOf('prio=') === -1 && line.indexOf('t@') === -1) {
                 // Multi line thread name
                 i++;
                 if (i >= lines.length) {
