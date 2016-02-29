@@ -316,9 +316,9 @@ function Thread(line) {
     line = match.shorterString;
 
     if(this.tid === undefined){
-        match = _extract(/ - Thread t@([0-9a-fx]+)/,line)
-        this.tid = match.value
-        line = match.shorterString
+        match = _extract(/ - Thread t@([0-9a-fx]+)/,line);
+        this.tid = match.value;
+        line = match.shorterString;
     }
 
     match = _extract(/ prio=([0-9]+)/, line);
