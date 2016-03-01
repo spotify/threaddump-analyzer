@@ -124,6 +124,13 @@ QUnit.test( "thread header 13", function(assert) {
     assert.equal(new Thread(header).group, undefined);
 });
 
+QUnit.test("thread header 14", function(assert){
+    var header = '"http-bio-8810-exec-147" - Thread t@96965';
+    assert.equal(new Thread(header).name,'http-bio-8810-exec-147');
+    assert.equal(new Thread(header).tid, '96965');
+    assert.equal(new Thread(header).group, undefined);
+});
+
 // A thread should be considered running if it has a stack trace and
 // is RUNNABLE
 QUnit.test("thread.running", function(assert) {
@@ -308,6 +315,37 @@ QUnit.test( "analyze thread waiting for traditional lock", function(assert) {
     assert.deepEqual(thread.locksHeld, locksHeld);
 
     assert.equal(thread.synchronizerClasses['0xe0375410'], 'beans.ConnectionPool');
+    assert.equal(thread.synchronizerClasses['47114712gris'], null);
+});
+
+QUnit.test(" analyze thread waiting for locks 2", function(assert){
+    var threadDump= [
+        '"http-5525-116" - Thread t@151',
+        '   java.lang.Thread.State: BLOCKED',
+        '   at org.apache.log4j.Category.callAppenders(Category.java:205)',
+        '   - waiting to lock <259a4a41> (a org.apache.log4j.spi.RootLogger) owned by "http-5525-127" t@162',
+        '   at org.apache.log4j.Category.forcedLog(Category.java:391)',
+        '   at org.apache.log4j.Category.log(Category.java:856)',
+        '   at org.apache.juli.logging.impl.Log4JLogger.error(Log4JLogger.java:251)',
+        '   at org.apache.catalina.core.StandardWrapperValve.invoke(StandardWrapperValve.java:274)',
+        '   at java.lang.Thread.run(Thread.java:662)',
+        '',
+        '   Locked ownable synchronizers:',
+        '   - None',
+    ].join('\n');
+
+    var analyzer = new Analyzer(threadDump);
+    var threads = analyzer.threads;
+    assert.equal(threads.length, 1);
+    var thread = threads[0];
+
+    assert.equal(thread.wantNotificationOn, null);
+    assert.equal(thread.wantToAcquire, '259a4a41');
+
+    var locksHeld = [ /* None */ ];
+    assert.deepEqual(thread.locksHeld, locksHeld);
+
+    assert.equal(thread.synchronizerClasses['259a4a41'], 'org.apache.log4j.spi.RootLogger');
     assert.equal(thread.synchronizerClasses['47114712gris'], null);
 });
 
