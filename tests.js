@@ -202,6 +202,20 @@ QUnit.test( "multiline thread name", function(assert) {
     ]);
 });
 
+QUnit.test( "non-multiline thread name", function(assert) {
+    // It's the Analyzer that joins lines so we have to go through the Analyzer here
+    var nonMultilineHeader = '"line 1":\nat x.y.Z.service(Z.java:722)';
+    var analyzer = new Analyzer(nonMultilineHeader);
+    var threads = analyzer.threads;
+
+    assert.equal(threads.length, 1);
+    var threadLines = threads[0].toString().split('\n');
+    assert.deepEqual(threadLines, [
+        '"line 1": ',
+        '	<empty stack>'
+    ]);
+});
+
 QUnit.test( "analyze stackless thread", function(assert) {
     var threadDump = '"thread name" prio=10 tid=0x00007f16a118e000 nid=0x6e5a runnable [0x00007f18b91d0000]';
     var analyzer = new Analyzer(threadDump);

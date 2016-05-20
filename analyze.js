@@ -596,11 +596,32 @@ function Analyzer(text) {
         }
     };
 
+    this._is_incomplete_thread_header = function(line) {
+      if (line.charAt(0) !== '"') {
+        // Thread headers start with ", this is not it
+        return false;
+      }
+      if (line.indexOf('prio=') !== -1) {
+        // Thread header contains "prio=" => we think it's complete
+        return false;
+      }
+      if (line.indexOf('Thread t@') !== -1) {
+        // Thread header contains a thread ID => we think it's complete
+        return false;
+      }
+      if (line.substr(line.length - 2, 2) == '":') {
+        // Thread headers ending in ": are complete as seen in the example here:
+        // https://github.com/spotify/threaddump-analyzer/issues/12
+        return false;
+      }
+      return true;
+    }
+
     this._analyze = function(text) {
         var lines = text.split('\n');
         for (var i = 0; i < lines.length; i++) {
             var line = lines[i];
-            while (line.charAt(0) === '"' && line.indexOf('prio=') === -1 && line.indexOf('t@') === -1) {
+            while (this._is_incomplete_thread_header(line)) {
                 // Multi line thread name
                 i++;
                 if (i >= lines.length) {
