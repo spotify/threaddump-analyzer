@@ -23,6 +23,7 @@
 .warn {
     color: red;
     background-color: inherit;
+    font-weight: bold;
 }
 
 a.internal:link {
