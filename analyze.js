@@ -133,7 +133,7 @@ function ThreadStatus(thread) {
             // doesn't exist yet)
             html += '<span class="warn" title="Thread is &quot;';
             html += this.thread.threadState;
-            html += '&quot; without waiting for anything">inconsistent</span>';
+            html += '&quot; without waiting for anything">inconsistent<sup>?</sup></span>';
         }
 
         if (this.thread.locksHeld.length > 0) {
