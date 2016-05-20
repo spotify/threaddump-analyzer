@@ -131,6 +131,19 @@ QUnit.test("thread header 14", function(assert){
     assert.equal(new Thread(header).group, undefined);
 });
 
+QUnit.test("thread header 15", function(assert){
+    // From: https://github.com/spotify/threaddump-analyzer/issues/12
+    var header = '"ajp-bio-18009-exec-1189":';
+
+    assert.equal(new Thread(header).name,'ajp-bio-18009-exec-1189');
+
+    var tid = new Thread(header).tid;
+    assert.notEqual(tid, undefined);
+    assert.equal(tid.indexOf('generated-id-'), 0);
+
+    assert.equal(new Thread(header).group, undefined);
+});
+
 // A thread should be considered running if it has a stack trace and
 // is RUNNABLE
 QUnit.test("thread.running", function(assert) {

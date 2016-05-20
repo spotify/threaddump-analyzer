@@ -17,6 +17,7 @@ limitations under the License.
 /* global document */
 
 var EMPTY_STACK = "	<empty stack>";
+var generated_id_counter = 1;
 
 // This method is called from HTML so we need to tell JSHint it's not unused
 function analyzeTextfield() { // jshint ignore: line
@@ -346,7 +347,7 @@ function Thread(line) {
     line = match.shorterString;
 
     if (this.name === undefined) {
-        match = _extract(/^"(.*)"$/, line);
+        match = _extract(/^"(.*)":?$/, line);
         this.name = match.value;
         line = match.shorterString;
     }
@@ -355,6 +356,10 @@ function Thread(line) {
 
     if (this.name === undefined) {
         return undefined;
+    }
+    if (this.tid === undefined) {
+      this.tid = "generated-id-" + generated_id_counter;
+      generated_id_counter++;
     }
 
     this.frames = [];
