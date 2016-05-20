@@ -17,7 +17,7 @@ limitations under the License.
 /* global document */
 
 var EMPTY_STACK = "	<empty stack>";
-var generated_id_counter = 1;
+var generatedIdCounter = 1;
 
 // This method is called from HTML so we need to tell JSHint it's not unused
 function analyzeTextfield() { // jshint ignore: line
@@ -358,8 +358,8 @@ function Thread(line) {
         return undefined;
     }
     if (this.tid === undefined) {
-      this.tid = "generated-id-" + generated_id_counter;
-      generated_id_counter++;
+      this.tid = "generated-id-" + generatedIdCounter;
+      generatedIdCounter++;
     }
 
     this.frames = [];
@@ -596,7 +596,7 @@ function Analyzer(text) {
         }
     };
 
-    this._is_incomplete_thread_header = function(line) {
+    this._isIncompleteThreadHeader = function(line) {
       if (line.charAt(0) !== '"') {
         // Thread headers start with ", this is not it
         return false;
@@ -609,19 +609,19 @@ function Analyzer(text) {
         // Thread header contains a thread ID => we think it's complete
         return false;
       }
-      if (line.substr(line.length - 2, 2) == '":') {
+      if (line.substr(line.length - 2, 2) === '":') {
         // Thread headers ending in ": are complete as seen in the example here:
         // https://github.com/spotify/threaddump-analyzer/issues/12
         return false;
       }
       return true;
-    }
+    };
 
     this._analyze = function(text) {
         var lines = text.split('\n');
         for (var i = 0; i < lines.length; i++) {
             var line = lines[i];
-            while (this._is_incomplete_thread_header(line)) {
+            while (this._isIncompleteThreadHeader(line)) {
                 // Multi line thread name
                 i++;
                 if (i >= lines.length) {
