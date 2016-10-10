@@ -131,6 +131,19 @@ QUnit.test("thread header 14", function(assert){
     assert.equal(new Thread(header).group, undefined);
 });
 
+QUnit.test("thread header 15", function(assert){
+    // From: https://github.com/spotify/threaddump-analyzer/issues/12
+    var header = '"ajp-bio-18009-exec-1189":';
+
+    assert.equal(new Thread(header).name,'ajp-bio-18009-exec-1189');
+
+    var tid = new Thread(header).tid;
+    assert.notEqual(tid, undefined);
+    assert.equal(tid.indexOf('generated-id-'), 0);
+
+    assert.equal(new Thread(header).group, undefined);
+});
+
 // A thread should be considered running if it has a stack trace and
 // is RUNNABLE
 QUnit.test("thread.running", function(assert) {
@@ -186,6 +199,20 @@ QUnit.test( "multiline thread name", function(assert) {
         "<div class=\"raw\">	&lt;empty stack&gt;</div>",
         "</div>",
         ""
+    ]);
+});
+
+QUnit.test( "non-multiline thread name", function(assert) {
+    // It's the Analyzer that joins lines so we have to go through the Analyzer here
+    var nonMultilineHeader = '"line 1":\nat x.y.Z.service(Z.java:722)';
+    var analyzer = new Analyzer(nonMultilineHeader);
+    var threads = analyzer.threads;
+
+    assert.equal(threads.length, 1);
+    var threadLines = threads[0].toString().split('\n');
+    assert.deepEqual(threadLines, [
+        '"line 1": ',
+        '	<empty stack>'
     ]);
 });
 

@@ -17,6 +17,7 @@ limitations under the License.
 /* global document */
 
 var EMPTY_STACK = "	<empty stack>";
+var generatedIdCounter = 1;
 
 // This method is called from HTML so we need to tell JSHint it's not unused
 function analyzeTextfield() { // jshint ignore: line
@@ -132,7 +133,7 @@ function ThreadStatus(thread) {
             // doesn't exist yet)
             html += '<span class="warn" title="Thread is &quot;';
             html += this.thread.threadState;
-            html += '&quot; without waiting for anything">inconsistent</span>';
+            html += '&quot; without waiting for anything">inconsistent<sup>?</sup></span>';
         }
 
         if (this.thread.locksHeld.length > 0) {
@@ -346,7 +347,7 @@ function Thread(line) {
     line = match.shorterString;
 
     if (this.name === undefined) {
-        match = _extract(/^"(.*)"$/, line);
+        match = _extract(/^"(.*)":?$/, line);
         this.name = match.value;
         line = match.shorterString;
     }
@@ -355,6 +356,10 @@ function Thread(line) {
 
     if (this.name === undefined) {
         return undefined;
+    }
+    if (this.tid === undefined) {
+      this.tid = "generated-id-" + generatedIdCounter;
+      generatedIdCounter++;
     }
 
     this.frames = [];
@@ -591,11 +596,32 @@ function Analyzer(text) {
         }
     };
 
+    this._isIncompleteThreadHeader = function(line) {
+      if (line.charAt(0) !== '"') {
+        // Thread headers start with ", this is not it
+        return false;
+      }
+      if (line.indexOf('prio=') !== -1) {
+        // Thread header contains "prio=" => we think it's complete
+        return false;
+      }
+      if (line.indexOf('Thread t@') !== -1) {
+        // Thread header contains a thread ID => we think it's complete
+        return false;
+      }
+      if (line.substr(line.length - 2, 2) === '":') {
+        // Thread headers ending in ": are complete as seen in the example here:
+        // https://github.com/spotify/threaddump-analyzer/issues/12
+        return false;
+      }
+      return true;
+    };
+
     this._analyze = function(text) {
         var lines = text.split('\n');
         for (var i = 0; i < lines.length; i++) {
             var line = lines[i];
-            while (line.charAt(0) === '"' && line.indexOf('prio=') === -1 && line.indexOf('t@') === -1) {
+            while (this._isIncompleteThreadHeader(line)) {
                 // Multi line thread name
                 i++;
                 if (i >= lines.length) {

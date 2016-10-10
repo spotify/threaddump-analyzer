@@ -1,5 +1,6 @@
 .ignored {
     color: red;
+    background-color: inherit;
 }
 
 .right-align {
@@ -22,6 +23,8 @@
 
 .warn {
     color: red;
+    background-color: inherit;
+    font-weight: bold;
 }
 
 h3 {
@@ -34,16 +37,22 @@ td {
 
 a.internal:link {
     color: blue;
+    background-color: inherit;
+
     text-decoration: none;
 }
 
 a.internal:visited {
     color: blue;
+    background-color: inherit;
+
     text-decoration: none;
 }
 
 a.internal:hover {
     color: blue;
+    background-color: inherit;
+
     text-decoration: underline;
 }
 
