@@ -492,23 +492,24 @@ QUnit.test( "Top Methods from running threads", function(assert) {
     var analyzer = new Analyzer(input);
     var running = analyzer.toRunningHtml();
     var expectedRunning = [
-        '<tr id="java.net.PlainSocketImpl.socketAccept(Native%20Method)">',
-            '<td class="vertical-align">java.net.PlainSocketImpl.socketAccept(Native Method)</td>',
-            '<td class="raw">',
-                '<a class="internal" href="#thread-11c319800">RMI TCP Accept-0</a><br>',
-                '<a class="internal" href="#thread-105001800">Lock thread</a>',
-            '</td>',
-        '</tr>\n',
-        '<tr id="java.lang.UNIXProcess.waitForProcessExit(Native%20Method)">',
-            '<td class="vertical-align">java.lang.UNIXProcess.waitForProcessExit(Native Method)</td>',
-            '<td class="raw">',
-                '<a class="internal" href="#thread-11c048800">process reaper</a>',
-            '</td>',
-        '</tr>\n',
-        '<tr id="sun.nio.ch.KQueueArrayWrapper.kevent0(Native%20Method)">',
-            '<td class="vertical-align">sun.nio.ch.KQueueArrayWrapper.kevent0(Native Method)</td>',
-            '<td class="raw"><a class="internal" href="#thread-11c386000">ApplicationImpl pooled thread 9</a></td>',
-        '</tr>\n'
+        '<dt id="java.net.PlainSocketImpl.socketAccept(Native%20Method)">',
+          'java.net.PlainSocketImpl.socketAccept(Native Method)</dt>',
+        '<dd class="raw">',
+          '<a class="internal" href="#thread-11c319800">RMI TCP Accept-0</a><br>',
+          '<a class="internal" href="#thread-105001800">Lock thread</a>',
+        '</dd>\n',
+
+        '<dt id="java.lang.UNIXProcess.waitForProcessExit(Native%20Method)">',
+          'java.lang.UNIXProcess.waitForProcessExit(Native Method)</dt>',
+        '<dd class="raw">',
+          '<a class="internal" href="#thread-11c048800">process reaper</a>',
+        '</dd>\n',
+
+        '<dt id="sun.nio.ch.KQueueArrayWrapper.kevent0(Native%20Method)">',
+          'sun.nio.ch.KQueueArrayWrapper.kevent0(Native Method)</dt>',
+        '<dd class="raw">',
+          '<a class="internal" href="#thread-11c386000">ApplicationImpl pooled thread 9</a>',
+        '</dd>\n',
     ].join('');
     assert.equal(running, expectedRunning);
 });
