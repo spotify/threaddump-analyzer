@@ -14,6 +14,7 @@
 
 .threadgroup {
     margin-top: 1.5em;
+    margin: 1.5em;
 }
 
 .threadcount {
@@ -24,6 +25,14 @@
     color: red;
     background-color: inherit;
     font-weight: bold;
+}
+
+h3 {
+  margin-left: 0.5em;
+}
+
+td {
+    padding: 3px;
 }
 
 a.internal:link {
@@ -61,6 +70,9 @@ div.synchronizer {
 }
 
 :target {
-    color: inherit;
-    background-color: #ffa;
+   background-color: #d3d7cf;
+}
+
+p.hint {
+   font-size: medium;
 }

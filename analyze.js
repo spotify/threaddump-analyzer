@@ -753,7 +753,7 @@ function Analyzer(text) {
         var threadsAndStacks = this._toThreadsAndStacks();
 
         var asHtml = "";
-        asHtml += '<h2>' + this.threads.length + " threads found</h2>\n";
+        asHtml += '<h3>' + this.threads.length + " threads found</h3>\n";
         for (var i = 0; i < threadsAndStacks.length; i++) {
             var currentThreadsAndStack = threadsAndStacks[i];
             var threads = currentThreadsAndStack.threads;
