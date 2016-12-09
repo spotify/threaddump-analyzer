@@ -55,6 +55,11 @@ div.synchronizer {
     margin-top: 0.25em;
 }
 
+.vertical-align{
+    vertical-align: top;
+    padding-top:  10px;
+}
+
 :target {
     color: inherit;
     background-color: #ffa;

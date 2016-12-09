@@ -797,27 +797,26 @@ function Analyzer(text) {
         return this.countedRunningMethods.toString();
     };
 
+    this.getSourceInfo = function(source){
+        return [
+            '<a class="internal" href="#thread-' + source.tid + '">',
+            htmlEscape(source.name),
+            '</a>'
+        ].join('');
+    };
+
     this.toRunningHtml = function() {
         var html = "";
         var countedStrings = this.countedRunningMethods.getStrings();
         for (var i = 0; i < countedStrings.length; i++) {
             var countedString = countedStrings[i];
-
+            var ids = countedString.sources.map(this.getSourceInfo);
             html += '<tr id="';
             html += stringToId(countedString.string);
-            html += '"><td class="right-align">';
-            html += countedString.count;
-            html += '</td><td class="raw">';
-
-            // Link to the thread currently executing this method
-            if (countedString.count === 1) {
-                html += '<a class="internal" href="#thread-' + countedString.sources[0].tid + '">';
-            }
+            html += '"><td class="vertical-align">';
             html += htmlEscape(countedString.string);
-            if (countedString.count === 1) {
-                html += '</a>';
-            }
-
+            html += '</td><td class="raw">';
+            html += ids.join('<br>');
             html += "</td></tr>\n";
         }
         return html;
