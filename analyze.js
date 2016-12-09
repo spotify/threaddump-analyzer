@@ -811,13 +811,14 @@ function Analyzer(text) {
         for (var i = 0; i < countedStrings.length; i++) {
             var countedString = countedStrings[i];
             var ids = countedString.sources.map(this.getSourceInfo);
-            html += '<tr id="';
-            html += stringToId(countedString.string);
-            html += '"><td class="vertical-align">';
+
+            html += '<dt id="' + stringToId(countedString.string) + '">';
             html += htmlEscape(countedString.string);
-            html += '</td><td class="raw">';
+            html += '</dt>';
+
+            html += '<dd class="raw">';
             html += ids.join('<br>');
-            html += "</td></tr>\n";
+            html += "</dd>\n";
         }
         return html;
     };
