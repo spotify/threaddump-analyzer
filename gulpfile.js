@@ -42,8 +42,8 @@ gulp.task('htmllint', function() {
 });
 
 gulp.task('csslint', function() {
-    gulp.src('*.css')
+    return gulp.src('*.css')
         .pipe(csslint())
-        .pipe(csslint.reporter())
-        .pipe(csslint.failReporter());
+        .pipe(csslint.formatter())
+        .pipe(csslint.failFormatter());
 });

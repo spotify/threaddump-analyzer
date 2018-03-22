@@ -1,66 +1,66 @@
 .ignored {
-    color: red;
-    background-color: inherit;
+  background-color: inherit;
+  color: red;
 }
 
 .right-align {
-    text-align: right;
+  text-align: right;
 }
 
 .raw {
-    font-family: monospace;
-    white-space: pre;
+  font-family: monospace;
+  white-space: pre;
 }
 
 .threadgroup {
-    margin-top: 1.5em;
+  margin-top: 1.5em;
 }
 
 .threadcount {
-    font-weight: bold;
+  font-weight: bold;
 }
 
 .warn {
-    color: red;
-    background-color: inherit;
-    font-weight: bold;
+  background-color: inherit;
+  color: red;
+  font-weight: bold;
 }
 
 a.internal:link {
-    color: blue;
-    background-color: inherit;
+  background-color: inherit;
+  color: blue;
 
-    text-decoration: none;
+  text-decoration: none;
 }
 
 a.internal:visited {
-    color: blue;
-    background-color: inherit;
+  background-color: inherit;
+  color: blue;
 
-    text-decoration: none;
+  text-decoration: none;
 }
 
 a.internal:hover {
-    color: blue;
-    background-color: inherit;
+  background-color: inherit;
+  color: blue;
 
-    text-decoration: underline;
+  text-decoration: underline;
 }
 
 td.synchronizer {
-    vertical-align: top;
+  vertical-align: top;
 }
 
 div.synchronizer {
-    margin-top: 0.25em;
+  margin-top: 0.25em;
 }
 
 .vertical-align{
-    vertical-align: top;
-    padding-top:  10px;
+  padding-top:  10px;
+  vertical-align: top;
 }
 
 :target {
-    color: inherit;
-    background-color: #ffa;
+  background-color: #ffa;
+  color: inherit;
 }
