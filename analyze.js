@@ -14,6 +14,7 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
+/* jshint browser: true */
 /* global document */
 
 var EMPTY_STACK = "	<empty stack>";
@@ -35,9 +36,8 @@ function analyzeFile() { // jshint ignore: line
         fileReader.onloadend = function(){
             var text = fileReader.result;
             analyze(text);
-        }
+        };
     }
-
 }
 
 
