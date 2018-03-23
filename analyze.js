@@ -14,6 +14,7 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
+/* jshint browser: true */
 /* global document */
 
 var EMPTY_STACK = "	<empty stack>";
@@ -22,7 +23,25 @@ var generatedIdCounter = 1;
 // This method is called from HTML so we need to tell JSHint it's not unused
 function analyzeTextfield() { // jshint ignore: line
     var text = document.getElementById("TEXTAREA").value;
+    analyze(text);
+}
 
+// This method is called from HTML so we need to tell JSHint it's not unused
+function analyzeFile() { // jshint ignore: line
+    var fileNode = document.getElementById("FILE");
+    if(fileNode.files.length > 0) {
+        var file = fileNode.files[0];
+        var fileReader = new FileReader();
+        fileReader.readAsText(file);
+        fileReader.onloadend = function(){
+            var text = fileReader.result;
+            analyze(text);
+        };
+    }
+}
+
+
+function analyze(text) {
     var analyzer = new Analyzer(text);
     setHtml("OUTPUT", analyzer.toHtml());
 
