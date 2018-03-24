@@ -186,7 +186,7 @@ QUnit.test( "multiline thread name", function(assert) {
     var threadLines = threads[0].toString().split('\n');
     assert.deepEqual(threadLines, [
         '"line 1, line 2": runnable',
-        '	<empty stack>'
+        '	<empty stack>',
     ]);
 
     // Test the Analyzer's toString() method as well now that we have an Analyzer
@@ -198,7 +198,7 @@ QUnit.test( "multiline thread name", function(assert) {
         '<div id="thread-0x00007f16a118e000"><span class="raw">"line 1, line 2": non-Java thread</span></div>',
         "<div class=\"raw\">	&lt;empty stack&gt;</div>",
         "</div>",
-        ""
+        "",
     ]);
 });
 
@@ -212,7 +212,7 @@ QUnit.test( "non-multiline thread name", function(assert) {
     var threadLines = threads[0].toString().split('\n');
     assert.deepEqual(threadLines, [
         '"line 1": ',
-        '	<empty stack>'
+        '	<empty stack>',
     ]);
 });
 
@@ -226,14 +226,14 @@ QUnit.test( "analyze stackless thread", function(assert) {
     var analysisResult = analyzer._toThreadsAndStacks();
     assert.deepEqual(analysisResult, [{
         threads: [thread],
-        stackFrames: []
+        stackFrames: [],
     }]);
 });
 
 QUnit.test( "analyze single thread", function(assert) {
     var threadDump = [
         '"thread name" prio=10 tid=0x00007f16a118e000 nid=0x6e5a runnable [0x00007f18b91d0000]',
-        '	at fluff'
+        '	at fluff',
     ].join('\n');
     var analyzer = new Analyzer(threadDump);
     var threads = analyzer.threads;
@@ -243,7 +243,7 @@ QUnit.test( "analyze single thread", function(assert) {
     var analysisResult = analyzer._toThreadsAndStacks();
     assert.deepEqual(analysisResult, [{
         threads: [thread],
-        stackFrames: ["fluff"]
+        stackFrames: ["fluff"],
     }]);
 });
 
@@ -430,7 +430,7 @@ QUnit.test( "analyze two threads with same stack", function(assert) {
         '	at fluff',
         "",
         '"aardvark thread" prio=10 tid=0x00007f16a118e000 nid=0x6e5a runnable [0x00007f18b91d0000]',
-        '	at fluff'
+        '	at fluff',
     ].join('\n');
 
     var analyzer = new Analyzer(threadDump);
@@ -446,7 +446,7 @@ QUnit.test( "analyze two threads with same stack", function(assert) {
     assert.deepEqual(analysisResult, [{
         // Make sure the aardvark comes before the zebra
         threads: [aardvark, zebra],
-        stackFrames: ["fluff"]
+        stackFrames: ["fluff"],
     }]);
 });
 
@@ -464,7 +464,7 @@ QUnit.test( "thread stack", function(assert) {
     assert.deepEqual(threadLines, [
         '"Thread name": sleeping',
         "	at java.security.AccessController.doPrivileged(Native Method)",
-        "	at java.net.SocksSocketImpl.connect(SocksSocketImpl.java:353)"
+        "	at java.net.SocksSocketImpl.connect(SocksSocketImpl.java:353)",
     ]);
 });
 
@@ -508,7 +508,7 @@ QUnit.test( "Top Methods from running threads", function(assert) {
         '<tr id="sun.nio.ch.KQueueArrayWrapper.kevent0(Native%20Method)">',
             '<td class="vertical-align">sun.nio.ch.KQueueArrayWrapper.kevent0(Native Method)</td>',
             '<td class="raw"><a class="internal" href="#thread-11c386000">ApplicationImpl pooled thread 9</a></td>',
-        '</tr>\n'
+        '</tr>\n',
     ].join('');
     assert.equal(running, expectedRunning);
 });
@@ -532,7 +532,7 @@ QUnit.test("identical string counter", function(assert) {
     counter.addString("hej");
     assert.deepEqual(counter.getStrings(), [{count:1, string:"hej", sources: [undefined]}]);
     assert.deepEqual(counter.toString().split('\n'), [
-        "1 hej"
+        "1 hej",
     ]);
     assert.equal(counter.length, 1);
 
@@ -541,11 +541,11 @@ QUnit.test("identical string counter", function(assert) {
     assert.deepEqual(counter.getStrings(),
                      [
                          {count:2, string:"nej", sources:[undefined, undefined]},
-                         {count:1, string:"hej", sources:[undefined]}
+                         {count:1, string:"hej", sources:[undefined]},
                      ]);
     assert.deepEqual(counter.toString().split('\n'), [
         "2 nej",
-        "1 hej"
+        "1 hej",
     ]);
     assert.equal(counter.length, 3);
 
@@ -554,11 +554,11 @@ QUnit.test("identical string counter", function(assert) {
     assert.deepEqual(counter.getStrings(),
                      [
                          {count:3, string:"hej", sources:[undefined, "foo", "bar"]},
-                         {count:2, string:"nej", sources:[undefined, undefined]}
+                         {count:2, string:"nej", sources:[undefined, undefined]},
                      ]);
     assert.deepEqual(counter.toString().split('\n'), [
         "3 hej",
-        "2 nej"
+        "2 nej",
     ]);
     assert.equal(counter.length, 5);
 
@@ -723,7 +723,7 @@ QUnit.test( "analyze thread waiting for unspecified notification 1", function(as
         '        at java.lang.Object.wait(Native Method)',
         '        at java.lang.ref.ReferenceQueue.remove(ReferenceQueue.java:136)',
         '        - locked <0x0000000780b17bc8> (a java.lang.ref.ReferenceQueue$Lock)',
-        '        at org.netbeans.lib.profiler.server.ProfilerRuntimeObjLiveness$ReferenceManagerThread.run(ProfilerRuntimeObjLiveness.java:54)'
+        '        at org.netbeans.lib.profiler.server.ProfilerRuntimeObjLiveness$ReferenceManagerThread.run(ProfilerRuntimeObjLiveness.java:54)',
     ].join('\n');
     var analyzer = new Analyzer(threadDump);
     var threads = analyzer.threads;
@@ -750,7 +750,7 @@ QUnit.test( "analyze thread waiting for unspecified notification 2", function(as
         '        at org.hsqldb.lib.HsqlTimer.nextTask(Unknown Source)',
         '        - locked <0x00000007805debf8> (a org.hsqldb.lib.HsqlTimer$TaskQueue)',
         '        at org.hsqldb.lib.HsqlTimer$TaskRunner.run(Unknown Source)',
-        '        at java.lang.Thread.run(Thread.java:745)'
+        '        at java.lang.Thread.run(Thread.java:745)',
     ].join('\n');
     var analyzer = new Analyzer(threadDump);
     var threads = analyzer.threads;
@@ -774,7 +774,7 @@ QUnit.test( "analyze thread waiting for unspecified notification 3", function(as
         '        at java.lang.Object.wait(Native Method)',
         '        at java.lang.ref.ReferenceQueue.remove(ReferenceQueue.java:136)',
         '        - locked <0x0000000780b17bc8> (a java.lang.ref.ReferenceQueue$Lock)',
-        '        at org.netbeans.lib.profiler.server.ProfilerRuntimeObjLiveness$ReferenceManagerThread.run(ProfilerRuntimeObjLiveness.java:54)'
+        '        at org.netbeans.lib.profiler.server.ProfilerRuntimeObjLiveness$ReferenceManagerThread.run(ProfilerRuntimeObjLiveness.java:54)',
     ].join('\n');
     var analyzer = new Analyzer(threadDump);
     var threads = analyzer.threads;
@@ -806,7 +806,7 @@ QUnit.test( "analyze thread waiting for unspecified notification 4", function(as
         '	at java.lang.Thread.run(Thread.java:744)',
         '',
         '   Locked ownable synchronizers:',
-        '	- <0x00000004f00094c0> (a java.util.concurrent.ThreadPoolExecutor$Worker)'
+        '	- <0x00000004f00094c0> (a java.util.concurrent.ThreadPoolExecutor$Worker)',
     ].join('\n');
     var analyzer = new Analyzer(threadDump);
     var threads = analyzer.threads;

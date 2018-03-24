@@ -1,0 +1,11 @@
+extends: eslint:recommended
+
+env:
+    browser: true
+    node: true
+
+rules:
+  comma-dangle:
+    - error
+    - only-multiline
+  no-empty: warn

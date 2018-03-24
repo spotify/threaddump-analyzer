@@ -18,7 +18,7 @@ limitations under the License.
 
 var gulp = require('gulp');
 var qunit = require('gulp-qunit');
-var jshint = require('gulp-jshint');
+var eslint = require('gulp-eslint');
 var htmlhint = require("gulp-htmlhint");
 var csslint = require("gulp-csslint");
 
@@ -27,11 +27,11 @@ gulp.task('test', function() {
         .pipe(qunit({'phantomjs-options': ['--ignore-ssl-errors=true']}));
 });
 
-gulp.task('jslint', function() {
+gulp.task('eslint', function() {
     return gulp.src('*.js')
-        .pipe(jshint())
-        .pipe(jshint.reporter('default'))
-        .pipe(jshint.reporter('fail'));
+        .pipe(eslint())
+        .pipe(eslint.format())
+        .pipe(eslint.failAfterError());
 });
 
 gulp.task('htmllint', function() {

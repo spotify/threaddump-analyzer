@@ -12,7 +12,7 @@
         "url": "https://github.com/spotify/threaddump-analyzer/issues"
     },
     "scripts": {
-        "test": "gulp test jslint htmllint csslint"
+        "test": "gulp test eslint htmllint csslint"
     },
     "keywords": [
         "java",
@@ -22,7 +22,7 @@
     "dependencies": {},
     "devDependencies": {
         "gulp-qunit": "2.0.1",
-        "gulp-jshint": "2.1.0",
+        "gulp-eslint": "4.0.2",
         "gulp-htmlhint": "2.1.0",
         "gulp-csslint": "1.0.1",
         "gulp": "3.9.1"

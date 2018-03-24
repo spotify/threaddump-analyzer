@@ -14,20 +14,17 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
-/* jshint browser: true */
-/* global document */
-
 var EMPTY_STACK = "	<empty stack>";
 var generatedIdCounter = 1;
 
-// This method is called from HTML so we need to tell JSHint it's not unused
-function analyzeTextfield() { // jshint ignore: line
+// This method is called from HTML
+function analyzeTextfield() {
     var text = document.getElementById("TEXTAREA").value;
     analyze(text);
 }
 
-// This method is called from HTML so we need to tell JSHint it's not unused
-function analyzeFile() { // jshint ignore: line
+// This method is called from HTML so we need to tell ESLint it's not unused
+function analyzeFile() { // eslint-disable-line no-unused-vars
     var fileNode = document.getElementById("FILE");
     if(fileNode.files.length > 0) {
         var file = fileNode.files[0];
@@ -60,8 +57,8 @@ function analyze(text) {
         " Running Threads";
 }
 
-// This method is called from HTML so we need to tell JSHint it's not unused
-function clearTextfield() { // jshint ignore: line
+// This method is called from HTML so we need to tell ESLint it's not unused
+function clearTextfield() {  // eslint-disable-line no-unused-vars
     var textArea = document.getElementById("TEXTAREA");
     textArea.value = "";
 
@@ -124,7 +121,7 @@ function ThreadStatus(thread) {
             this.thread.threadState === "RUNNABLE";
     };
 
-    this.toHtml = function() { //jshint ignore:line
+    this.toHtml = function() {
         var html = '';
 
         if (this.thread.wantNotificationOn !== null) {
@@ -189,7 +186,7 @@ function Thread(line) {
     };
 
     // Return true if the line was understood, false otherwise
-    this.addStackLine = function(line) { //jshint ignore:line
+    this.addStackLine = function(line) {
         var match;
 
         var FRAME = /^\s+at (.*)/;
@@ -726,7 +723,7 @@ function Analyzer(text) {
 
             threadsAndStacks.push({
                 threads: threads,
-                stackFrames: threads[0].frames
+                stackFrames: threads[0].frames,
             });
         }
 
@@ -820,7 +817,7 @@ function Analyzer(text) {
         return [
             '<a class="internal" href="#thread-' + source.tid + '">',
             htmlEscape(source.name),
-            '</a>'
+            '</a>',
         ].join('');
     };
 
