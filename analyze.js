@@ -26,7 +26,7 @@ function analyzeTextfield() {
 // This method is called from HTML so we need to tell ESLint it's not unused
 function analyzeFile() { // eslint-disable-line no-unused-vars
     var fileNode = document.getElementById("FILE");
-    if(fileNode.files.length > 0) {
+    if (fileNode.files.length > 0) {
         var file = fileNode.files[0];
         var fileReader = new FileReader();
         fileReader.readAsText(file);
@@ -58,7 +58,7 @@ function analyze(text) {
 }
 
 // This method is called from HTML so we need to tell ESLint it's not unused
-function clearTextfield() {  // eslint-disable-line no-unused-vars
+function clearTextfield() { // eslint-disable-line no-unused-vars
     var textArea = document.getElementById("TEXTAREA");
     textArea.value = "";
 
@@ -67,7 +67,7 @@ function clearTextfield() {  // eslint-disable-line no-unused-vars
 }
 
 function htmlEscape(unescaped) {
-    var div = document.createElement('div');
+    var div = document.createElement("div");
     div.appendChild(document.createTextNode(unescaped));
     var escaped = div.innerHTML;
     return escaped;
@@ -81,8 +81,8 @@ function setHtml(name, html) {
     var destination = document.getElementById(name);
     destination.innerHTML = html;
 
-    var div = document.getElementById(name + '_DIV');
-    div.style.display = (html.length > 0) ? 'inline' : 'none';
+    var div = document.getElementById(name + "_DIV");
+    div.style.display = (html.length > 0) ? "inline" : "none";
 }
 
 // Extracts a substring from a string.
@@ -106,13 +106,13 @@ function decorateStackFrames(stackFrames) {
 
     var decorated = [];
     for (var i = 0; i < stackFrames.length; i++) {
-        decorated.push('	at ' + stackFrames[i]);
+        decorated.push("	at " + stackFrames[i]);
     }
     return decorated;
 }
 
 function toSynchronizerHref(id) {
-    return '<a href="#synchronizer-' + id + '" class="internal">' + id + '</a>';
+    return '<a href="#synchronizer-' + id + '" class="internal">' + id + "</a>";
 }
 
 function ThreadStatus(thread) {
@@ -122,28 +122,28 @@ function ThreadStatus(thread) {
     };
 
     this.toHtml = function() {
-        var html = '';
+        var html = "";
 
         if (this.thread.wantNotificationOn !== null) {
-            html += 'awaiting notification on [';
+            html += "awaiting notification on [";
             html += toSynchronizerHref(this.thread.wantNotificationOn);
-            html += ']';
+            html += "]";
         } else if (this.thread.wantToAcquire !== null) {
-            html += 'waiting to acquire [';
+            html += "waiting to acquire [";
             html += toSynchronizerHref(this.thread.wantToAcquire);
-            html += ']';
-        } else if (this.thread.threadState === 'TIMED_WAITING (sleeping)') {
-            html += 'sleeping';
-        } else if (this.thread.threadState === 'NEW') {
-            html += 'not started';
-        } else if (this.thread.threadState === 'TERMINATED') {
-            html += 'terminated';
+            html += "]";
+        } else if (this.thread.threadState === "TIMED_WAITING (sleeping)") {
+            html += "sleeping";
+        } else if (this.thread.threadState === "NEW") {
+            html += "not started";
+        } else if (this.thread.threadState === "TERMINATED") {
+            html += "terminated";
         } else if (this.thread.threadState === null) {
-            html += 'non-Java thread';
+            html += "non-Java thread";
         } else if (this.thread.frames.length === 0 ) {
-            html += 'non-Java thread';
-        } else if (this.thread.threadState === 'RUNNABLE') {
-            html += 'running';
+            html += "non-Java thread";
+        } else if (this.thread.threadState === "RUNNABLE") {
+            html += "running";
         } else {
             // FIXME: Write something in the warnings section (that
             // doesn't exist yet)
@@ -153,15 +153,15 @@ function ThreadStatus(thread) {
         }
 
         if (this.thread.locksHeld.length > 0) {
-            html += ', holding [';
+            html += ", holding [";
             for (var i = 0; i < this.thread.locksHeld.length; i++) {
                 if (i > 0) {
-                    html += ', ';
+                    html += ", ";
                 }
 
                 html += toSynchronizerHref(this.thread.locksHeld[i]);
             }
-            html += ']';
+            html += "]";
         }
 
         return html;
@@ -178,11 +178,11 @@ function arrayAddUnique(array, toAdd) {
 
 function Thread(line) {
     this.toString = function() {
-        return '"' + this.name + '": ' + this.state + '\n' + this.toStackString();
+        return '"' + this.name + '": ' + this.state + "\n" + this.toStackString();
     };
 
     this.isValid = function() {
-        return this.hasOwnProperty('name') && this.name !== undefined;
+        return this.hasOwnProperty("name") && this.name !== undefined;
     };
 
     // Return true if the line was understood, false otherwise
@@ -277,7 +277,7 @@ function Thread(line) {
     };
 
     this.toStackString = function() {
-        return decorateStackFrames(this.frames).join('\n');
+        return decorateStackFrames(this.frames).join("\n");
     };
 
     this.toHeaderHtml = function() {
@@ -298,7 +298,7 @@ function Thread(line) {
 
     // Get the name of this thread wrapped in an <a href=>
     this.getLinkedName = function() {
-        return '<a class="internal" href="#thread-' + this.tid + '">' + htmlEscape(this.name) + '</a>';
+        return '<a class="internal" href="#thread-' + this.tid + '">' + htmlEscape(this.name) + "</a>";
     };
 
     this.getStatus = function() {
@@ -409,6 +409,10 @@ function StringCounter() {
         var returnMe = [];
 
         for (var string in this._stringsToCounts) {
+            if (!Object.prototype.hasOwnProperty.call(this._stringsToCounts, string)) {
+                continue;
+            }
+
             var count = this._stringsToCounts[string].count;
             var sources = this._stringsToCounts[string].sources;
             returnMe.push({count:count, string:string, sources:sources});
@@ -430,7 +434,7 @@ function StringCounter() {
         var countedStrings = this.getStrings();
         for (var i = 0; i < countedStrings.length; i++) {
             if (string.length > 0) {
-                string += '\n';
+                string += "\n";
             }
             string += countedStrings[i].count +
                 " " + countedStrings[i].string;
@@ -457,21 +461,21 @@ function StringCounter() {
 
 function createLockUsersHtml(title, threads) {
     if (threads.length === 0) {
-        return '';
+        return "";
     }
 
-    var html = '';
+    var html = "";
 
     html += '<div class="synchronizer">';
     if (threads.length > 4) {
-        html += threads.length + ' ';
+        html += threads.length + " ";
         title = title.charAt(0).toLowerCase() + title.slice(1);
     }
-    html += title + ':';
+    html += title + ":";
     threads.sort();
     for (var i = 0; i < threads.length; i++) {
         var thread = threads[i];
-        html += '<br><span class="raw">  ' + thread.getLinkedName() + '</span>';
+        html += '<br><span class="raw">  ' + thread.getLinkedName() + "</span>";
     }
     html += "</div>";
 
@@ -526,7 +530,7 @@ function Synchronizer(id, className) {
 
         if (this.lockHolder !== null) {
             html += '<div class="synchronizer">';
-            html += 'Held by:<br><span class="raw">  ' + this.lockHolder.getLinkedName() + '</span>';
+            html += 'Held by:<br><span class="raw">  ' + this.lockHolder.getLinkedName() + "</span>";
             html += "</div>";
         }
 
@@ -593,8 +597,8 @@ function Analyzer(text) {
         for (var i = 0; i < this.threads.length; i++) {
             var thread = this.threads[i];
 
-            if (-1 === ['TIMED_WAITING (on object monitor)',
-                        'WAITING (on object monitor)'].indexOf(thread.threadState))
+            if (-1 === ["TIMED_WAITING (on object monitor)",
+                        "WAITING (on object monitor)"].indexOf(thread.threadState))
             {
                 // Not waiting for notification
                 continue;
@@ -617,11 +621,11 @@ function Analyzer(text) {
         // Thread headers start with ", this is not it
         return false;
       }
-      if (line.indexOf('prio=') !== -1) {
+      if (line.indexOf("prio=") !== -1) {
         // Thread header contains "prio=" => we think it's complete
         return false;
       }
-      if (line.indexOf('Thread t@') !== -1) {
+      if (line.indexOf("Thread t@") !== -1) {
         // Thread header contains a thread ID => we think it's complete
         return false;
       }
@@ -634,7 +638,7 @@ function Analyzer(text) {
     };
 
     this._analyze = function(text) {
-        var lines = text.split('\n');
+        var lines = text.split("\n");
         for (var i = 0; i < lines.length; i++) {
             var line = lines[i];
             while (this._isIncompleteThreadHeader(line)) {
@@ -645,7 +649,7 @@ function Analyzer(text) {
                 }
 
                 // Replace thread name newline with ", "
-                line += ', ' + lines[i];
+                line += ", " + lines[i];
             }
 
             this._handleLine(line);
@@ -672,6 +676,10 @@ function Analyzer(text) {
         // List stacks by popularity
         var stacks = [];
         for (var stack in stacksToThreads) {
+            if (!Object.prototype.hasOwnProperty.call(stacksToThreads, stack)) {
+                continue;
+            }
+
             stacks.push(stack);
         }
         stacks.sort(function(a, b) {
@@ -732,7 +740,7 @@ function Analyzer(text) {
 
     this._stackToHtml = function(stackFrames) {
         if (stackFrames.length === 0) {
-            return '<div class="raw">' + htmlEscape(EMPTY_STACK) + '</div>\n';
+            return '<div class="raw">' + htmlEscape(EMPTY_STACK) + "</div>\n";
         }
 
         var asHtml = "";
@@ -752,7 +760,7 @@ function Analyzer(text) {
             }
             asHtml += htmlEscape(stackFrames[i]);
             if (href) {
-                asHtml += '</a>';
+                asHtml += "</a>";
             }
 
             asHtml += "</div>\n";
@@ -769,7 +777,7 @@ function Analyzer(text) {
         var threadsAndStacks = this._toThreadsAndStacks();
 
         var asHtml = "";
-        asHtml += '<h2>' + this.threads.length + " threads found</h2>\n";
+        asHtml += "<h2>" + this.threads.length + " threads found</h2>\n";
         for (var i = 0; i < threadsAndStacks.length; i++) {
             var currentThreadsAndStack = threadsAndStacks[i];
             var threads = currentThreadsAndStack.threads;
@@ -790,19 +798,19 @@ function Analyzer(text) {
                     thread.tid +
                     '">' +
                     thread.toHeaderHtml() +
-                    '</div>\n';
+                    "</div>\n";
             }
 
             asHtml += this._stackToHtml(currentThreadsAndStack.stackFrames);
 
-            asHtml += '</div>\n';
+            asHtml += "</div>\n";
         }
 
         return asHtml;
     };
 
     this.toIgnoresString = function() {
-        return this._ignores.toString() + '\n';
+        return this._ignores.toString() + "\n";
     };
 
     this.toIgnoresHtml = function() {
@@ -817,8 +825,8 @@ function Analyzer(text) {
         return [
             '<a class="internal" href="#thread-' + source.tid + '">',
             htmlEscape(source.name),
-            '</a>',
-        ].join('');
+            "</a>",
+        ].join("");
     };
 
     this.toRunningHtml = function() {
@@ -832,7 +840,7 @@ function Analyzer(text) {
             html += '"><td class="vertical-align">';
             html += htmlEscape(countedString.string);
             html += '</td><td class="raw">';
-            html += ids.join('<br>');
+            html += ids.join("<br>");
             html += "</td></tr>\n";
         }
         return html;
@@ -846,11 +854,11 @@ function Analyzer(text) {
                 continue;
             }
 
-            if (thread.frames.length ===  0) {
+            if (thread.frames.length === 0) {
                 continue;
             }
 
-            var runningMethod = thread.frames[0].replace(/^\s+at\s+/, '');
+            var runningMethod = thread.frames[0].replace(/^\s+at\s+/, "");
             countedRunning.addString(runningMethod, thread);
         }
 
@@ -861,7 +869,7 @@ function Analyzer(text) {
         var html = "";
         for (var i = 0; i < this._synchronizers.length; i++) {
             var synchronizer = this._synchronizers[i];
-            html += synchronizer.toHtmlTableRow() + '\n';
+            html += synchronizer.toHtmlTableRow() + "\n";
         }
         return html;
     };
