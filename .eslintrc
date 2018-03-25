@@ -1,11 +1,28 @@
 extends: eslint:recommended
 
 env:
-    browser: true
-    node: true
+  browser: true
+  node: true
 
 rules:
+  block-scoped-var: warn
   comma-dangle:
-    - error
+    - warn
     - only-multiline
   no-empty: warn
+  consistent-return: warn
+  guard-for-in: warn
+  no-eq-null: warn
+  no-multi-spaces: warn
+  no-return-assign: warn
+  no-self-compare: warn
+  no-unmodified-loop-condition: warn
+  no-unused-expressions: warn
+  no-shadow-restricted-names: warn
+  no-mixed-operators: warn
+  no-multi-assign: warn
+  no-trailing-spaces: warn
+  quotes:
+    - warn
+    - double
+    - avoidEscape: true
