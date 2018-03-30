@@ -23,9 +23,6 @@ the copyright belongs to Spotify AB.
 * In the Top Running Methods list, list thread names per top method
 and link them all to the stack traces list.
 
-* Support uploading thread dumps from the local file system:
-<http://www.html5rocks.com/en/tutorials/file/dndfiles/>
-
 * Support parsing gzipped thread dumps.
 
 * If one thread is holding multiple locks, this should be noted in the
@@ -189,3 +186,6 @@ name and address, in that order.
 
 * If a thread is listed as holding the same lock more than once,
 remove duplicates from that list.
+
+* Support uploading thread dumps from the local file system:
+<http://www.html5rocks.com/en/tutorials/file/dndfiles/>
