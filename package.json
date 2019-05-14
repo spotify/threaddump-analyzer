@@ -21,10 +21,10 @@
     ],
     "dependencies": {},
     "devDependencies": {
-        "gulp-qunit": "2.0.1",
-        "gulp-eslint": "4.0.2",
-        "gulp-htmlhint": "2.1.0",
+        "gulp-qunit": "2.0.3",
+        "gulp-eslint": "5.0.0",
+        "gulp-htmlhint": "2.2.1",
         "gulp-csslint": "1.0.1",
-        "gulp": "3.9.1"
+        "gulp": "4.0.2"
     }
 }
