@@ -22,7 +22,7 @@
     "dependencies": {},
     "devDependencies": {
         "gulp-qunit": "2.0.3",
-        "gulp-eslint": "5.0.0",
+        "gulp-eslint": "6.0.0",
         "gulp-htmlhint": "2.2.1",
         "gulp-csslint": "1.0.1",
         "gulp": "4.0.2"
