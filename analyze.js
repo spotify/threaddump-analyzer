@@ -182,7 +182,7 @@ function Thread(line) {
     };
 
     this.isValid = function() {
-        return this.hasOwnProperty("name") && this.name !== undefined;
+        return Object.prototype.hasOwnProperty.call(this,"name") && this.name !== undefined;
     };
 
     // Return true if the line was understood, false otherwise
@@ -391,7 +391,7 @@ function Thread(line) {
 
 function StringCounter() {
     this.addString = function(string, source) {
-        if (!this._stringsToCounts.hasOwnProperty(string)) {
+        if (!Object.prototype.hasOwnProperty.call(this._stringsToCounts, string)) {
             this._stringsToCounts[string] = {count: 0, sources: []};
         }
         this._stringsToCounts[string].count++;
@@ -400,7 +400,7 @@ function StringCounter() {
     };
 
     this.hasString = function(string) {
-        return this._stringsToCounts.hasOwnProperty(string);
+        return Object.prototype.hasOwnProperty.call(this._stringsToCounts, string);
     };
 
     // Returns all individual string and their counts as
@@ -667,7 +667,7 @@ function Analyzer(text) {
         for (var i = 0; i < this.threads.length; i++) {
             var thread = this.threads[i];
             var stackString = thread.toStackString();
-            if (!stacksToThreads.hasOwnProperty(stackString)) {
+            if (!Object.prototype.hasOwnProperty.call(stacksToThreads, stackString)) {
                 stacksToThreads[stackString] = [];
             }
             stacksToThreads[stackString].push(thread);

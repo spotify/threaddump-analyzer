@@ -22,6 +22,7 @@ rules:
   no-mixed-operators: warn
   no-multi-assign: warn
   no-trailing-spaces: warn
+  no-redeclare: warn
   quotes:
     - warn
     - double
