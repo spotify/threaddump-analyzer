@@ -37,6 +37,25 @@ function analyzeFile() { // eslint-disable-line no-unused-vars
     }
 }
 
+function analyzeFromQuery() { // eslint-disable-line no-unused-vars
+    var search = document.location.search;
+    var pairs = search.substr(1).split("&");
+    var url = "";
+    for (var i = 0; i < pairs.length; ++i) {
+        var kv = pairs[i].split("=");
+        if (kv.length == 2 && kv[0] == "url") {
+            url = kv[1];
+        }
+    }
+    if (url == "") return;
+    fetch(url)
+        .then(function (response) {
+            response.text().then(function (text) {
+                analyze(text);
+            });
+        });
+}
+
 
 function analyze(text) {
     var analyzer = new Analyzer(text);
