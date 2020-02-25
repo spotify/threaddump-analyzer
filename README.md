@@ -14,6 +14,15 @@ The Java Thread Dump Analyzer is licensed under
 [version 2.0 of the Apache license](http://www.apache.org/licenses/LICENSE-2.0.html),
 the copyright belongs to Spotify AB.
 
+# Testing Locally
+
+```bash
+npm install
+npm test
+```
+
+Tested with `npm` `6.13.7` and `node` `v13.8.0`.
+
 ## TODO
 * Enable multiple threads to hold the same lock in the Synchronizers
   section. This will happen when we have threads waiting on unnamed
@@ -53,7 +62,7 @@ corresponding toString methods from the source code.
 from the HTML code.
 
 * If all lines share the same prefix, strip it away before analyzing
-so we can parse dumps like this one: http://pastebin.com/fcSqxsku
+so we can parse dumps like this one: <http://pastebin.com/fcSqxsku>
 
 * If a thread is waiting for another thread to release a lock, make
 sure there's a clickable reference from the waiter to the holder.
